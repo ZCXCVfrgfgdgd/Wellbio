@@ -1,0 +1,117 @@
+
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
+<style>
+  :root{--accent:#7ee7ff;--accent2:#ff6b9a}
+  *{box-sizing:border-box}
+  body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:linear-gradient(120deg,#071018,#0b1223 40%,#071018);color:#e7f8ff;display:flex;align-items:center;justify-content:center;padding:24px}
+  .wrap{width:100%;max-width:980px}
+  .top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.18));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(12px)}
+  .avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06)}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block}
+  .info{display:flex;flex-direction:column;gap:6px}
+  .nick{font-weight:800;color:var(--accent);letter-spacing:1px}
+  .sub{opacity:0.85;font-size:13px}
+  .controls{display:flex;gap:12px;margin-top:10px}
+  .btn{padding:10px 16px;border-radius:12px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s}
+  .btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
+  .card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px)}
+  .card.show{display:block;animation:panelIn .36s ease}
+  @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .row{display:flex;gap:12px;flex-wrap:wrap}
+  .col{flex:1 1 220px;min-width:180px}
+  h3{margin:0 0 6px 0;color:#bfefff}
+  .socials{display:flex;flex-direction:column;gap:8px}
+  .social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03)}
+  .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800}
+  footer{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:linear-gradient(180deg,rgba(3,8,15,0.9),rgba(8,12,20,0.7));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(8px);display:flex;gap:12px;align-items:center}
+  .pbtn{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);transition:transform .22s}
+  .pbtn:hover{transform:translateY(-6px)}
+  .play{width:58px;height:58px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800;border:none}
+  .meta{flex:1;min-width:0}
+  .track{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .progress{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px}
+  .bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+  .time{font-size:12px;opacity:0.85;min-width:70px;text-align:right}
+  @media(max-width:720px){.top{flex-direction:column;align-items:center}.avatar{width:120px;height:120px}.player{width:100%;left:0;transform:none;border-radius:0}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <div class="avatar"><img id="avatar" src="avatar.jpg" alt="avatar"></div>
+    <div class="info">
+      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
+      <div class="sub">Максим — Львов, Украина</div>
+      <div class="controls">
+        <button class="btn" id="btn-bio">ʙɪᴏ</button>
+        <button class="btn" id="btn-other">OTHER</button>
+        <button class="btn" id="btn-socials">SOCIALS</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="panel-bio">
+    <div class="row">
+      <div class="col"><h3>Имя</h3><div>Максим</div></div>
+      <div class="col"><h3>Страна</h3><div>Украина</div></div>
+      <div class="col"><h3>Город</h3><div>Львов</div></div>
+    </div>
+    <div style="height:10px"></div>
+    <div class="row">
+      <div class="col"><h3>Дата рождения</h3><div>28/08/2012</div></div>
+      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
+    </div>
+  </div>
+
+  <div class="card" id="panel-other">
+    <h3>OTHER</h3>
+    <p>📱 Телефон: Tecno Povo 6</p>
+    <p>🎮 Игры: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</p>
+    <p>✨ Увлечения: Мне нравится делать видео по разным играм, монтировать, и в свои 13 лет я пробую учиться новому, радовать людей контентом в соцсетях.</p>
+    <p>➕ INK GAME WIN|26</p>
+  </div>
+
+  <div class="card" id="panel-socials">
+    <h3>SOCIALS</h3>
+    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
+    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка) — t.me/Femscout1</div></a>
+    <a class="social" href="#" target="_blank"><div class="icon">TG</div><div>TG (канал) — (пока пусто)</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO) — t.me/wellbioink</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+  </div>
+</div>
+
+<footer class="player">
+  <div class="pbtn" id="btn-prev">⟲</div>
+  <div class="pbtn play" id="btn-play">▶</div>
+  <div class="pbtn" id="btn-next">✦</div>
+  <div class="meta"><div class="track">Dope17 — Болен</div><div class="progress" id="prog"><div class="bar" id="bar"></div></div></div>
+  <div class="time" id="time">0:00 / 0:00</div>
+</footer>
+
+<script>
+const audio = new Audio('dope17, mapt0v - болен.mp3');
+const playBtn = document.getElementById('btn-play');
+const bar = document.getElementById('bar');
+const prog = document.getElementById('prog');
+const timeEl = document.getElementById('time');
+const panels = {bio:document.getElementById('panel-bio'), other:document.getElementById('panel-other'), socials:document.getElementById('panel-socials')};
+const btns = {bio:document.getElementById('btn-bio'), other:document.getElementById('btn-other'), socials:document.getElementById('btn-socials')};
+
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('active'))}
+btns.bio.onclick=()=>{const s=panels.bio.classList.contains('show'); hideAll(); if(!s){panels.bio.classList.add('show'); btns.bio.classList.add('active'); panels.bio.scrollIntoView({behavior:'smooth',block:'center'})}}
+btns.other.onclick=()=>{const s=panels.other.classList.contains('show'); hideAll(); if(!s){panels.other.classList.add('show'); btns.other.classList.add('active'); panels.other.scrollIntoView({behavior:'smooth',block:'center'})}}
+btns.socials.onclick=()=>{const s=panels.socials.classList.contains('show'); hideAll(); if(!s){panels.socials.classList.add('show'); btns.socials.classList.add('active'); panels.socials.scrollIntoView({behavior:'smooth',block:'center'})}}
+
+playBtn.onclick=()=>{ if(audio.paused) audio.play(); else audio.pause(); }
+audio.ontimeupdate = ()=>{ if(audio.duration){ const pct = audio.currentTime/audio.duration*100; bar.style.width = pct+'%'; const m = Math.floor(audio.currentTime/60); const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0'); const dm = Math.floor(audio.duration/60); const ds = Math.floor(audio.duration%60).toString().padStart(2,'0'); timeEl.textContent = m+':'+s+' / '+dm+':'+ds } }
+audio.onplay = ()=> playBtn.textContent = '⏸'; audio.onpause = ()=> playBtn.textContent = '▶';
+</script>
+</body>
+</html>
