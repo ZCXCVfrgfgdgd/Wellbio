@@ -22,7 +22,6 @@
     cursor:none;
     overflow-x:hidden;
   }
-  /* Glow cursor */
   body::after {
     content:'';
     position:fixed;
@@ -119,10 +118,39 @@
     color:#071018;
     font-weight:800;
   }
-  /* Cursor tracking JS */
+  /* Плеер стили */
+  #player {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 400px;
+    padding: 12px 18px;
+    background: rgba(255,255,255,0.05);
+    border-radius: 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    color: white;
+    font-family: Inter,Segoe UI,Roboto,Arial,sans-serif;
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+  .player-btn { 
+    width: 36px; height: 36px; border-radius:50%; 
+    background: linear-gradient(90deg,#7ee7ff,#ff6b9a); border:none; 
+    cursor:pointer; color:#071018; font-weight:800; display:flex; justify-content:center; align-items:center; font-size:16px;
+  }
+  #trackName { flex:1; font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  #progressContainer { position:relative; height:4px; background: rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; flex:1; }
+  #progressBar { position:absolute; top:0; left:0; height:100%; background:#7ee7ff; border-radius:2px; width:0%; }
+  #time { font-size:12px; min-width:70px; text-align:right; opacity:0.85; }
 </style>
 </head>
 <body>
+
+<!-- Звёздный фон -->
+<canvas id="stars" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></canvas>
+
 <div class="wrap">
   <div class="top">
     <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
@@ -176,7 +204,18 @@
   </div>
 </div>
 
+<!-- Плеер -->
+<div id="player">
+  <button class="player-btn" id="prevBtn">⏮</button>
+  <button class="player-btn" id="playPauseBtn">▶</button>
+  <button class="player-btn" id="nextBtn">⏭</button>
+  <div id="trackName">BOLEN</div>
+  <div id="progressContainer"><div id="progressBar"></div></div>
+  <div id="time">0:00 / 0:00</div>
+</div>
+
 <script>
+// Панели
 const panels = {
   bio:document.getElementById('panel-bio'),
   goals:document.getElementById('panel-goals'),
@@ -195,28 +234,23 @@ btns.goals.onclick=()=>{ const s=panels.goals.classList.contains('show'); hideAl
 btns.other.onclick=()=>{ const s=panels.other.classList.contains('show'); hideAll(); if(!s) panels.other.classList.add('show'); }
 btns.socials.onclick=()=>{ const s=panels.socials.classList.contains('show'); hideAll(); if(!s) panels.socials.classList.add('show'); }
 
-/* Cursor tracking */
-const cursor = document.body.querySelector('::after');
+// Glow курсор
 document.addEventListener('mousemove', e=>{
-  const c = document.querySelector('body::after');
+  const c = document.body.querySelector('::after');
   document.body.style.setProperty('--cursorX', e.clientX+'px');
   document.body.style.setProperty('--cursorY', e.clientY+'px');
 });
-</script>
-<!-- Фон со звездами -->
-<canvas id="stars" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></canvas>
-<script>
+
+// Звёздный фон
 const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 let W = canvas.width = window.innerWidth;
 let H = canvas.height = window.innerHeight;
 const starsCount = 150;
 const stars = [];
-
 for(let i=0;i<starsCount;i++){
-  stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5 + 0.5, d:Math.random()*starsCount});
+  stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5 + 0.5});
 }
-
 function drawStars(){
   ctx.clearRect(0,0,W,H);
   ctx.fillStyle = 'white';
@@ -228,115 +262,118 @@ function drawStars(){
     ctx.fill();
   });
 }
-
 function updateStars(){
   stars.forEach(s=>{
-    s.y += 0.2;
-    if(s.y>H) s.y=0;
-  });
-}
-
-function animateStars(){
-  drawStars();
-  updateStars();
-  requestAnimationFrame(animateStars);
-}
-animateStars();
-
-window.addEventListener('resize', ()=>{
-  W = canvas.width = window.innerWidth;
-  H = canvas.height = window.innerHeight;
-});
-</script>
+    <!-- Stars Canvas -->
+<canvas id="starsCanvas" style="position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;"></canvas>
 
 <!-- ПЛЕЕР -->
-<style>
-#player {
-  position: fixed;
-  bottom: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 400px;
-  padding: 12px 18px;
-  background: rgba(255,255,255,0.05);
-  border-radius: 14px;
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  color: white;
-  font-family: Inter,Segoe UI,Roboto,Arial,sans-serif;
-  border: 1px solid rgba(255,255,255,0.1);
-}
-.player-btn { 
-  width: 36px; height: 36px; border-radius:50%; 
-  background: linear-gradient(90deg,#7ee7ff,#ff6b9a); border:none; 
-  cursor:pointer; color:#071018; font-weight:800; display:flex; justify-content:center; align-items:center; font-size:16px;
-}
-#trackName { flex:1; font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-#progressContainer { position:relative; height:4px; background: rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; flex:1; }
-#progressBar { position:absolute; top:0; left:0; height:100%; background:#7ee7ff; border-radius:2px; width:0%; }
-#time { font-size:12px; min-width:70px; text-align:right; opacity:0.85; }
-</style>
-
-<div id="player">
-  <button class="player-btn" id="prevBtn">⏮</button>
-  <button class="player-btn" id="playPauseBtn">▶</button>
-  <button class="player-btn" id="nextBtn">⏭</button>
-  <div id="trackName">BOLEN</div>
-  <div id="progressContainer"><div id="progressBar"></div></div>
-  <div id="time">0:00 / 0:00</div>
+<div class="wrap" style="margin-top:20px;">
+  <div class="card show" id="music-player">
+    <h3>Плеер</h3>
+    <audio id="audio" preload="auto"></audio>
+    <div style="display:flex;align-items:center;gap:10px;">
+      <button id="prevBtn">⏮️</button>
+      <button id="playBtn">▶️</button>
+      <button id="nextBtn">⏭️</button>
+      <div id="trackName">Название трека</div>
+    </div>
+    <input type="range" id="progress" min="0" max="100" value="0" style="flex:1;">
+    <div id="time">0:00 / 0:00</div>
+  </div>
 </div>
 
 <script>
-/* ПЛЕЕР */
-const tracks=[
-  {file:"bolen.mp3",name:"BOLEN"},
-  {file:"2_5321416586563717473.mp3",name:"MOON | Crystals"},
-  {file:"2_5375374187688907798.mp3",name:"Vtornik | Хороший"},
-  {file:"Токсік(Mulancore).mp3",name:"Токсік(Mulancore)"},
-  {file:"Мы - Возможно.mp3",name:"Мы - Возможно"},
-  {file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3",name:"NAM VSЕГО 16"}
+// === STARS ANIMATION ===
+const canvas = document.getElementById('starsCanvas');
+const ctx = canvas.getContext('2d');
+let stars = [];
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+window.addEventListener('resize', resizeCanvas);
+resizeCanvas();
+
+for(let i=0;i<200;i++){
+  stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*1.5+0.5, speed:Math.random()*0.5+0.2});
+}
+
+function updateStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle = 'white';
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.size, 0, Math.PI*2);
+    ctx.fill();
+    s.y += s.speed;
+    if(s.y>canvas.height){ s.y=0; s.x=Math.random()*canvas.width; }
+  });
+  requestAnimationFrame(updateStars);
+}
+updateStars();
+
+// === ПЛЕЕР ===
+const tracks = [
+  {name:'MOON | Crystals', file:'2_5321416586563717473.mp3'},
+  {name:'Vtornik | Хороший', file:'2_5375374187688907798.mp3'},
+  {name:'Токсік(Mulancore)', file:'Токсік(Mulancore).mp3'},
+  {name:'Мы - Возможно', file:'Мы - Возможно.mp3'},
+  {name:'AKA-SHGS-NAM VSEGO 16', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'},
+  {name:'Bolen', file:'bolen.mp3'}
 ];
-let currentTrack = 0;
-const audio = new Audio();
-const playBtn = document.getElementById('playPauseBtn');
+
+const audio = document.getElementById('audio');
+const playBtn = document.getElementById('playBtn');
 const prevBtn = document.getElementById('prevBtn');
 const nextBtn = document.getElementById('nextBtn');
 const trackName = document.getElementById('trackName');
-const progressBar = document.getElementById('progressBar');
-const progressContainer = document.getElementById('progressContainer');
-const timeEl = document.getElementById('time');
+const progress = document.getElementById('progress');
+const timeDisplay = document.getElementById('time');
+let currentTrack = 0;
+let isPlaying = false;
 
-function loadTrack(){
-  audio.src = tracks[currentTrack].file;
-  trackName.textContent = tracks[currentTrack].name;
+function loadTrack(i){
+  audio.src = tracks[i].file;
+  trackName.textContent = tracks[i].name;
+  audio.load();
+}
+loadTrack(currentTrack);
+
+playBtn.onclick = ()=>{
+  if(isPlaying){ audio.pause(); playBtn.textContent='▶️'; } 
+  else{ audio.play(); playBtn.textContent='⏸️'; }
+  isPlaying = !isPlaying;
+};
+
+prevBtn.onclick = ()=>{
+  currentTrack = (currentTrack-1+tracks.length)%tracks.length;
+  loadTrack(currentTrack);
+  audio.play(); playBtn.textContent='⏸️'; isPlaying=true;
+};
+nextBtn.onclick = ()=>{
+  currentTrack = (currentTrack+1)%tracks.length;
+  loadTrack(currentTrack);
+  audio.play(); playBtn.textContent='⏸️'; isPlaying=true;
+};
+
+audio.ontimeupdate = ()=>{
+  let progressPercent = (audio.currentTime/audio.duration)*100;
+  progress.value = progressPercent || 0;
+  let c=Math.floor(audio.currentTime);
+  let d=Math.floor(audio.duration);
+  let cMin=Math.floor(c/60), cSec=c%60;
+  let dMin=Math.floor(d/60), dSec=d%60;
+  timeDisplay.textContent = `${cMin}:${cSec.toString().padStart(2,'0')} / ${dMin}:${dSec.toString().padStart(2,'0')}`;
+};
+
+progress.oninput = ()=>{
+  audio.currentTime = (progress.value/100)*audio.duration;
+};
+
+audio.onended = ()=>{
+  currentTrack = Math.floor(Math.random()*tracks.length);
+  loadTrack(currentTrack);
   audio.play();
-  playBtn.textContent = '⏸';
-}
-
-playBtn.onclick = () => {
-  if(audio.paused){ audio.play(); playBtn.textContent='⏸'; }
-  else { audio.pause(); playBtn.textContent='▶'; }
-}
-prevBtn.onclick = () => { currentTrack = (currentTrack - 1 + tracks.length) % tracks.length; loadTrack(); }
-nextBtn.onclick = () => { currentTrack = (currentTrack + 1) % tracks.length; loadTrack(); }
-
-audio.ontimeupdate = () => {
-  if(audio.duration){
-    const progress = (audio.currentTime/audio.duration)*100;
-    progressBar.style.width = progress+'%';
-    const m = Math.floor(audio.currentTime/60);
-    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-    const dm = Math.floor(audio.duration/60);
-    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
-    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
-  }
-}
-progressContainer.onclick = (e) => {
-  const rect = progressContainer.getBoundingClientRect();
-  const pos = (e.clientX - rect.left)/rect.width;
-  audio.currentTime = pos*audio.duration;
-}
-window.onload = loadTrack;
-audio.onended = () => { currentTrack = Math.floor(Math.random()*tracks.length); loadTrack(); }
+};
 </script>
