@@ -110,10 +110,51 @@ footer{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc
 
 <script>
 const audio = new Audio('dope17, mapt0v - болен.mp3');
-audio.autoplay = true;
 audio.loop = true;
+
 const playBtn = document.getElementById('btn-play');
 const bar = document.getElementById('bar');
 const timeEl = document.getElementById('time');
-const panels = {bio:document.getElementById('panel-bio'), other:document.getElementById('panel-other'), socials:document.getElementById('panel-socials')};
-const btns = {bio:document.getElementById('btn-bio'), other:document.getElementById('btn
+
+const panels = {bio: document.getElementById('panel-bio'), other: document.getElementById('panel-other'), socials: document.getElementById('panel-socials')};
+const btns = {bio: document.getElementById('btn-bio'), other: document.getElementById('btn-other'), socials: document.getElementById('btn-socials')};
+
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('active'))}
+Object.keys(btns).forEach(key=>{
+  btns[key].onclick = ()=>{
+    const panel = panels[key];
+    const isVisible = panel.classList.contains('show');
+    hideAll();
+    if(!isVisible){panel.classList.add('show'); btns[key].classList.add('active'); panel.scrollIntoView({behavior:'smooth', block:'center'})}
+    if(!audioStarted){audio.play().catch(()=>{}); audioStarted=true;} // старт музыки при первом клике
+  }
+});
+
+playBtn.onclick = ()=>{if(audio.paused) audio.play(); else audio.pause();}
+
+audio.ontimeupdate = ()=>{
+  if(audio.duration){
+    const pct = (audio.currentTime/audio.duration)*100;
+    bar.style.width = pct+'%';
+    const m = Math.floor(audio.currentTime/60);
+    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+    const dm = Math.floor(audio.duration/60);
+    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
+  }
+}
+audio.onplay = ()=>playBtn.textContent='⏸';
+audio.onpause = ()=>playBtn.textContent='▶';
+
+// Цвет кнопок под фон
+function updateButtonColor(){
+  const bgColor = window.getComputedStyle(document.body).backgroundColor;
+  const isBlack = bgColor.includes('0, 0, 0');
+  Object.values(btns).forEach(b=>b.style.color = isBlack?'white':'black');
+}
+setInterval(updateButtonColor,100);
+
+let audioStarted=false;
+</script>
+</body>
+</html>
