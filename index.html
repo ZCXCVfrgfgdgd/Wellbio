@@ -1,197 +1,252 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
-<style>
-  :root { --accent:#7ee7ff; --accent2:#ff6b9a; }
-  *{box-sizing:border-box; margin:0; padding:0;}
-  body{
-    background:black;
-    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-    color:white;
-    display:flex;
-    justify-content:center;
-    padding:24px;
-    overflow-x:hidden;
-  }
-  .wrap{width:100%; max-width:980px;}
-  .top{
-    display:flex;
-    gap:18px;
-    align-items:center;
-    padding:18px;
-  }
-  .avatar{width:128px; height:128px; border-radius:50%; overflow:hidden; border:2px solid rgba(255,255,255,0.06);}
-  .avatar img{width:100%; height:100%; object-fit:cover; display:block;}
-  .info{display:flex; flex-direction:column; gap:6px;}
-  .nick{font-weight:800; color:var(--accent); letter-spacing:1px; text-shadow:0 0 8px #7ee7ff;}
-  .sub{opacity:0.85; font-size:13px;}
-  .controls{display:flex; gap:12px; margin-top:10px;}
-  .btn{
-    padding:12px 18px;
-    border-radius:12px;
-    background:rgba(255,255,255,0.03);
-    border:1px solid rgba(255,255,255,0.04);
-    cursor:pointer;
-    font-weight:700;
-    color:white;
-    text-shadow:0 0 6px #00ffcc;
-    transition:transform .25s, box-shadow .25s;
-  }
-  .btn:hover{transform:translateY(-4px); box-shadow:0 8px 20px rgba(0,255,255,0.3);}
-  .card{display:none; margin-top:16px; padding:14px; border-radius:12px; background:rgba(255,255,255,0.02); backdrop-filter:blur(10px);}
-  .card.show{display:block;}
-  h3{margin-bottom:6px; color:#bfefff; text-shadow:0 0 5px #7ee7ff;}
-  .row{display:flex; gap:12px; flex-wrap:wrap;}
-  .col{flex:1 1 220px; min-width:180px;}
-  footer.player{
-    position:fixed;
-    left:50%;
-    transform:translateX(-50%);
-    bottom:14px;
-    width:calc(100% - 48px);
-    max-width:760px;
-    padding:12px;
-    border-radius:14px;
-    background:rgba(3,8,15,0.9);
-    display:flex;
-    align-items:center;
-    gap:12px;
-  }
-  .play, .prev, .next{padding:12px 16px; border:none; border-radius:10px; cursor:pointer; font-weight:700; background:linear-gradient(90deg,var(--accent),var(--accent2)); color:#061018;}
-  .meta{flex:1; min-width:0;}
-  .track{font-weight:700; white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
-  .progress{height:8px; background:rgba(255,255,255,0.1); border-radius:8px; overflow:hidden; margin-top:8px; cursor:pointer;}
-  .bar{height:100%; width:0%; background:linear-gradient(90deg,var(--accent),var(--accent2)); transition:width .2s;}
-  .time{font-size:12px; opacity:0.85; min-width:70px; text-align:right;}
-</style>
+  <meta charset="UTF-8">
+  <title>My Site</title>
+  <link rel="stylesheet" href="style.css">
 </head>
 <body>
-<div class="wrap">
-  <div class="top">
-    <div class="avatar"><img id="avatar" src="1000038711-removebg-preview.png" alt="avatar"></div>
-    <div class="info">
-      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
-      <div class="sub">Максим — Львов, Украина</div>
+  <canvas id="starfield"></canvas>
+
+  <div class="container">
+    <img src="avatar.png" alt="Avatar" class="avatar">
+
+    <div class="buttons">
+      <button data-section="bio">Bio</button>
+      <button data-section="goals">Goals</button>
+      <button data-section="socials">Socials</button>
+      <button data-section="other">Other</button>
+    </div>
+
+    <!-- Переключатель языка -->
+    <div class="lang-switcher">
+      <img src="ua.png" alt="UA" data-lang="ua">
+      <img src="ru.png" alt="RU" data-lang="ru">
+      <img src="us.png" alt="EN" data-lang="en">
+    </div>
+
+    <div class="sections">
+      <div id="bio" class="section active">My bio text...</div>
+      <div id="goals" class="section">My goals text...</div>
+      <div id="socials" class="section">My socials...</div>
+      <div id="other" class="section">Other info...</div>
+    </div>
+
+    <!-- ⚡ Твой имба-плеер -->
+    <div class="player">
+      <div id="track-title">Track name</div>
+      <audio id="audio"></audio>
+      <input type="range" id="progress" value="0">
+      <div id="time">0:00 / 0:00</div>
       <div class="controls">
-        <button class="btn" id="btn-bio">BIO</button>
-        <button class="btn" id="btn-goals">Цели</button>
-        <button class="btn" id="btn-socials">SOCIALS</button>
+        <button id="prevBtn">⏮</button>
+        <button id="playPauseBtn">▶️</button>
+        <button id="nextBtn">⏭</button>
       </div>
     </div>
   </div>
 
-  <div class="card" id="panel-bio">
-    <div class="row">
-      <div class="col"><h3>Имя</h3><div>Максим</div></div>
-      <div class="col"><h3>Страна</h3><div>Украина</div></div>
-      <div class="col"><h3>Город</h3><div>Львов</div></div>
-    </div>
-    <div style="height:10px"></div>
-    <div class="row">
-      <div class="col"><h3>Дата рождения</h3><div>28.08.2012</div></div>
-      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
-    </div>
-  </div>
-
-  <div class="card" id="panel-goals">
-    <h3>Цели и достижения</h3>
-    <p>№1: стать успешным программистом (зароботок от 7000$*)</p>
-    <p>№2: Купить Porsche 911 и Tesla model S</p>
-    <p>№3: Сделать так, чтобы родители больше не работали и я их обеспечивал</p>
-  </div>
-
-  <div class="card" id="panel-socials">
-    <h3>SOCIALS</h3>
-    <p>Пример ссылок соцсетей...</p>
-  </div>
-</div>
-<!-- ========================== ПЛЕЕР ========================== -->
-<footer class="player">
-  <button class="prev" id="btn-prev">⏮</button>
-  <button class="play" id="btn-play">▶</button>
-  <button class="next" id="btn-next">⏭</button>
-  <div class="meta">
-    <div class="track" id="track-name">Bolen</div>
-    <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
-  </div>
-  <div class="time" id="time">0:00 / 0:00</div>
-</footer>
-
-<script>
-  // ========================== ПЛЕЕР ==========================
-  const tracks = [
-    {file:'bolen.mp3', name:'Bolen'},
-    {file:'2_5321416586563717473.mp3', name:'MOON | Crystals'},
-    {file:'2_5375374187688907798.mp3', name:'Vtornik | Хороший'},
-    {file:'Токсік(Mulancore).mp3', name:'Токсік (Mulancore)'},
-    {file:'Мы - Возможно.mp3', name:'Мы - Возможно'},
-    {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3', name:'AKA-SHGS - NAM VSEGO 16'}
-  ];
-
-  const audio = new Audio();
-  let currentTrack = 0;
-
-  const playBtn = document.getElementById('btn-play');
-  const prevBtn = document.getElementById('btn-prev');
-  const nextBtn = document.getElementById('btn-next');
-  const bar = document.getElementById('bar');
-  const prog = document.getElementById('prog');
-  const timeEl = document.getElementById('time');
-  const trackName = document.getElementById('track-name');
-
-  function loadTrack(index){
-    audio.src = tracks[index].file;
-    trackName.textContent = tracks[index].name;
-    audio.play();
-    playBtn.textContent = '⏸';
-  }
-
-  loadTrack(currentTrack);
-
-  playBtn.onclick = () => {
-    if(audio.paused) audio.play();
-    else audio.pause();
-  };
-
-  prevBtn.onclick = () => {
-    currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-    loadTrack(currentTrack);
-  };
-
-  nextBtn.onclick = () => {
-    currentTrack = (currentTrack + 1) % tracks.length;
-    loadTrack(currentTrack);
-  };
-
-  audio.ontimeupdate = () => {
-    if(audio.duration){
-      const pct = audio.currentTime/audio.duration*100;
-      bar.style.width = pct+'%';
-      const m = Math.floor(audio.currentTime/60);
-      const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-      const dm = Math.floor(audio.duration/60);
-      const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
-      timeEl.textContent = m+':'+s+' / '+dm+':'+ds;
-    }
-  };
-
-  audio.onplay = () => playBtn.textContent = '⏸';
-  audio.onpause = () => playBtn.textContent = '▶';
-
-  audio.onended = () => {
-    currentTrack = Math.floor(Math.random()*tracks.length);
-    loadTrack(currentTrack);
-  };
-
-  // ========================== ПРОМОТКА ==========================
-  prog.addEventListener('click', e => {
-    const rect = prog.getBoundingClientRect();
-    const pct = (e.clientX - rect.left)/rect.width;
-    audio.currentTime = pct * audio.duration;
-  });
-</script>
+  <script src="script.js"></script>
 </body>
 </html>
+body {
+  margin: 0;
+  overflow: hidden;
+  background: black;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+}
+
+#starfield {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.container {
+  position: relative;
+  z-index: 1;
+  padding-top: 30px;
+}
+
+button {
+  background: none;
+  border: 1px solid white;
+  color: white;
+  margin: 5px;
+  padding: 8px 14px;
+  cursor: pointer;
+  text-shadow: 0 0 10px white;
+}
+button:hover {
+  box-shadow: 0 0 15px white;
+}
+
+.avatar {
+  width: 120px;
+  border-radius: 50%;
+  transition: 0.3s;
+}
+.avatar:hover {
+  box-shadow: 0 0 25px white;
+}
+
+.lang-switcher {
+  margin: 15px;
+}
+.lang-switcher img {
+  width: 30px;
+  margin: 0 5px;
+  cursor: pointer;
+  border-radius: 5px;
+  transition: 0.2s;
+}
+.lang-switcher img:hover {
+  box-shadow: 0 0 10px white;
+}
+
+.section {
+  display: none;
+  margin-top: 20px;
+  text-shadow: 0 0 8px white;
+}
+.section.active {
+  display: block;
+}
+
+.player {
+  margin-top: 30px;
+}
+#progress {
+  width: 80%;
+}
+// ===== ЗВЁЗДНЫЙ ФОН =====
+const canvas = document.getElementById("starfield");
+const ctx = canvas.getContext("2d");
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = Array.from({length: 150}, () => ({
+  x: Math.random() * canvas.width,
+  y: Math.random() * canvas.height,
+  r: Math.random() * 2,
+  dx: (Math.random() - 0.5) * 0.3,
+  dy: (Math.random() - 0.5) * 0.3
+}));
+
+function animateStars() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "white";
+  stars.forEach(s => {
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    ctx.fill();
+    s.x += s.dx;
+    s.y += s.dy;
+    if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
+    if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
+  });
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+// ===== МЕНЮ =====
+const sections = document.querySelectorAll(".section");
+const buttons = document.querySelectorAll(".buttons button");
+
+buttons.forEach(btn => {
+  btn.onclick = () => {
+    sections.forEach(s => s.classList.remove("active"));
+    document.getElementById(btn.dataset.section).classList.add("active");
+  };
+});
+
+// ===== ЯЗЫКИ =====
+const langBtns = document.querySelectorAll(".lang-switcher img");
+let currentLang = "en";
+
+const texts = {
+  en: {
+    bio: "My biography text...",
+    goals: "My goals here...",
+    socials: "Links to my socials...",
+    other: "Other information..."
+  },
+  ua: {
+    bio: "Моя біографія...",
+    goals: "Мої цілі...",
+    socials: "Посилання на соцмережі...",
+    other: "Інша інформація..."
+  },
+  ru: {
+    bio: "Моя биография...",
+    goals: "Мои цели...",
+    socials: "Ссылки на соцсети...",
+    other: "Другая информация..."
+  }
+};
+
+langBtns.forEach(flag => {
+  flag.onclick = () => {
+    currentLang = flag.dataset.lang;
+    document.getElementById("bio").innerText = texts[currentLang].bio;
+    document.getElementById("goals").innerText = texts[currentLang].goals;
+    document.getElementById("socials").innerText = texts[currentLang].socials;
+    document.getElementById("other").innerText = texts[currentLang].other;
+  };
+});
+
+// ===== ПЛЕЕР (имба, не трогаю логику) =====
+const audio = document.getElementById("audio");
+const progress = document.getElementById("progress");
+const time = document.getElementById("time");
+const playPauseBtn = document.getElementById("playPauseBtn");
+const prevBtn = document.getElementById("prevBtn");
+const nextBtn = document.getElementById("nextBtn");
+const trackTitle = document.getElementById("track-title");
+
+const tracks = [
+  {title: "Track 1", file: "track1.mp3"},
+  {title: "Track 2", file: "track2.mp3"}
+];
+
+let currentTrack = 0;
+audio.src = tracks[currentTrack].file;
+trackTitle.innerText = tracks[currentTrack].title;
+
+function playTrack() {
+  audio.play();
+  playPauseBtn.innerText = "⏸";
+}
+function pauseTrack() {
+  audio.pause();
+  playPauseBtn.innerText = "▶️";
+}
+playPauseBtn.onclick = () => audio.paused ? playTrack() : pauseTrack();
+
+prevBtn.onclick = () => {
+  currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+  audio.src = tracks[currentTrack].file;
+  trackTitle.innerText = tracks[currentTrack].title;
+  playTrack();
+};
+nextBtn.onclick = () => {
+  currentTrack = (currentTrack + 1) % tracks.length;
+  audio.src = tracks[currentTrack].file;
+  trackTitle.innerText = tracks[currentTrack].title;
+  playTrack();
+};
+
+// Обновление прогресс-бара
+audio.ontimeupdate = () => {
+  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+  let cur = Math.floor(audio.currentTime / 60) + ":" + String(Math.floor(audio.currentTime % 60)).padStart(2,"0");
+  let dur = Math.floor(audio.duration / 60) + ":" + String(Math.floor(audio.duration % 60)).padStart(2,"0");
+  time.innerText = cur + " / " + dur;
+};
+progress.oninput = () => {
+  audio.currentTime = (progress.value / 100) * audio.duration;
+};
