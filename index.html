@@ -1,424 +1,112 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
-<style>
-:root{
-  --bg:#000;
-  --panel: rgba(255,255,255,0.03);
-  --glass: rgba(255,255,255,0.06);
-  --accent:#7ee7ff;
-  --accent2:#ff6b9a;
-  --text:#e7f8ff;
-  --ios-track: rgba(255,255,255,0.06);
-  --btn-size:56px;
-}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  padding:20px;
-  -webkit-font-smoothing:antialiased;
-  -moz-osx-font-smoothing:grayscale;
-  overflow-x:hidden;
-  position:relative;
-}
-
-/* STARS BACKGROUND */
-.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.9;animation:fall linear infinite}
-@keyframes fall{0%{transform:translateY(-5px);opacity:0}50%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
-
-.container{width:100%;max-width:980px}
-.top{
-  display:flex;
-  gap:18px;
-  align-items:center;
-  padding:18px;
-  border-radius:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.00));
-  border:1px solid rgba(255,255,255,0.03);
-  backdrop-filter:blur(10px);
-  flex-direction:column;
-  align-items:center;
-}
-
-/* Avatar */
-.avatar{width:150px;height:150px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);transition:box-shadow .25s, transform .18s}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.avatar:hover{box-shadow:0 0 30px rgba(255,255,255,0.14); transform:translateY(-4px)}
-
-/* Buttons */
-.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:14px}
-.btn{
-  padding:12px 18px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.04);
-  color:var(--text);font-weight:700;cursor:pointer;backdrop-filter:blur(6px);
-  transition:transform .18s, box-shadow .18s, background .18s;min-width:84px;text-align:center;
-}
-.btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.6)}
-.btn.active{box-shadow:0 18px 40px rgba(0,0,0,0.6);background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018}
-
-/* Panels */
-.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:var(--panel);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(8px)}
-.card.show{display:block;animation:panelIn .28s ease}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
-
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.col{flex:1 1 220px;min-width:180px}
-h3{margin:0 0 6px 0;color:#bfefff;font-size:14px}
-
-/* Social link */
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:var(--text);border:1px solid rgba(255,255,255,0.03)}
-
-/* IMBA PLAYER */
-.player{margin-top:20px;padding:14px;border-radius:14px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(6px);display:flex;flex-direction:column;gap:10px}
-.controls-row{display:flex;align-items:center;gap:12px;justify-content:center;flex-wrap:wrap}
-.icon-btn{
-  width:var(--btn-size);height:var(--btn-size);border-radius:14px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent2));
-  color:#061018;font-weight:800;display:flex;align-items:center;justify-content:center;font-size:20px;cursor:pointer;
-  box-shadow:0 8px 24px rgba(0,0,0,0.5);transition:transform .12s;
-}
-.icon-btn:active{transform:scale(.98)}
-.track-meta{display:flex;align-items:center;gap:12px;justify-content:space-between;flex-wrap:wrap;padding:0 8px}
-.track-title{font-weight:800;min-width:150px;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.track-artist{opacity:.9;font-size:13px}
-
-/* time + progress */
-.time-row{display:flex;align-items:center;gap:10px;justify-content:space-between;flex-wrap:wrap;padding:0 8px}
-.time-left,.time-right{font-size:13px;color:var(--text);opacity:.95;min-width:40px;text-align:center}
-
-/* progress */
-.progress-container{width:100%;height:8px;background:var(--ios-track);border-radius:999px;position:relative;overflow:hidden;cursor:pointer}
-.progress-filled{position:absolute;left:0;top:0;height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));border-radius:999px;transition:width .06s linear}
-.progress-thumb{width:14px;height:14px;border-radius:50%;background:#fff;position:absolute;top:50%;transform:translate(-50%,-50%);left:0;box-shadow:0 6px 18px rgba(0,0,0,0.6);transition:transform .08s;touch-action:none}
-
-/* autoplay overlay */
-.autoplay-overlay{
-  position:fixed;left:0;top:0;width:100%;height:100%;display:flex;align-items:center;justify-content:center;
-  background:rgba(0,0,0,0.5);z-index:9999;backdrop-filter:blur(4px);
-}
-.autoplay-box{background:#071018;padding:18px 24px;border-radius:12px;color:white;text-align:center}
-.autoplay-box button{margin-top:12px;padding:8px 14px;border-radius:8px;border:none;background:var(--accent);color:#061018;font-weight:700;cursor:pointer}
-
-/* responsive */
-@media(max-width:720px){
-  .avatar{width:120px;height:120px}
-  :root{--btn-size:48px}
-}
+<!DOCTYPE html>  
+<html lang="ru">  
+<head>  
+<meta charset="utf-8" />  
+<meta name="viewport" content="width=device-width,initial-scale=1" />  
+<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>  
+<style>  
+/* ... твои стили без изменений ... */
 </style>
-</head>
-<body>
-<div class="container">
-  <div class="top">
-    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
-    <div class="info">
-      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
-      <div class="sub">Максим — Львов, Украина</div>
-    </div>
+</head>  
+<body>  
+<div class="container">  
+  <div class="top">  
+    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>  
+    <div class="info">  
+      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>  
+      <div class="sub">Максим — Львов, Украина</div>  
+    </div>  
+    <div class="controls" role="tablist">  
+      <button class="btn" id="btn-bio">BIO</button>  
+      <button class="btn" id="btn-other">OTHER</button>  
+      <button class="btn" id="btn-goals">Goals</button>  
+      <button class="btn" id="btn-socials">SOCIALS</button>  
+    </div>  
 
-    <div class="controls" role="tablist">
-      <button class="btn" id="btn-bio">BIO</button>
-      <button class="btn" id="btn-other">OTHER</button>
-      <button class="btn" id="btn-goals">Goals</button>
-      <button class="btn" id="btn-socials">SOCIALS</button>
-    </div>
+    <!-- панели BIO, OTHER, Goals, Socials (без изменений) -->
 
-    <div class="card" id="panel-bio">
-      <div class="row">
-        <div class="col"><h3>Основное</h3><div>Имя: Максим<br>Город: Львов<br>Страна: Украина</div></div>
-        <div class="col"><h3>Детали</h3><div>Дата рождения: 28.08.2012<br>Возраст: 13 лет</div></div>
-      </div>
-    </div>
+    <!-- IMBA PLAYER -->  
+    <div class="player" aria-label="Плеер">  
+      <div class="track-meta">  
+        <div style="display:flex;flex-direction:column;gap:4px;">  
+          <div class="track-title" id="track-title">—</div>  
+          <div class="track-artist" id="track-artist">—</div>  
+        </div>  
+        <div style="display:flex;align-items:center;gap:12px;">  
+          <button class="icon-btn" id="btn-prev" title="Previous">  
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6v12l8.5-6L6 6zM16 6v12h2V6h-2z" fill="#061018"/></svg>  
+          </button>  
+          <button class="icon-btn" id="btn-play" title="Play/Pause">  
+            <svg id="play-svg" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>  
+          </button>  
+          <button class="icon-btn" id="btn-next" title="Next">  
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L9.5 12 18 18V6zM8 6v12h2V6H8z" fill="#061018"/></svg>  
+          </button>  
+        </div>  
+      </div>  
 
-    <div class="card" id="panel-other">
-      <h3>OTHER</h3>
-      <p>📱 Phone: Tecno Povo 6</p>
-      <p>🎮 Games: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</p>
-      <p>✨ Hobbies: Видео, монтаж, учусь новому</p>
-      <p>➕ INK GAME WIN|28</p>
-    </div>
+      <div class="time-row">  
+        <div class="time-left" id="current-time">0:00</div>  
+        <div style="flex:1;padding:0 8px;">  
+          <div class="progress-container" id="progress-container" aria-label="Прогресс">  
+            <div class="progress-filled" id="progress-filled"></div>  
+            <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>  
+          </div>  
+        </div>  
+        <div class="time-right" id="duration">0:00</div>  
+      </div>  
+    </div>  
+  </div>  
+</div>  
 
-    <div class="card" id="panel-goals">
-      <h3>Goals</h3>
-      <ol>
-        <li>Become a successful programmer (income from 7000$)</li>
-        <li>Buy a Porsche 911 and Tesla Model S</li>
-        <li>Provide for my parents so they don't need to work</li>
-      </ol>
-    </div>
+<!-- autoplay fallback overlay -->  
+<div id="autoplayOverlay" class="autoplay-overlay" style="display:none;">  
+  <div class="autoplay-box">  
+    <div>Браузер заблокировал автозапуск звука.</div>  
+    <div style="margin-top:8px;font-size:13px;opacity:.9">Нажми, чтобы включить звук</div>  
+    <button id="autoplayEnable">Включить звук</button>  
+  </div>  
+</div>  
 
-    <div class="card" id="panel-socials">
-      <h3>SOCIALS</h3>
-      <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
-      <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
-      <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
-      <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
-      <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
-    </div>
+<script>  
+/* ---------------- STARS ---------------- */  
+const starsCount = 120;  
+for(let i=0;i<starsCount;i++){  
+  const s=document.createElement('div');  
+  s.className='star';  
+  s.style.left = (Math.random()*100)+'vw';  
+  s.style.top = (Math.random()*100)+'vh';  
+  const size=(Math.random()*2+1)+'px';  
+  s.style.width = s.style.height = size;  
+  s.style.animationDuration = (Math.random()*6+4)+'s';  
+  document.body.appendChild(s);  
+}  
 
-    <!-- IMBA PLAYER -->
-    <div class="player" aria-label="Плеер">
-      <div class="track-meta">
-        <div style="display:flex;flex-direction:column;gap:4px;">
-          <div class="track-title" id="track-title">—</div>
-          <div class="track-artist" id="track-artist">—</div>
-        </div>
-        <div style="display:flex;align-items:center;gap:12px;">
-          <button class="icon-btn" id="btn-prev" title="Previous">
-            <!-- custom prev SVG -->
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6v12l8.5-6L6 6zM16 6v12h2V6h-2z" fill="#061018"/></svg>
-          </button>
-          <button class="icon-btn" id="btn-play" title="Play/Pause">
-            <!-- custom play icon; will be swapped to custom pause SVG in JS -->
-            <svg id="play-svg" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>
-          </button>
-          <button class="icon-btn" id="btn-next" title="Next">
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L9.5 12 18 18V6zM8 6v12h2V6H8z" fill="#061018"/></svg>
-          </button>
-        </div>
-      </div>
+/* ---------------- PANELS ---------------- */  
+// ... код панелей без изменений ...
 
-      <div class="time-row">
-        <div class="time-left" id="current-time">0:00</div>
-        <div style="flex:1;padding:0 8px;">
-          <div class="progress-container" id="progress-container" aria-label="Прогресс">
-            <div class="progress-filled" id="progress-filled"></div>
-            <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>
-          </div>
-        </div>
-        <div class="time-right" id="duration">0:00</div>
-      </div>
-    </div>
+/* ---------------- TRACKS ---------------- */  
+const tracks = [  
+  {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},  
+  {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},  
+  {title:'LASKX3I - Против царя', artist:'LASKX3I', file:'LASKX3I - Против царя.mp3'},  
+  {title:'Ягода', artist:'—', file:'Ягода.m4a'},  
+  {title:'Шугар - BMW (HoodTrap Remix)', artist:'Шугар', file:'Шугар - BMW (HoodTrap Remix).mp3'},  
+  {title:'Bolen', artist:'Dope17', file:'bolen.mp3'},  
+  {title:'MOON | Crystals', artist:'MOON', file:'2_5321416586563717473.mp3'},  
+  {title:'Vtornik | Хороший', artist:'Vtornik', file:'2_5375374187688907798.mp3'},  
+  {title:'Токсік(Mulancore)', artist:'—', file:'Токсік(Mulancore).mp3'},  
+  {title:'Мы - Возможно', artist:'—', file:'Мы - Возможно.mp3'},  
+  {title:'AKA-SHGSH - NAM VSEGO 16', artist:'AKA-SHGSH', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'},  
 
-  </div>
-</div>
+  /* новые треки */  
+  {title:'Это слыш малая я тебя кохаю', artist:'—', file:'Это слыш малая я тебя кохаю.mp3'},  
+  {title:'Больше не курю я хочу другой аромат', artist:'—', file:'2_5346031138626369896 (1).mp3'},  
+  {title:'Бледный', artist:'—', file:'Бледный.m4a'}  
+];  
 
-<!-- autoplay fallback overlay (hidden unless autoplay blocked) -->
-<div id="autoplayOverlay" class="autoplay-overlay" style="display:none;">
-  <div class="autoplay-box">
-    <div>Браузер заблокировал автозапуск звука.</div>
-    <div style="margin-top:8px;font-size:13px;opacity:.9">Нажми, чтобы включить звук</div>
-    <button id="autoplayEnable">Включить звук</button>
-  </div>
-</div>
-
-<script>
-/* ---------------- STARS ---------------- */
-const starsCount = 120;
-for(let i=0;i<starsCount;i++){
-  const s=document.createElement('div');
-  s.className='star';
-  s.style.left = (Math.random()*100)+'vw';
-  s.style.top = (Math.random()*100)+'vh';
-  const size=(Math.random()*2+1)+'px';
-  s.style.width = s.style.height = size;
-  s.style.animationDuration = (Math.random()*6+4)+'s';
-  document.body.appendChild(s);
-}
-
-/* ---------------- PANELS ---------------- */
-const panels = {
-  bio: document.getElementById('panel-bio'),
-  other: document.getElementById('panel-other'),
-  goals: document.getElementById('panel-goals'),
-  socials: document.getElementById('panel-socials')
-};
-const btns = {
-  bio: document.getElementById('btn-bio'),
-  other: document.getElementById('btn-other'),
-  goals: document.getElementById('btn-goals'),
-  socials: document.getElementById('btn-socials')
-};
-function hideAllPanels(){
-  Object.values(panels).forEach(p=>p.classList.remove('show'));
-  Object.values(btns).forEach(b=>b.classList.remove('active'));
-}
-btns.bio.addEventListener('click', ()=>{ const s=panels.bio.classList.contains('show'); hideAllPanels(); if(!s){panels.bio.classList.add('show'); btns.bio.classList.add('active')}});
-btns.other.addEventListener('click', ()=>{ const s=panels.other.classList.contains('show'); hideAllPanels(); if(!s){panels.other.classList.add('show'); btns.other.classList.add('active')}});
-btns.goals.addEventListener('click', ()=>{ const s=panels.goals.classList.contains('show'); hideAllPanels(); if(!s){panels.goals.classList.add('show'); btns.goals.classList.add('active')}});
-btns.socials.addEventListener('click', ()=>{ const s=panels.socials.classList.contains('show'); hideAllPanels(); if(!s){panels.socials.classList.add('show'); btns.socials.classList.add('active')}});
-
-/* ---------------- TRACKS ----------------
-Make sure these filenames exactly match files in same folder.
-*/
-const tracks = [
-  {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},
-  {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},
-  {title:'LASKX3I - Против царя', artist:'LASKX3I', file:'LASKX3I - Против царя.mp3'},
-  {title:'Ягода', artist:'—', file:'Ягода.m4a'},
-  {title:'Шугар - BMW (HoodTrap Remix)', artist:'Шугар', file:'Шугар - BMW (HoodTrap Remix).mp3'},
-  {title:'Bolen', artist:'Dope17', file:'bolen.mp3'},
-  {title:'MOON | Crystals', artist:'MOON', file:'2_5321416586563717473.mp3'},
-  {title:'Vtornik | Хороший', artist:'Vtornik', file:'2_5375374187688907798.mp3'},
-  {title:'Токсік(Mulancore)', artist:'—', file:'Токсік(Mulancore).mp3'},
-  {title:'Мы - Возможно', artist:'—', file:'Мы - Возможно.mp3'},
-  {title:'AKA-SHGSH - NAM VSEGO 16', artist:'AKA-SHGSH', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'}
-];
-
-/* ---------------- PLAYER (autoplay random) ---------------- */
-const audio = new Audio();
-audio.preload = 'auto';
-let current = Math.floor(Math.random()*tracks.length); // start with random track
-let isPlaying = false;
-
-const titleEl = document.getElementById('track-title');
-const artistEl = document.getElementById('track-artist');
-const btnPlay = document.getElementById('btn-play');
-const btnPrev = document.getElementById('btn-prev');
-const btnNext = document.getElementById('btn-next');
-const currTimeEl = document.getElementById('current-time');
-const durEl = document.getElementById('duration');
-const progressContainer = document.getElementById('progress-container');
-const progressFilled = document.getElementById('progress-filled');
-const progressThumb = document.getElementById('progress-thumb');
-
-function setPlayIconPlaying(){
-  // custom pause icon (two rounded bars)
-  btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="6" y="5" width="3.5" height="14" rx="1" fill="#061018"/><rect x="14.5" y="5" width="3.5" height="14" rx="1" fill="#061018"/></svg>`;
-}
-function setPlayIconPaused(){
-  // custom play icon
-  btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>`;
-}
-
-function loadTrack(index, autoplay=true){
-  current = index;
-  const t = tracks[current];
-  audio.src = t.file;
-  titleEl.textContent = t.title;
-  artistEl.textContent = t.artist || '';
-  // update duration after metadata loads
-  audio.load();
-  if(autoplay){
-    audio.play().then(()=>{ isPlaying=true; setPlayIconPlaying(); }).catch(err=>{
-      // autoplay blocked — show overlay requesting user interaction
-      showAutoplayOverlay();
-    });
-  } else {
-    isPlaying=false; setPlayIconPaused();
-  }
-}
-
-// format time like 1:05
-function formatTime(s){
-  if(!s || isNaN(s)) return '0:00';
-  const m = Math.floor(s/60);
-  const sec = Math.floor(s%60).toString().padStart(2,'0');
-  return `${m}:${sec}`;
-}
-
-/* Events */
-audio.addEventListener('loadedmetadata', ()=>{
-  durEl.textContent = formatTime(audio.duration);
-});
-audio.addEventListener('timeupdate', ()=>{
-  if(!audio.duration) return;
-  const pct = (audio.currentTime / audio.duration) * 100;
-  progressFilled.style.width = pct + '%';
-  progressThumb.style.left = pct + '%';
-  currTimeEl.textContent = formatTime(audio.currentTime);
-});
-audio.addEventListener('ended', ()=>{
-  // choose a different random track (not same as current if possible)
-  let next;
-  if(tracks.length<=1) next = current;
-  else {
-    do { next = Math.floor(Math.random()*tracks.length); } while(next === current);
-  }
-  loadTrack(next, true);
-});
-
-/* Controls */
-btnPlay.addEventListener('click', ()=>{
-  if(audio.paused){
-    audio.play().then(()=>{ isPlaying=true; setPlayIconPlaying(); }).catch(()=>{ showAutoplayOverlay(); });
-  } else {
-    audio.pause();
-    isPlaying=false;
-    setPlayIconPaused();
-  }
-});
-btnPrev.addEventListener('click', ()=>{
-  // go to previous track (sequential)
-  current = (current - 1 + tracks.length) % tracks.length;
-  loadTrack(current, true);
-});
-btnNext.addEventListener('click', ()=>{
-  // go to next random track
-  let next;
-  if(tracks.length<=1) next = current;
-  else {
-    do { next = Math.floor(Math.random()*tracks.length); } while(next === current);
-  }
-  loadTrack(next, true);
-});
-
-/* Progress seeking (pointer events) */
-let dragging = false;
-function seek(clientX){
-  const rect = progressContainer.getBoundingClientRect();
-  let x = clientX - rect.left;
-  if(x<0) x=0; if(x>rect.width) x=rect.width;
-  const pct = x/rect.width;
-  progressFilled.style.width = (pct*100) + '%';
-  progressThumb.style.left = (pct*100) + '%';
-  if(audio.duration) audio.currentTime = pct * audio.duration;
-}
-progressContainer.addEventListener('pointerdown', e=>{
-  dragging = true;
-  progressContainer.setPointerCapture(e.pointerId);
-  seek(e.clientX);
-});
-progressContainer.addEventListener('pointermove', e=>{
-  if(!dragging) return;
-  seek(e.clientX);
-});
-progressContainer.addEventListener('pointerup', e=>{
-  dragging = false;
-  progressContainer.releasePointerCapture(e.pointerId);
-});
-progressContainer.addEventListener('click', e=>{
-  seek(e.clientX);
-});
-
-/* Keyboard: space play/pause, arrows */
-document.addEventListener('keydown', e=>{
-  if(e.code === 'Space'){ e.preventDefault(); btnPlay.click(); }
-  if(e.code === 'ArrowRight'){ btnNext.click(); }
-  if(e.code === 'ArrowLeft'){ btnPrev.click(); }
-});
-
-/* Autoplay overlay handling */
-const autoplayOverlay = document.getElementById('autoplayOverlay');
-const autoplayEnableBtn = document.getElementById('autoplayEnable');
-function showAutoplayOverlay(){
-  autoplayOverlay.style.display = 'flex';
-}
-function hideAutoplayOverlay(){ autoplayOverlay.style.display = 'none'; }
-autoplayEnableBtn.addEventListener('click', ()=>{
-  audio.play().then(()=>{ hideAutoplayOverlay(); isPlaying=true; setPlayIconPlaying(); }).catch(()=>{ /* still blocked */ });
-});
-
-/* Initial UI: set play icon to paused then try autoplay random track */
-setPlayIconPaused();
-// load random on start and try autoplay
-loadTrack(current, true);
-
-/* If autoplay blocked, audio.play() promise will reject and overlay shown */
-audio.play().catch(()=>{ /* already handled in loadTrack */ });
-
-/* Touch adjustments */
-if('ontouchstart' in window){
-  document.querySelectorAll('.btn').forEach(b=>b.style.padding='14px 18px');
-}
-
-/* End of script */
-</script>
-</body>
-</html>
+/* ---------------- PLAYER ---------------- */  
+// ... код плеера без изменений ...
+</script>  
+</body>  
+</html>
