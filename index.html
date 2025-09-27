@@ -1,76 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
-  :root{--accent:#7ee7ff;--accent2:#ff6b9a;}
-  *{box-sizing:border-box;}
-  body{
-    margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-    background:black;overflow-x:hidden;color:white;
-    display:flex;align-items:center;justify-content:center;padding:24px;
-  }
-  canvas{position:fixed;top:0;left:0;z-index:-1;}
-
-  .wrap{width:100%;max-width:980px;position:relative;z-index:1;}
-  .top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.02);}
-  .avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
-  .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
-  .info{display:flex;flex-direction:column;gap:6px;}
-  .nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
-  .sub{opacity:0.85;font-size:13px;}
-  .controls{display:flex;gap:12px;margin-top:10px;}
-  .btn{
-    padding:12px 18px;border-radius:12px;
-    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
-    cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s,opacity .5s,transform .5s;
-    opacity:0;transform:translateY(10px);
-  }
-  .btn.show-btn{opacity:1;transform:translateY(0);}
-  .btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
-  .card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);}
-  .card.show{display:block;animation:panelIn .36s ease;}
-  @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-  .row{display:flex;gap:12px;flex-wrap:wrap;}
-  .col{flex:1 1 220px;min-width:180px;}
-  h3{margin:0 0 6px 0;color:#bfefff;opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
-  .show h3{opacity:1;transform:translateY(0);}
-  .card p{opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
-  .show p{opacity:1;transform:translateY(0);}
-  .socials{display:flex;flex-direction:column;gap:8px;}
-  .social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
-  .show .social{opacity:1;transform:translateY(0);}
-  .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
-  
-  footer.player{
-    position:fixed;left:50%;transform:translateX(-50%);
-    bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:rgba(0,0,0,0.7);
-    display:flex;gap:12px;align-items:center;
-  }
-  .pbtn{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.03);}
-  .pbtn:hover{transform:translateY(-6px);}
-  .play{width:58px;height:58px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800;border:none;display:flex;align-items:center;justify-content:center;font-size:24px;}
-
-  /* POPUP */
-  #game-popup{
-    display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;
-    z-index:999;color:white;flex-direction:column;
-  }
-  #popup-text{margin-bottom:16px;text-align:center;}
-  #popup-close{padding:8px 12px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer;}
-  #game-popup.show-popup{display:flex;opacity:1;transition:opacity 0.4s;}
-  
-  @media(max-width:720px){
-    .top{flex-direction:column;align-items:center;}
-    .avatar{width:120px;height:120px;}
-    .player{width:100%;left:0;transform:none;border-radius:0;}
-  }
+:root{--accent:#7ee7ff;--accent2:#ff6b9a}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
+body{background:black;color:white;overflow-x:hidden;cursor:none}
+.wrap{width:100%;max-width:980px;margin:auto;padding:20px}
+.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.05)}
+.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.1);transition:0.3s}
+.avatar:hover{box-shadow:0 0 20px rgba(255,255,255,0.6)}
+.avatar img{width:100%;height:100%;object-fit:cover}
+.info{display:flex;flex-direction:column;gap:6px}
+.nick{font-weight:800;color:var(--accent);letter-spacing:1px}
+.sub{opacity:0.85;font-size:13px}
+.controls{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
+.btn{padding:12px 18px;border-radius:12px;background:rgba(255,255,255,0.1);border:none;color:white;font-weight:700;cursor:pointer;transition:0.3s}
+.btn:hover{background:rgba(255,255,255,0.3)}
+.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05)}
+.card.show{display:block;animation:panelIn .36s ease}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.col{flex:1 1 220px;min-width:180px}
+h3{margin:0 0 6px 0;color:#bfefff}
+.socials{display:flex;flex-direction:column;gap:8px}
+.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.05);text-decoration:none;color:inherit}
+.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800}
+footer.player{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.05);display:flex;gap:12px;align-items:center;backdrop-filter:blur(4px)}
+footer.player button{background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:48px;height:48px;color:white;font-size:18px;cursor:pointer;transition:0.3s}
+footer.player button:hover{background:rgba(255,255,255,0.3)}
+.progress{flex:1;height:8px;background:rgba(255,255,255,0.2);border-radius:8px;overflow:hidden;cursor:pointer}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
+.time{font-size:12px;opacity:0.85;min-width:70px;text-align:right}
+#cursor{width:8px;height:8px;border-radius:50%;position:fixed;background:white;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
+.game-info-btn{background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:20px;height:20px;color:white;cursor:pointer;transition:0.2s}
+.game-info-btn:hover{background:rgba(255,255,255,0.4)}
+canvas#star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
+@media(max-width:720px){.top{flex-direction:column;align-items:center}.avatar{width:120px;height:120px}}
 </style>
 </head>
 <body>
-<canvas id="stars"></canvas>
+<div id="cursor"></div>
+<canvas id="star-canvas"></canvas>
 <div class="wrap">
   <div class="top">
     <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
@@ -86,199 +59,144 @@
     </div>
   </div>
 
-  <!-- ПАНЕЛИ -->
   <div class="card" id="panel-bio">
     <div class="row">
-      <div class="col"><h3>Имя</h3><p>Максим</p></div>
-      <div class="col"><h3>Страна</h3><p>Украина</p></div>
-      <div class="col"><h3>Город</h3><p>Львов</p></div>
+      <div class="col"><h3>Имя</h3><div>Максим</div></div>
+      <div class="col"><h3>Страна</h3><div>Украина</div></div>
+      <div class="col"><h3>Город</h3><div>Львов</div></div>
+    </div>
+    <div class="row">
+      <div class="col"><h3>Дата рождения</h3><div>28.08.2012</div></div>
+      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
     </div>
   </div>
 
   <div class="card" id="panel-goals">
     <h3>Цели и достижения</h3>
-    <p>№1: Стать успешным программистом (зароботок от 7000$*)</p>
+    <p>№1: Стать успешным программистом (зароботок от 7000$)</p>
     <p>№2: Купить Porsche 911 и Tesla model S</p>
-    <p>№3: Сделать так, чтобы родители больше не работали и я их обеспечивал</p>
+    <p>№3: Сделать так чтобы родители больше не работали и я их обеспечивал</p>
   </div>
 
   <div class="card" id="panel-other">
-    <h3>OTHER</h3>
-    <p>📱 Телефон: Tecno Povo 6</p>
-    <p>🎮 Игры:</p>
-    <p>Roblox <button class="info-btn" data-game="Roblox">i</button></p>
-    <p>DBD <button class="info-btn" data-game="DBD">i</button></p>
-    <p>CS2 <button class="info-btn" data-game="CS2">i</button></p>
-    <p>The Forest <button class="info-btn" data-game="The Forest">i</button></p>
-    <p>Sons of the Forest <button class="info-btn" data-game="Sons of the Forest">i</button></p>
+    <h3>Игры</h3>
+    <div class="row" style="flex-direction:column;gap:8px;">
+      <div class="col">
+        Roblox <button class="game-info-btn" data-info="Наиграно более 3000 часов">i</button>
+      </div>
+      <div class="col">
+        DBD <button class="game-info-btn" data-info="Наиграно 20 часов, любимый ман: Майкл Маерс, любимый сурв: Сейбл">i</button>
+      </div>
+      <div class="col">
+        CS2 <button class="game-info-btn" data-info="Наиграно 120 часов, любимая карта: Anubis, любимая роль: опорник">i</button>
+      </div>
+      <div class="col">
+        The Forest <button class="game-info-btn" data-info="80+ часов">i</button>
+      </div>
+      <div class="col">
+        Sons of the Forest <button class="game-info-btn" data-info="30+ часов">i</button>
+      </div>
+    </div>
   </div>
 
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
     <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
     <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
-    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
-    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка) — t.me/Femscout1</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO) — t.me/wellbioink</div></a>
     <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
   </div>
 </div>
 
-<!-- POPUP -->
-<div id="game-popup">
-  <div id="popup-text"></div>
-  <div id="popup-close">⬅️</div>
-</div>
-
-<!-- ПЛЕЕР -->
+<!-- ======== ПЛЕЕР ========= -->
 <footer class="player">
-  <div class="pbtn" id="btn-prev">⟲</div>
-  <div class="pbtn play" id="btn-play">▶</div>
-  <div class="pbtn" id="btn-next">✦</div>
-  <div class="meta"><div class="track">Трек</div>
-    <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
-  </div>
+  <button id="btn-prev">⟲</button>
+  <button id="btn-play">▶</button>
+  <button id="btn-next">✦</button>
+  <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
   <div class="time" id="time">0:00 / 0:00</div>
 </footer>
+
 <script>
-// ======================= ЗВЁЗДЫ =======================
-const canvas = document.getElementById('stars');
+// ========== CURSOR ==========
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX + 'px';
+  cursor.style.top = e.clientY + 'px';
+});
+
+// ========== STARS ==========
+const canvas = document.getElementById('star-canvas');
 const ctx = canvas.getContext('2d');
-let w = canvas.width = window.innerWidth;
-let h = canvas.height = window.innerHeight;
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+let stars = [];
+for(let i=0;i<150;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,s:Math.random()*0.5})}
+function drawStars(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let s of stars){ctx.fillStyle='white';ctx.globalAlpha=s.s;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();s.y+=0.5;if(s.y>canvas.height)s.y=0;}}
+setInterval(drawStars,30);
+window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
 
-window.addEventListener('resize', () => {
-  w = canvas.width = window.innerWidth;
-  h = canvas.height = window.innerHeight;
+// ========== CARDS ==========
+const panels = {bio:document.getElementById('panel-bio'),goals:document.getElementById('panel-goals'),other:document.getElementById('panel-other'),socials:document.getElementById('panel-socials')};
+const btns = {bio:document.getElementById('btn-bio'),goals:document.getElementById('btn-goals'),other:document.getElementById('btn-other'),socials:document.getElementById('btn-socials')};
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'))}
+btns.bio.onclick=()=>{panels.bio.classList.toggle('show')}
+btns.goals.onclick=()=>{panels.goals.classList.toggle('show')}
+btns.other.onclick=()=>{panels.other.classList.toggle('show')}
+btns.socials.onclick=()=>{panels.socials.classList.toggle('show')}
+
+// ========== GAME INFO ==========
+document.querySelectorAll('.game-info-btn').forEach(b=>{
+  b.onclick=()=>{alert(b.dataset.info)}
 });
 
-const stars = [];
-for(let i=0;i<200;i++){
-  stars.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.2, dx:(Math.random()-0.5)*0.5});
-}
-
-function drawStars(){
-  ctx.clearRect(0,0,w,h);
-  stars.forEach(s=>{
-    ctx.beginPath();
-    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
-    ctx.fillStyle='white';
-    ctx.fill();
-    s.x += s.dx;
-    if(s.x<0) s.x=w;
-    if(s.x>w) s.x=0;
-  });
-  requestAnimationFrame(drawStars);
-}
-drawStars();
-
-// ======================= ПАНЕЛИ =======================
-const panels = {
-  bio:document.getElementById('panel-bio'),
-  goals:document.getElementById('panel-goals'),
-  other:document.getElementById('panel-other'),
-  socials:document.getElementById('panel-socials')
-};
-const btns = {
-  bio:document.getElementById('btn-bio'),
-  goals:document.getElementById('btn-goals'),
-  other:document.getElementById('btn-other'),
-  socials:document.getElementById('btn-socials')
-};
-
-function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('show-btn'));}
-Object.keys(btns).forEach(key=>{
-  btns[key].addEventListener('click',()=>{
-    const s = panels[key].classList.contains('show');
-    hideAll();
-    if(!s){
-      panels[key].classList.add('show');
-      btns[key].classList.add('show-btn');
-    }
-  });
-});
-
-// ======================= POPUP для игр =======================
-const popup = document.getElementById('game-popup');
-const popupText = document.getElementById('popup-text');
-const popupClose = document.getElementById('popup-close');
-document.querySelectorAll('.info-btn').forEach(btn=>{
-  btn.addEventListener('click',()=>{
-    const game = btn.dataset.game;
-    let text = '';
-    switch(game){
-      case 'Roblox': text='Наиграно 3000+ часов'; break;
-      case 'DBD': text='Наиграно 20 часов, любимый ман: Майкл Маерс, любимый сурв: Сейбл'; break;
-      case 'CS2': text='Наиграно 120 часов, любимая карта Anubis, роль: опорник'; break;
-      case 'The Forest': text='80+ часов'; break;
-      case 'Sons of the Forest': text='30+ часов'; break;
-    }
-    popupText.textContent = text;
-    popup.classList.add('show-popup');
-  });
-});
-popupClose.addEventListener('click',()=>{popup.classList.remove('show-popup');});
-
-// ======================= ПЛЕЕР =======================
-const playlist = [
-  {file:'болен.mp3', name:'Dope17 — Болен'},
-  {file:'2_5321416586563717473.mp3', name:'MOON | Crystals'},
-  {file:'2_5375374187688907798.mp3', name:'Vtornik | Хороший'},
-  {file:'Токсік(Mulancore).mp3', name:'Токсік (Mulancore)'},
-  {file:'Мы - Возможно.mp3', name:'Мы - Возможно'},
-  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3', name:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16'}
-];
-
-const audio = new Audio();
+// ========== ПЛЕЕР ==========
 const playBtn = document.getElementById('btn-play');
 const prevBtn = document.getElementById('btn-prev');
 const nextBtn = document.getElementById('btn-next');
 const bar = document.getElementById('bar');
 const prog = document.getElementById('prog');
 const timeEl = document.getElementById('time');
-const trackEl = document.querySelector('.track');
 
-let currentIndex = 0;
+const tracks = [
+  {file:'bolen.mp3',title:'Dope17 — Болен'},
+  {file:'2_5321416586563717473.mp3',title:'MOON | Crystals'},
+  {file:'2_5375374187688907798.mp3',title:'Vtornik | Хороший'},
+  {file:'Токсік(Mulancore).mp3',title:'Токсік(Mulancore)'},
+  {file:'Мы - Возможно.mp3',title:'Мы - Возможно'},
+  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3',title:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16'}
+];
 
-// ФУНКЦИИ
-function loadTrack(index){
-  audio.src = playlist[index].file;
-  trackEl.textContent = playlist[index].name;
-  audio.play();
-}
-function playPause(){
-  if(audio.paused) audio.play();
-  else audio.pause();
-}
-function nextTrack(){
-  currentIndex = Math.floor(Math.random()*playlist.length);
-  loadTrack(currentIndex);
-}
-function prevTrack(){
-  currentIndex = (currentIndex-1+playlist.length)%playlist.length;
-  loadTrack(currentIndex);
-}
+let currentTrack = 0;
+const audio = new Audio(tracks[currentTrack].file);
+audio.play();
 
-// СОБЫТИЯ
-playBtn.addEventListener('click',playPause);
-nextBtn.addEventListener('click',nextTrack);
-prevBtn.addEventListener('click',prevTrack);
-audio.ontimeupdate = ()=>{
+function updateBar(){
   if(audio.duration){
-    const pct = audio.currentTime/audio.duration*100;
-    bar.style.width = pct+'%';
-    const m = Math.floor(audio.currentTime/60);
-    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-    const dm = Math.floor(audio.duration/60);
-    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
-    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
+    let pct = audio.currentTime/audio.duration*100;
+    bar.style.width=pct+'%';
+    const m=Math.floor(audio.currentTime/60);
+    const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+    const dm=Math.floor(audio.duration/60);
+    const ds=Math.floor(audio.duration%60).toString().padStart(2,'0');
+    timeEl.textContent=`${m}:${s} / ${dm}:${ds}`;
   }
-};
-audio.onplay = ()=>playBtn.textContent='⏸';
-audio.onpause = ()=>playBtn.textContent='▶';
-audio.onended = nextTrack;
+}
 
-// Автозапуск при входе
-window.addEventListener('load',()=>{loadTrack(currentIndex);});
+audio.ontimeupdate=updateBar;
+audio.onended=()=>{currentTrack=Math.floor(Math.random()*tracks.length);audio.src=tracks[currentTrack].file;audio.play();}
+
+playBtn.onclick=()=>{audio.paused?audio.play():audio.pause()}
+audio.onplay=()=>playBtn.textContent='❚❚';
+audio.onpause=()=>playBtn.textContent='▶';
+
+prog.onclick=(e)=>{
+  const pct = e.offsetX/prog.offsetWidth;
+  audio.currentTime = pct*audio.duration;
+}
+prevBtn.onclick=()=>{currentTrack=(currentTrack-1+tracks.length)%tracks.length;audio.src=tracks[currentTrack].file;audio.play();}
+nextBtn.onclick=()=>= (currentTrack+1)%tracks.length;audio.src=tracks[currentTrack].file;audio.play();}
 </script>
 </body>
 </html>
