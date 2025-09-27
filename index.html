@@ -159,6 +159,7 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
   border-radius:6px;
 }
 .track-title { min-width:120px; text-align:center; }
+.time { font-size:12px; min-width:50px; text-align:center; color:white; }
 </style>
 <body>
 <div class="wrap">
@@ -208,9 +209,9 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
     <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
     <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
     <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
-    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
-    <a class="social" href="https://discord.gg/66rXGeXR
-" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</
+<div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
   </div>
 
   <!-- =================== ПЛЕЕР =================== -->
@@ -219,9 +220,11 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
     <button class="play-btn">▶️</button>
     <button class="next-btn">⏭</button>
     <div class="track-title">Bolen</div>
+    <div class="time" id="current-time">0:00</div>
     <div class="progress-container">
       <div class="progress-bar"></div>
     </div>
+    <div class="time" id="duration">0:00</div>
   </div>
 </div>
 
@@ -275,13 +278,17 @@ const nextBtn=document.querySelector('.next-btn');
 const progressContainer=document.querySelector('.progress-container');
 const progressBar=document.querySelector('.progress-bar');
 const trackTitle=document.querySelector('.track-title');
+const currentTimeElem=document.getElementById('current-time');
+const durationElem=document.getElementById('duration');
 
 function loadTrack(i){
   audio.src=tracks[i].file;
   trackTitle.textContent=tracks[i].title;
+  audio.load();
   audio.play();
   playBtn.textContent='⏸️';
 }
+
 loadTrack(currentTrack);
 
 playBtn.onclick=()=>{
@@ -302,17 +309,26 @@ nextBtn.onclick=()=>{
 audio.ontimeupdate=()=>{
   const percent=(audio.currentTime/audio.duration)*100;
   progressBar.style.width=percent+'%';
+  
+  let curMin=Math.floor(audio.currentTime/60);
+  let curSec=Math.floor(audio.currentTime%60);
+  if(curSec<10) curSec='0'+curSec;
+  currentTimeElem.textContent=`${curMin}:${curSec}`;
+  
+  let durMin=Math.floor(audio.duration/60)||0;
+  let durSec=Math.floor(audio.duration%60)||0;
+  if(durSec<10) durSec='0'+durSec;
+  durationElem.textContent=`${durMin}:${durSec}`;
 };
 
 progressContainer.onclick=(e)=>{
   const w=progressContainer.clientWidth;
   const clickX=e.offsetX;
-  const duration=audio.duration;
-  audio.currentTime=(clickX/w)*duration;
+  audio.currentTime=(clickX/w)*audio.duration;
 };
 
 audio.onended=()=>{
-  currentTrack=Math.floor(Math.random()*tracks.length);
+  currentTrack=(currentTrack+1)%tracks.length;
   loadTrack(currentTrack);
 };
 </script>
