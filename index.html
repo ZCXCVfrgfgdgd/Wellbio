@@ -1,276 +1,357 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <title>My Site</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      background: black;
-      color: white;
-      font-family: Arial, sans-serif;
-      overflow: hidden;
-    }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
+<style>
+  :root {
+    --accent:#7ee7ff;
+    --accent2:#ff6b9a;
+    --glow:#ffffff;
+  }
+  * { box-sizing:border-box; }
+  body {
+    margin:0;
+    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    background:black;
+    color:white;
+    display:flex;
+    justify-content:center;
+    padding:24px;
+    cursor:none;
+    overflow-x:hidden;
+  }
+  /* Glow cursor */
+  body::after {
+    content:'';
+    position:fixed;
+    width:12px;
+    height:12px;
+    border-radius:50%;
+    background:white;
+    pointer-events:none;
+    transform:translate(-50%,-50%);
+    transition:transform .05s linear;
+    z-index:9999;
+  }
 
-    /* Glow текст */
-    h1, h2, p {
-      text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
-    }
+  .wrap { width:100%; max-width:980px; }
+  .top {
+    display:flex;
+    gap:18px;
+    align-items:center;
+    padding:18px;
+    border-radius:14px;
+    background: rgba(255,255,255,0.02);
+    backdrop-filter:blur(12px);
+    flex-wrap:wrap;
+  }
+  .avatar {
+    width:128px;
+    height:128px;
+    border-radius:50%;
+    overflow:hidden;
+    border:2px solid rgba(255,255,255,0.06);
+    transition:box-shadow .3s;
+  }
+  .avatar:hover {
+    box-shadow:0 0 20px var(--glow);
+  }
+  .avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+  .info { display:flex; flex-direction:column; gap:6px; flex:1; }
+  .nick { font-weight:800; color:var(--accent); letter-spacing:1px; }
+  .sub { opacity:0.85; font-size:13px; }
+  .controls { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; }
+  .btn {
+    padding:10px 16px;
+    border-radius:12px;
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.1);
+    cursor:pointer;
+    font-weight:700;
+    transition:transform .25s, box-shadow .25s, background .25s;
+    color:white;
+    position:relative;
+  }
+  .btn:hover {
+    transform:translateY(-4px);
+    box-shadow:0 8px 20px rgba(255,255,255,0.3);
+    background:rgba(255,255,255,0.15);
+  }
+  .card {
+    display:none;
+    margin-top:16px;
+    padding:14px;
+    border-radius:12px;
+    background: rgba(255,255,255,0.03);
+    border:1px solid rgba(255,255,255,0.05);
+    backdrop-filter:blur(10px);
+  }
+  .card.show { display:block; animation:panelIn .36s ease; }
+  @keyframes panelIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 
-    /* Контейнер */
-    .container {
-      position: relative;
-      z-index: 2;
-      text-align: center;
-      padding-top: 20px;
-    }
-
-    /* Аватар */
-    .avatar {
-      width: 150px;
-      border-radius: 50%;
-      transition: 0.3s ease-in-out;
-      box-shadow: 0 0 20px transparent;
-    }
-    .avatar:hover {
-      box-shadow: 0 0 40px #0ff, 0 0 80px #0ff;
-    }
-
-    /* Кнопки */
-    .menu {
-      margin-top: 20px;
-    }
-    .menu button {
-      margin: 10px;
-      padding: 10px 20px;
-      border: none;
-      border-radius: 8px;
-      background: transparent;
-      color: white;
-      font-size: 18px;
-      cursor: pointer;
-      text-shadow: 0 0 5px #0ff;
-      transition: 0.3s;
-    }
-    .menu button:hover {
-      background: rgba(0,255,255,0.2);
-      box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
-    }
-
-    /* Меню контент */
-    .content {
-      display: none;
-      margin-top: 20px;
-      font-size: 18px;
-    }
-    .content.active {
-      display: block;
-    }
-
-    /* Плеер */
-    .player {
-      margin-top: 30px;
-      background: rgba(255,255,255,0.05);
-      padding: 15px;
-      border-radius: 15px;
-      width: 350px;
-      margin-left: auto;
-      margin-right: auto;
-      box-shadow: 0 0 15px #0ff;
-    }
-    .progress {
-      width: 100%;
-    }
-    .controls {
-      margin-top: 10px;
-    }
-    .controls button {
-      margin: 0 10px;
-      padding: 8px 15px;
-      border: none;
-      border-radius: 8px;
-      background: #0ff;
-      color: black;
-      cursor: pointer;
-      font-weight: bold;
-    }
-    .controls button:hover {
-      background: #fff;
-    }
-
-    /* Звезды */
-    canvas {
-      position: fixed;
-      top: 0;
-      left: 0;
-      z-index: 0;
-    }
-  </style>
+  .row { display:flex; gap:12px; flex-wrap:wrap; }
+  .col { flex:1 1 220px; min-width:180px; }
+  h3 { margin:0 0 6px 0; color:#bfefff; }
+  .socials { display:flex; flex-direction:column; gap:8px; }
+  .social {
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:8px;
+    border-radius:10px;
+    background:rgba(255,255,255,0.02);
+    text-decoration:none;
+    color:white;
+    border:1px solid rgba(255,255,255,0.03);
+    transition:0.25s;
+  }
+  .social:hover { background:rgba(255,255,255,0.1); }
+  .icon {
+    width:36px;
+    height:36px;
+    border-radius:8px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    color:#071018;
+    font-weight:800;
+  }
+  /* Cursor tracking JS */
+</style>
 </head>
 <body>
-  <canvas id="stars"></canvas>
-
-  <div class="container">
-    <img src="1000038711-removebg-preview.png" alt="avatar" class="avatar">
-    <h1>Welcome to my site</h1>
-
-    <div class="menu">
-      <button onclick="showContent('bio')">BIO</button>
-      <button onclick="showContent('goals')">Goals</button>
-      <button onclick="showContent('socials')">Socials</button>
-      <button onclick="showContent('other')">OTHER</button>
-    </div>
-
-    <div id="bio" class="content">
-      <p><b>Имя:</b> Максим</p>
-      <p><b>Возраст:</b> 13 лет</p>
-      <p><b>Дата рождения:</b> 28.08.2012</p>
-      <p><b>Хобби:</b> Игры, программирование</p>
-    </div>
-
-    <div id="goals" class="content">
-      <p>Стать успешным программистом (зароботок от 7000$)</p>
-    </div>
-
-    <div id="socials" class="content">
-      <p>Telegram: @example</p>
-      <p>GitHub: github.com/example</p>
-    </div>
-
-    <div id="other" class="content">
-      <p>INK GAME WIN | 26</p>
-    </div>
-
-    <!-- ПЛЕЕР -->
-    <div class="player">
-      <h2 id="track-title">Загрузка...</h2>
-      <input type="range" id="progress" class="progress" value="0" step="1">
-      <div>
-        <span id="current-time">0:00</span> / <span id="duration">0:00</span>
-      </div>
+<div class="wrap">
+  <div class="top">
+    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
+    <div class="info">
+      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
+      <div class="sub">Максим — Львов, Украина</div>
       <div class="controls">
-        <button id="prevBtn">⏮</button>
-        <button id="playBtn">▶</button>
-        <button id="nextBtn">⏭</button>
+        <button class="btn" id="btn-bio">BIO</button>
+        <button class="btn" id="btn-goals">Goals</button>
+        <button class="btn" id="btn-other">OTHER</button>
+        <button class="btn" id="btn-socials">SOCIALS</button>
       </div>
     </div>
   </div>
 
-  <script>
-    /* === Система меню === */
-    function showContent(id) {
-      document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
-      document.getElementById(id).classList.add('active');
-    }
+  <div class="card" id="panel-bio">
+    <div class="row">
+      <div class="col"><h3>Имя</h3><div>Максим</div></div>
+      <div class="col"><h3>Страна</h3><div>Украина</div></div>
+      <div class="col"><h3>Город</h3><div>Львов</div></div>
+    </div>
+    <div style="height:10px"></div>
+    <div class="row">
+      <div class="col"><h3>Дата рождения</h3><div>28/08/2012</div></div>
+      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
+    </div>
+  </div>
 
-    /* === ПЛЕЕР === */
-    const tracks = [
-      {title: "Track 1", file: "music1.mp3"},
-      {title: "Track 2", file: "music2.mp3"},
-      {title: "Track 3", file: "music3.mp3"}
-    ];
+  <div class="card" id="panel-goals">
+    <h3>Goals</h3>
+    <p>№1: Become a successful programmer (income from 7000$)</p>
+    <p>№2: Buy a Porsche 911 and Tesla Model S</p>
+    <p>№3: Make my parents not work and provide for them</p>
+  </div>
 
-    let currentTrack = Math.floor(Math.random() * tracks.length);
-    const audio = new Audio(tracks[currentTrack].file);
-    const playBtn = document.getElementById('playBtn');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const progress = document.getElementById('progress');
-    const trackTitle = document.getElementById('track-title');
-    const currentTimeEl = document.getElementById('current-time');
-    const durationEl = document.getElementById('duration');
+  <div class="card" id="panel-other">
+    <h3>OTHER</h3>
+    <p>📱 Phone: Tecno Povo 6</p>
+    <p>🎮 Games: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</p>
+    <p>✨ Hobbies: I like making videos, editing, learning new things at 13, and making people happy.</p>
+    <p>➕ INK GAME WIN|26</p>
+  </div>
 
-    function loadTrack(index) {
-      audio.src = tracks[index].file;
-      trackTitle.textContent = tracks[index].title;
-      audio.load();
-      audio.play();
-      playBtn.textContent = "⏸";
-    }
+  <div class="card" id="panel-socials">
+    <h3>SOCIALS</h3>
+    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
+    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+  </div>
+</div>
 
-    playBtn.onclick = () => {
-      if (audio.paused) {
-        audio.play();
-        playBtn.textContent = "⏸";
-      } else {
-        audio.pause();
-        playBtn.textContent = "▶";
-      }
-    };
+<script>
+const panels = {
+  bio:document.getElementById('panel-bio'),
+  goals:document.getElementById('panel-goals'),
+  other:document.getElementById('panel-other'),
+  socials:document.getElementById('panel-socials')
+};
+const btns = {
+  bio:document.getElementById('btn-bio'),
+  goals:document.getElementById('btn-goals'),
+  other:document.getElementById('btn-other'),
+  socials:document.getElementById('btn-socials')
+};
+function hideAll(){ Object.values(panels).forEach(p=>p.classList.remove('show')); }
+btns.bio.onclick=()=>{ const s=panels.bio.classList.contains('show'); hideAll(); if(!s) panels.bio.classList.add('show'); }
+btns.goals.onclick=()=>{ const s=panels.goals.classList.contains('show'); hideAll(); if(!s) panels.goals.classList.add('show'); }
+btns.other.onclick=()=>{ const s=panels.other.classList.contains('show'); hideAll(); if(!s) panels.other.classList.add('show'); }
+btns.socials.onclick=()=>{ const s=panels.socials.classList.contains('show'); hideAll(); if(!s) panels.socials.classList.add('show'); }
 
-    prevBtn.onclick = () => {
-      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      loadTrack(currentTrack);
-    };
+/* Cursor tracking */
+const cursor = document.body.querySelector('::after');
+document.addEventListener('mousemove', e=>{
+  const c = document.querySelector('body::after');
+  document.body.style.setProperty('--cursorX', e.clientX+'px');
+  document.body.style.setProperty('--cursorY', e.clientY+'px');
+});
+</script>
+<!-- ЧАСТЬ 2: ПЛЕЕР И ЗВЁЗДЫ -->
+<style>
+  /* Фон со звездами */
+  body::before {
+    content:'';
+    position:fixed;
+    width:100%;
+    height:100%;
+    top:0;
+    left:0;
+    background:black;
+    z-index:-1;
+    overflow:hidden;
+  }
+  .star {
+    position:absolute;
+    width:2px;
+    height:2px;
+    background:white;
+    border-radius:50%;
+    opacity:0.8;
+    animation:fall linear infinite;
+  }
+  @keyframes fall {
+    0% { transform:translateY(-10px); opacity:1; }
+    100% { transform:translateY(100vh); opacity:0; }
+  }
 
-    nextBtn.onclick = () => {
-      currentTrack = (currentTrack + 1) % tracks.length;
-      loadTrack(currentTrack);
-    };
+  /* Плеер */
+  #player {
+    position:fixed;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+    width:360px;
+    padding:12px 18px;
+    background:rgba(255,255,255,0.05);
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    gap:12px;
+    color:white;
+    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    border:1px solid rgba(255,255,255,0.1);
+  }
+  #playPause {
+    width:40px; height:40px;
+    border-radius:50%;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    border:none;
+    cursor:pointer;
+    color:#071018;
+    font-weight:800;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    font-size:18px;
+  }
+  #trackName {
+    flex:1;
+    font-weight:600;
+    font-size:14px;
+    white-space:nowrap;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+  #progressContainer {
+    position:relative;
+    height:4px;
+    background:rgba(255,255,255,0.2);
+    border-radius:2px;
+    cursor:pointer;
+  }
+  #progressBar {
+    position:absolute;
+    top:0;
+    left:0;
+    height:100%;
+    background:var(--accent);
+    border-radius:2px;
+    width:0%;
+  }
+</style>
 
-    audio.ontimeupdate = () => {
-      progress.value = audio.currentTime;
-      progress.max = audio.duration;
-      currentTimeEl.textContent = formatTime(audio.currentTime);
-      durationEl.textContent = formatTime(audio.duration);
-    };
+<div id="player">
+  <button id="playPause">▶</button>
+  <div id="trackName">BOLEN.mp3</div>
+  <div id="progressContainer">
+    <div id="progressBar"></div>
+  </div>
+</div>
 
-    progress.oninput = () => {
-      audio.currentTime = progress.value;
-    };
+<script>
+  // ЗВЁЗДЫ
+  const numStars = 120;
+  for(let i=0;i<numStars;i++){
+    let star = document.createElement('div');
+    star.className='star';
+    star.style.left=Math.random()*100+'vw';
+    star.style.top=Math.random()*100+'vh';
+    star.style.animationDuration=(5+Math.random()*10)+'s';
+    star.style.width=(1+Math.random()*2)+'px';
+    star.style.height=(1+Math.random()*2)+'px';
+    document.body.appendChild(star);
+  }
 
-    audio.onended = () => {
-      currentTrack = Math.floor(Math.random() * tracks.length);
-      loadTrack(currentTrack);
-    };
+  // ПЛЕЕР (НЕ МЕНЯЕМ)
+  const tracks=[
+    {file:"bolen.mp3",name:"BOLEN"},
+    {file:"2_5321416586563717473.mp3",name:"MOON | Crystals"},
+    {file:"2_5375374187688907798.mp3",name:"Vtornik | Хороший"},
+    {file:"Токсік(Mulancore).mp3",name:"Токсік(Mulancore)"},
+    {file:"Мы - Возможно.mp3",name:"Мы - Возможно"},
+    {file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3",name:"NAM VSЕГО 16"}
+  ];
+  let currentTrack=0;
+  const audio=new Audio();
+  const playBtn=document.getElementById('playPause');
+  const trackName=document.getElementById('trackName');
+  const progressBar=document.getElementById('progressBar');
+  const progressContainer=document.getElementById('progressContainer');
 
-    function formatTime(sec) {
-      if (isNaN(sec)) return "0:00";
-      let m = Math.floor(sec / 60);
-      let s = Math.floor(sec % 60);
-      return `${m}:${s < 10 ? '0' : ''}${s}`;
-    }
+  function loadTrack(){
+    audio.src=tracks[currentTrack].file;
+    trackName.textContent=tracks[currentTrack].name;
+    audio.play();
+    playBtn.textContent='⏸';
+  }
 
-    loadTrack(currentTrack);
+  audio.addEventListener('ended',()=>{
+    currentTrack=Math.floor(Math.random()*tracks.length);
+    loadTrack();
+  });
 
-    /* === Звезды === */
-    const canvas = document.getElementById("stars");
-    const ctx = canvas.getContext("2d");
-    let stars = [];
+  playBtn.onclick=()=>{
+    if(audio.paused){audio.play(); playBtn.textContent='⏸';}
+    else {audio.pause(); playBtn.textContent='▶';}
+  }
 
-    function resizeCanvas() {
-      canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight;
-    }
-    resizeCanvas();
-    window.onresize = resizeCanvas;
+  audio.addEventListener('timeupdate',()=>{
+    const progress=(audio.currentTime/audio.duration)*100;
+    progressBar.style.width=progress+'%';
+  });
 
-    for (let i = 0; i < 150; i++) {
-      stars.push({
-        x: Math.random() * canvas.width,
-        y: Math.random() * canvas.height,
-        size: Math.random() * 2,
-        speed: Math.random() * 0.5 + 0.2
-      });
-    }
+  progressContainer.onclick=(e)=>{
+    const rect=progressContainer.getBoundingClientRect();
+    const pos=(e.clientX-rect.left)/rect.width;
+    audio.currentTime=pos*audio.duration;
+  }
 
-    function drawStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach(star => {
-        ctx.beginPath();
-        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
-        ctx.fill();
-        star.y += star.speed;
-        if (star.y > canvas.height) {
-          star.y = 0;
-          star.x = Math.random() * canvas.width;
-        }
-      });
-      requestAnimationFrame(drawStars);
-    }
-    drawStars();
-  </script>
-</body>
-</html>
+  window.onload=loadTrack;
+</script>
