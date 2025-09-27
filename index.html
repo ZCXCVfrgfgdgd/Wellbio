@@ -203,155 +203,140 @@ document.addEventListener('mousemove', e=>{
   document.body.style.setProperty('--cursorY', e.clientY+'px');
 });
 </script>
-<!-- ЧАСТЬ 2: ПЛЕЕР И ЗВЁЗДЫ -->
-<style>
-  /* Фон со звездами */
-  body::before {
-    content:'';
-    position:fixed;
-    width:100%;
-    height:100%;
-    top:0;
-    left:0;
-    background:black;
-    z-index:-1;
-    overflow:hidden;
-  }
-  .star {
-    position:absolute;
-    width:2px;
-    height:2px;
-    background:white;
-    border-radius:50%;
-    opacity:0.8;
-    animation:fall linear infinite;
-  }
-  @keyframes fall {
-    0% { transform:translateY(-10px); opacity:1; }
-    100% { transform:translateY(100vh); opacity:0; }
-  }
+<!-- Фон со звездами -->
+<canvas id="stars" style="position:fixed; top:0; left:0; width:100%; height:100%; z-index:-1;"></canvas>
+<script>
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let W = canvas.width = window.innerWidth;
+let H = canvas.height = window.innerHeight;
+const starsCount = 150;
+const stars = [];
 
-  /* Плеер */
-  #player {
-    position:fixed;
-    bottom:20px;
-    left:50%;
-    transform:translateX(-50%);
-    width:360px;
-    padding:12px 18px;
-    background:rgba(255,255,255,0.05);
-    border-radius:14px;
-    display:flex;
-    align-items:center;
-    gap:12px;
-    color:white;
-    font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-    border:1px solid rgba(255,255,255,0.1);
-  }
-  #playPause {
-    width:40px; height:40px;
-    border-radius:50%;
-    background:linear-gradient(90deg,var(--accent),var(--accent2));
-    border:none;
-    cursor:pointer;
-    color:#071018;
-    font-weight:800;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    font-size:18px;
-  }
-  #trackName {
-    flex:1;
-    font-weight:600;
-    font-size:14px;
-    white-space:nowrap;
-    overflow:hidden;
-    text-overflow:ellipsis;
-  }
-  #progressContainer {
-    position:relative;
-    height:4px;
-    background:rgba(255,255,255,0.2);
-    border-radius:2px;
-    cursor:pointer;
-  }
-  #progressBar {
-    position:absolute;
-    top:0;
-    left:0;
-    height:100%;
-    background:var(--accent);
-    border-radius:2px;
-    width:0%;
-  }
+for(let i=0;i<starsCount;i++){
+  stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.5 + 0.5, d:Math.random()*starsCount});
+}
+
+function drawStars(){
+  ctx.clearRect(0,0,W,H);
+  ctx.fillStyle = 'white';
+  ctx.shadowColor = 'white';
+  ctx.shadowBlur = 4;
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+  });
+}
+
+function updateStars(){
+  stars.forEach(s=>{
+    s.y += 0.2;
+    if(s.y>H) s.y=0;
+  });
+}
+
+function animateStars(){
+  drawStars();
+  updateStars();
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+window.addEventListener('resize', ()=>{
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+});
+</script>
+
+<!-- ПЛЕЕР -->
+<style>
+#player {
+  position: fixed;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 400px;
+  padding: 12px 18px;
+  background: rgba(255,255,255,0.05);
+  border-radius: 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: white;
+  font-family: Inter,Segoe UI,Roboto,Arial,sans-serif;
+  border: 1px solid rgba(255,255,255,0.1);
+}
+.player-btn { 
+  width: 36px; height: 36px; border-radius:50%; 
+  background: linear-gradient(90deg,#7ee7ff,#ff6b9a); border:none; 
+  cursor:pointer; color:#071018; font-weight:800; display:flex; justify-content:center; align-items:center; font-size:16px;
+}
+#trackName { flex:1; font-weight:600; font-size:14px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+#progressContainer { position:relative; height:4px; background: rgba(255,255,255,0.2); border-radius:2px; cursor:pointer; flex:1; }
+#progressBar { position:absolute; top:0; left:0; height:100%; background:#7ee7ff; border-radius:2px; width:0%; }
+#time { font-size:12px; min-width:70px; text-align:right; opacity:0.85; }
 </style>
 
 <div id="player">
-  <button id="playPause">▶</button>
-  <div id="trackName">BOLEN.mp3</div>
-  <div id="progressContainer">
-    <div id="progressBar"></div>
-  </div>
+  <button class="player-btn" id="prevBtn">⏮</button>
+  <button class="player-btn" id="playPauseBtn">▶</button>
+  <button class="player-btn" id="nextBtn">⏭</button>
+  <div id="trackName">BOLEN</div>
+  <div id="progressContainer"><div id="progressBar"></div></div>
+  <div id="time">0:00 / 0:00</div>
 </div>
 
 <script>
-  // ЗВЁЗДЫ
-  const numStars = 120;
-  for(let i=0;i<numStars;i++){
-    let star = document.createElement('div');
-    star.className='star';
-    star.style.left=Math.random()*100+'vw';
-    star.style.top=Math.random()*100+'vh';
-    star.style.animationDuration=(5+Math.random()*10)+'s';
-    star.style.width=(1+Math.random()*2)+'px';
-    star.style.height=(1+Math.random()*2)+'px';
-    document.body.appendChild(star);
+/* ПЛЕЕР */
+const tracks=[
+  {file:"bolen.mp3",name:"BOLEN"},
+  {file:"2_5321416586563717473.mp3",name:"MOON | Crystals"},
+  {file:"2_5375374187688907798.mp3",name:"Vtornik | Хороший"},
+  {file:"Токсік(Mulancore).mp3",name:"Токсік(Mulancore)"},
+  {file:"Мы - Возможно.mp3",name:"Мы - Возможно"},
+  {file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3",name:"NAM VSЕГО 16"}
+];
+let currentTrack = 0;
+const audio = new Audio();
+const playBtn = document.getElementById('playPauseBtn');
+const prevBtn = document.getElementById('prevBtn');
+const nextBtn = document.getElementById('nextBtn');
+const trackName = document.getElementById('trackName');
+const progressBar = document.getElementById('progressBar');
+const progressContainer = document.getElementById('progressContainer');
+const timeEl = document.getElementById('time');
+
+function loadTrack(){
+  audio.src = tracks[currentTrack].file;
+  trackName.textContent = tracks[currentTrack].name;
+  audio.play();
+  playBtn.textContent = '⏸';
+}
+
+playBtn.onclick = () => {
+  if(audio.paused){ audio.play(); playBtn.textContent='⏸'; }
+  else { audio.pause(); playBtn.textContent='▶'; }
+}
+prevBtn.onclick = () => { currentTrack = (currentTrack - 1 + tracks.length) % tracks.length; loadTrack(); }
+nextBtn.onclick = () => { currentTrack = (currentTrack + 1) % tracks.length; loadTrack(); }
+
+audio.ontimeupdate = () => {
+  if(audio.duration){
+    const progress = (audio.currentTime/audio.duration)*100;
+    progressBar.style.width = progress+'%';
+    const m = Math.floor(audio.currentTime/60);
+    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+    const dm = Math.floor(audio.duration/60);
+    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
   }
-
-  // ПЛЕЕР (НЕ МЕНЯЕМ)
-  const tracks=[
-    {file:"bolen.mp3",name:"BOLEN"},
-    {file:"2_5321416586563717473.mp3",name:"MOON | Crystals"},
-    {file:"2_5375374187688907798.mp3",name:"Vtornik | Хороший"},
-    {file:"Токсік(Mulancore).mp3",name:"Токсік(Mulancore)"},
-    {file:"Мы - Возможно.mp3",name:"Мы - Возможно"},
-    {file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3",name:"NAM VSЕГО 16"}
-  ];
-  let currentTrack=0;
-  const audio=new Audio();
-  const playBtn=document.getElementById('playPause');
-  const trackName=document.getElementById('trackName');
-  const progressBar=document.getElementById('progressBar');
-  const progressContainer=document.getElementById('progressContainer');
-
-  function loadTrack(){
-    audio.src=tracks[currentTrack].file;
-    trackName.textContent=tracks[currentTrack].name;
-    audio.play();
-    playBtn.textContent='⏸';
-  }
-
-  audio.addEventListener('ended',()=>{
-    currentTrack=Math.floor(Math.random()*tracks.length);
-    loadTrack();
-  });
-
-  playBtn.onclick=()=>{
-    if(audio.paused){audio.play(); playBtn.textContent='⏸';}
-    else {audio.pause(); playBtn.textContent='▶';}
-  }
-
-  audio.addEventListener('timeupdate',()=>{
-    const progress=(audio.currentTime/audio.duration)*100;
-    progressBar.style.width=progress+'%';
-  });
-
-  progressContainer.onclick=(e)=>{
-    const rect=progressContainer.getBoundingClientRect();
-    const pos=(e.clientX-rect.left)/rect.width;
-    audio.currentTime=pos*audio.duration;
-  }
-
-  window.onload=loadTrack;
+}
+progressContainer.onclick = (e) => {
+  const rect = progressContainer.getBoundingClientRect();
+  const pos = (e.clientX - rect.left)/rect.width;
+  audio.currentTime = pos*audio.duration;
+}
+window.onload = loadTrack;
+audio.onended = () => { currentTrack = Math.floor(Math.random()*tracks.length); loadTrack(); }
 </script>
