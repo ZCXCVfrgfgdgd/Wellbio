@@ -1,112 +1,253 @@
-<!DOCTYPE html>  
-<html lang="ru">  
-<head>  
-<meta charset="utf-8" />  
-<meta name="viewport" content="width=device-width,initial-scale=1" />  
-<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>  
-<style>  
-/* ... твои стили без изменений ... */
-</style>
-</head>  
-<body>  
-<div class="container">  
-  <div class="top">  
-    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>  
-    <div class="info">  
-      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>  
-      <div class="sub">Максим — Львов, Украина</div>  
-    </div>  
-    <div class="controls" role="tablist">  
-      <button class="btn" id="btn-bio">BIO</button>  
-      <button class="btn" id="btn-other">OTHER</button>  
-      <button class="btn" id="btn-goals">Goals</button>  
-      <button class="btn" id="btn-socials">SOCIALS</button>  
-    </div>  
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <title>Music Page</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: black;
+      color: white;
+      overflow: hidden;
+    }
 
-    <!-- панели BIO, OTHER, Goals, Socials (без изменений) -->
+    /* Звездный фон */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png');
+      opacity: 0.7;
+      z-index: -1;
+    }
 
-    <!-- IMBA PLAYER -->  
-    <div class="player" aria-label="Плеер">  
-      <div class="track-meta">  
-        <div style="display:flex;flex-direction:column;gap:4px;">  
-          <div class="track-title" id="track-title">—</div>  
-          <div class="track-artist" id="track-artist">—</div>  
-        </div>  
-        <div style="display:flex;align-items:center;gap:12px;">  
-          <button class="icon-btn" id="btn-prev" title="Previous">  
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M6 6v12l8.5-6L6 6zM16 6v12h2V6h-2z" fill="#061018"/></svg>  
-          </button>  
-          <button class="icon-btn" id="btn-play" title="Play/Pause">  
-            <svg id="play-svg" width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>  
-          </button>  
-          <button class="icon-btn" id="btn-next" title="Next">  
-            <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M18 6L9.5 12 18 18V6zM8 6v12h2V6H8z" fill="#061018"/></svg>  
-          </button>  
-        </div>  
-      </div>  
+    /* Аватар */
+    .avatar {
+      display: block;
+      margin: 20px auto;
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      box-shadow: 0 0 25px rgba(0,255,255,0.7);
+      transition: 0.3s;
+    }
+    .avatar:hover {
+      box-shadow: 0 0 50px rgba(0,255,255,1);
+    }
 
-      <div class="time-row">  
-        <div class="time-left" id="current-time">0:00</div>  
-        <div style="flex:1;padding:0 8px;">  
-          <div class="progress-container" id="progress-container" aria-label="Прогресс">  
-            <div class="progress-filled" id="progress-filled"></div>  
-            <div class="progress-thumb" id="progress-thumb" style="left:0%"></div>  
-          </div>  
-        </div>  
-        <div class="time-right" id="duration">0:00</div>  
-      </div>  
-    </div>  
-  </div>  
-</div>  
+    /* Кнопки меню */
+    .menu {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+      margin-bottom: 20px;
+    }
+    .menu button {
+      background: transparent;
+      border: 1px solid cyan;
+      color: white;
+      padding: 10px 20px;
+      cursor: pointer;
+      border-radius: 12px;
+      font-size: 16px;
+      text-shadow: 0 0 8px cyan;
+      transition: 0.3s;
+    }
+    .menu button:hover {
+      background: rgba(0,255,255,0.2);
+      box-shadow: 0 0 15px cyan;
+    }
 
-<!-- autoplay fallback overlay -->  
-<div id="autoplayOverlay" class="autoplay-overlay" style="display:none;">  
-  <div class="autoplay-box">  
-    <div>Браузер заблокировал автозапуск звука.</div>  
-    <div style="margin-top:8px;font-size:13px;opacity:.9">Нажми, чтобы включить звук</div>  
-    <button id="autoplayEnable">Включить звук</button>  
-  </div>  
-</div>  
+    /* Контейнеры меню */
+    .content {
+      display: none;
+      text-align: center;
+      margin-bottom: 20px;
+    }
 
-<script>  
-/* ---------------- STARS ---------------- */  
-const starsCount = 120;  
-for(let i=0;i<starsCount;i++){  
-  const s=document.createElement('div');  
-  s.className='star';  
-  s.style.left = (Math.random()*100)+'vw';  
-  s.style.top = (Math.random()*100)+'vh';  
-  const size=(Math.random()*2+1)+'px';  
-  s.style.width = s.style.height = size;  
-  s.style.animationDuration = (Math.random()*6+4)+'s';  
-  document.body.appendChild(s);  
-}  
+    /* Плеер */
+    .player {
+      text-align: center;
+      margin-top: 10px;
+    }
+    .player button {
+      background: transparent;
+      border: 2px solid cyan;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      margin: 5px;
+      font-size: 18px;
+      color: white;
+      text-shadow: 0 0 8px cyan;
+      cursor: pointer;
+      transition: 0.3s;
+    }
+    .player button:hover {
+      background: rgba(0,255,255,0.2);
+      box-shadow: 0 0 20px cyan;
+    }
 
-/* ---------------- PANELS ---------------- */  
-// ... код панелей без изменений ...
+    /* Прогресс бар */
+    .progress {
+      -webkit-appearance: none;
+      width: 80%;
+      height: 6px;
+      border-radius: 3px;
+      background: rgba(255,255,255,0.2);
+      margin: 10px auto;
+      display: block;
+      cursor: pointer;
+    }
+    .progress::-webkit-slider-thumb {
+      -webkit-appearance: none;
+      width: 14px;
+      height: 14px;
+      border-radius: 50%;
+      background: cyan;
+      cursor: pointer;
+    }
 
-/* ---------------- TRACKS ---------------- */  
-const tracks = [  
-  {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},  
-  {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},  
-  {title:'LASKX3I - Против царя', artist:'LASKX3I', file:'LASKX3I - Против царя.mp3'},  
-  {title:'Ягода', artist:'—', file:'Ягода.m4a'},  
-  {title:'Шугар - BMW (HoodTrap Remix)', artist:'Шугар', file:'Шугар - BMW (HoodTrap Remix).mp3'},  
-  {title:'Bolen', artist:'Dope17', file:'bolen.mp3'},  
-  {title:'MOON | Crystals', artist:'MOON', file:'2_5321416586563717473.mp3'},  
-  {title:'Vtornik | Хороший', artist:'Vtornik', file:'2_5375374187688907798.mp3'},  
-  {title:'Токсік(Mulancore)', artist:'—', file:'Токсік(Mulancore).mp3'},  
-  {title:'Мы - Возможно', artist:'—', file:'Мы - Возможно.mp3'},  
-  {title:'AKA-SHGSH - NAM VSEGO 16', artist:'AKA-SHGSH', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'},  
+    .time {
+      font-size: 14px;
+      margin-top: 5px;
+      text-shadow: 0 0 8px cyan;
+    }
 
-  /* новые треки */  
-  {title:'Это слыш малая я тебя кохаю', artist:'—', file:'Это слыш малая я тебя кохаю.mp3'},  
-  {title:'Больше не курю я хочу другой аромат', artist:'—', file:'2_5346031138626369896 (1).mp3'},  
-  {title:'Бледный', artist:'—', file:'Бледный.m4a'}  
-];  
+    a {
+      color: cyan;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
 
-/* ---------------- PLAYER ---------------- */  
-// ... код плеера без изменений ...
-</script>  
-</body>  
+  <!-- Аватар -->
+  <img src="avatar.png" alt="avatar" class="avatar">
+
+  <!-- Кнопки меню -->
+  <div class="menu">
+    <button onclick="openTab('bio')">BIO</button>
+    <button onclick="openTab('other')">OTHER</button>
+    <button onclick="openTab('goals')">GOALS</button>
+    <button onclick="openTab('socials')">SOCIALS</button>
+  </div>
+
+  <!-- Контент -->
+  <div id="bio" class="content">⚡ Здесь BIO</div>
+  <div id="other" class="content">🎮 Здесь OTHER</div>
+  <div id="goals" class="content">🚀 Здесь GOALS</div>
+  <div id="socials" class="content">
+    🔗 <a href="https://t.me/" target="_blank">Telegram</a><br>
+    🎧 <a href="https://soundcloud.com/" target="_blank">SoundCloud</a><br>
+    📸 <a href="https://instagram.com/" target="_blank">Instagram</a>
+  </div>
+
+  <!-- Плеер -->
+  <div class="player">
+    <div id="track-title">Loading...</div>
+    <input type="range" id="progress" class="progress" value="0">
+    <div class="time"><span id="current">0:00</span> / <span id="duration">0:00</span></div>
+    <br>
+    <button onclick="prevTrack()">⏮️</button>
+    <button onclick="togglePlay()" id="play-btn">▶️</button>
+    <button onclick="nextTrack()">⏭️</button>
+  </div>
+
+  <script>
+    // Меню
+    function openTab(id) {
+      document.querySelectorAll('.content').forEach(c => c.style.display = 'none');
+      document.getElementById(id).style.display = 'block';
+    }
+
+    // Плеер
+    const tracks = [
+      {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},
+      {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},
+      {title:'LASKX3I - Против царя', artist:'LASKX3I', file:'LASKX3I - Против царя.mp3'},
+      {title:'Ягода', artist:'—', file:'Ягода.m4a'},
+      {title:'Шугар - BMW (HoodTrap Remix)', artist:'Шугар', file:'Шугар - BMW (HoodTrap Remix).mp3'},
+      {title:'Bolen', artist:'Dope17', file:'bolen.mp3'},
+      {title:'MOON | Crystals', artist:'MOON', file:'2_5321416586563717473.mp3'},
+      {title:'Vtornik | Хороший', artist:'Vtornik', file:'2_5375374187688907798.mp3'},
+      {title:'Токсік(Mulancore)', artist:'—', file:'Токсік(Mulancore).mp3'},
+      {title:'Мы - Возможно', artist:'—', file:'Мы - Возможно.mp3'},
+      {title:'AKA-SHGSH - NAM VSEGO 16', artist:'AKA-SHGSH', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'}
+    ];
+
+    let audio = new Audio();
+    let currentTrack = Math.floor(Math.random() * tracks.length);
+    let isPlaying = false;
+
+    const titleEl = document.getElementById('track-title');
+    const playBtn = document.getElementById('play-btn');
+    const progress = document.getElementById('progress');
+    const currentTimeEl = document.getElementById('current');
+    const durationEl = document.getElementById('duration');
+
+    function loadTrack(i) {
+      audio.src = tracks[i].file;
+      titleEl.textContent = tracks[i].title + " — " + tracks[i].artist;
+      audio.load();
+      audio.onloadedmetadata = () => {
+        durationEl.textContent = formatTime(audio.duration);
+        progress.value = 0;
+      };
+    }
+
+    function togglePlay() {
+      if (isPlaying) {
+        audio.pause();
+        playBtn.textContent = "▶️";
+      } else {
+        audio.play();
+        playBtn.textContent = "⏸️";
+      }
+      isPlaying = !isPlaying;
+    }
+
+    function nextTrack() {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      loadTrack(currentTrack);
+      audio.play();
+      playBtn.textContent = "⏸️";
+      isPlaying = true;
+    }
+
+    function prevTrack() {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      loadTrack(currentTrack);
+      audio.play();
+      playBtn.textContent = "⏸️";
+      isPlaying = true;
+    }
+
+    audio.ontimeupdate = () => {
+      progress.value = (audio.currentTime / audio.duration) * 100;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+    };
+
+    progress.oninput = () => {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    };
+
+    audio.onended = () => {
+      nextTrack();
+    };
+
+    function formatTime(sec) {
+      let m = Math.floor(sec / 60);
+      let s = Math.floor(sec % 60);
+      return m + ":" + (s < 10 ? "0" + s : s);
+    }
+
+    // Загружаем рандомный трек при старте
+    loadTrack(currentTrack);
+  </script>
+</body>
 </html>
