@@ -1,50 +1,40 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
+<link rel="stylesheet" href="style.css">
 <style>
-:root{--accent:#7ee7ff;--accent2:#ff6b9a;}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;}
-body{background:#000;color:white;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;min-height:100vh;transition:background 0.5s,color 0.5s;}
-.wrap{width:100%;max-width:980px;margin-top:100px;z-index:2;position:relative;padding:0 10px;}
-.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.05);backdrop-filter:blur(12px);flex-wrap:wrap;}
-.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block;}
-.info{display:flex;flex-direction:column;gap:6px;flex:1;}
-.nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
-.sub{opacity:0.85;font-size:13px;}
-.controls{display:flex;gap:16px;margin-top:12px;flex-wrap:wrap;}
-.btn{padding:12px 18px;border-radius:14px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s,color 0.5s;font-size:16px;color:inherit;}
-.btn:hover{transform:translateY(-4px);box-shadow:0 8px 20px rgba(0,0,0,0.5);}
-.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);}
-.card.show{display:block;animation:panelIn .36s ease;}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.row{display:flex;gap:12px;flex-wrap:wrap;}
-.col{flex:1 1 220px;min-width:150px;}
-h3{margin:0 0 6px 0;color:#bfefff;}
-.socials{display:flex;flex-direction:column;gap:8px;}
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);}
-.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
-#themeToggle{position:fixed;top:14px;right:14px;width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,0.1);border:none;cursor:pointer;font-size:24px;color:white;display:flex;align-items:center;justify-content:center;z-index:999;transition:background 0.5s;}
-canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
-footer.player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);backdrop-filter:blur(8px);display:flex;gap:12px;align-items:center;z-index:2;}
-.pbtn{width:52px;height:52px;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);transition:transform .22s,background 0.5s;font-size:20px;color:white;}
-.pbtn:hover{transform:translateY(-4px);}
-.play{width:64px;height:64px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent2));display:flex;align-items:center;justify-content:center;font-size:24px;color:#061018;cursor:pointer;}
-.meta{flex:1;min-width:0;}
-.track{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.progress{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px;}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s;}
-.time{font-size:12px;opacity:0.85;min-width:70px;text-align:right;}
-@media(max-width:720px){.top{flex-direction:column;align-items:center}.avatar{width:120px;height:120px}.controls{justify-content:center;}}
+/* Основные стили */
+:root{--accent:#7ee7ff;--accent2:#ff6b9a}
+*{box-sizing:border-box}
+body{margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;background:black;color:white;display:flex;flex-direction:column;align-items:center;padding:24px;transition: background 0.5s;}
+.wrap{width:100%;max-width:980px}
+.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(12px)}
+.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06)}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.info{display:flex;flex-direction:column;gap:6px}
+.nick{font-weight:800;color:var(--accent);letter-spacing:1px}
+.sub{opacity:0.85;font-size:13px}
+.controls{display:flex;gap:12px;margin-top:10px}
+.btn{padding:10px 16px;border-radius:12px;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.2);cursor:pointer;font-weight:700;transition: all 0.3s ease;color:white;text-shadow:0 0 4px rgba(0,0,0,0.3)}
+.btn:hover{transform:translateY(-4px);background:rgba(255,255,255,0.15);box-shadow:0 6px 20px rgba(0,0,0,0.4)}
+.card{margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px);transition: transform 0.5s ease, max-height 0.5s ease;overflow:hidden;max-height:500px;}
+.card.minimized{max-height:50px;}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.col{flex:1 1 220px;min-width:180px}
+h3{margin:0 0 6px 0;color:#bfefff}
+.socials{display:flex;flex-direction:column;gap:8px}
+.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03)}
+.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800}
+/* Мобильные кнопки для сворачивания */
+.toggle-btn{display:none;margin-top:5px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);border-radius:8px;padding:5px 10px;cursor:pointer;font-weight:bold;transition: all 0.3s;}
+@media(max-width:720px){.toggle-btn{display:block}}
 </style>
 </head>
 <body>
-<canvas id="matrix"></canvas>
-<button id="themeToggle">🌞</button>
-
+<canvas id="stars"></canvas>
 <div class="wrap">
   <div class="top">
     <div class="avatar"><img id="avatar" src="avatar.jpg" alt="avatar"></div>
@@ -52,8 +42,9 @@ footer.player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);wid
       <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
       <div class="sub">Максим — Львов, Украина</div>
       <div class="controls">
-        <button class="btn" id="btn-bio">ʙɪᴏ</button>
+        <button class="btn" id="btn-bio">BIO</button>
         <button class="btn" id="btn-other">OTHER</button>
+        <button class="btn" id="btn-goals">ЦЕЛИ</button>
         <button class="btn" id="btn-socials">SOCIALS</button>
       </div>
     </div>
@@ -65,7 +56,6 @@ footer.player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);wid
       <div class="col"><h3>Страна</h3><div>Украина</div></div>
       <div class="col"><h3>Город</h3><div>Львов</div></div>
     </div>
-    <div style="height:10px"></div>
     <div class="row">
       <div class="col"><h3>Дата рождения</h3><div>28/08/2012</div></div>
       <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
@@ -73,44 +63,47 @@ footer.player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);wid
   </div>
 
   <div class="card" id="panel-other">
-    <h3>OTHER</h3>
-    <p>📱 Телефон: Tecno Povo 6</p>
-    <p>🎮 Игры: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</p>
-    <p>✨ Увлечения: Мне нравится делать видео по разным играм, монтировать, и в свои 13 лет я пробую учиться новому, радовать людей контентом в соцсетях.</p>
-    <p>➕ INK GAME WIN|26</p>
+    <h3>Игры</h3>
+    <p>Roblox</p>
+    <p>DBD</p>
+    <p>Hotline Miami</p>
+    <p>The Forest / Sons of the Forest</p>
+  </div>
+
+  <div class="card" id="panel-goals">
+    <h3>Цели и достижения</h3>
+    <p>№1: стать успешным программистом (заработок от 7$)</p>
+    <p>№2: Купить Porsche 911 и Tesla model S</p>
+    <p>№3: Обеспечить родителей</p>
   </div>
 
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
-    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
-    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
-    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка) — t.me/Femscout1</div></a>
-    <a class="social" href="#" target="_blank"><div class="icon">TG</div><div>TG (канал) — (пока пусто)</div></a>
-    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO) — t.me/wellbioink</div></a>
-    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+    <a class="social" href="#" target="_blank"><div class="icon">R</div><div>Roblox</div></a>
+    <a class="social" href="#" target="_blank"><div class="icon">T</div><div>TikTok</div></a>
+    <a class="social" href="#" target="_blank"><div class="icon">TG</div><div>Telegram</div></a>
   </div>
 </div>
-
+<!-- ПЛЕЕР -->
 <footer class="player">
   <div class="pbtn" id="btn-prev">⟲</div>
-  <div class="play" id="btn-play">▶</div>
+  <div class="pbtn play" id="btn-play">PLAY</div>
   <div class="pbtn" id="btn-next">✦</div>
-  <div class="meta"><div class="track" id="trackName">Болен</div>
-    <div class="progress"><div class="bar" id="bar"></div></div>
+  <div class="meta"><div class="track">Dope17 — Болен</div>
+    <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
   </div>
   <div class="time" id="time">0:00 / 0:00</div>
 </footer>
+
 <script>
-// -------------------------
-// ПЛЕЕР МУЗЫКИ
-// -------------------------
+// ПЛЕЕР
 const tracks = [
-  {file:'Болен.mp3', name:'Dope17 — Болен'},
-  {file:'2_5321416586563717473.mp3', name:'MOON|Crystals'},
-  {file:'2_5375374187688907798.mp3', name:'Vtornik|Хороший'},
-  {file:'Токсік(Mulancore).mp3', name:'Токсік(Mulancore)'},
-  {file:'Мы - Возможно.mp3', name:'Мы - Возможно'},
-  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3', name:'NAM VSЕГО 16'}
+  {file:"болен.mp3", title:"Dope17 — Болен"},
+  {file:"2_5321416586563717473.mp3", title:"MOON | Crystals"},
+  {file:"2_5375374187688907798.mp3", title:"Vtornik | Хороший"},
+  {file:"Токсік(Mulancore).mp3", title:"Токсік(Mulancore)"},
+  {file:"Мы - Возможно.mp3", title:"Мы - Возможно"},
+  {file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3", title:"АКА-SHGSH - NAM VSЕGO 16"}
 ];
 
 let currentTrack = 0;
@@ -120,128 +113,196 @@ audio.autoplay = true;
 const playBtn = document.getElementById('btn-play');
 const prevBtn = document.getElementById('btn-prev');
 const nextBtn = document.getElementById('btn-next');
-const trackName = document.getElementById('trackName');
 const bar = document.getElementById('bar');
+const prog = document.getElementById('prog');
 const timeEl = document.getElementById('time');
+const trackTitle = document.querySelector('.track');
 
-function loadTrack(index){
-  audio.src = tracks[index].file;
-  trackName.textContent = tracks[index].name;
+// Автопереключение на следующую песню
+audio.onended = () => {
+  currentTrack = Math.floor(Math.random() * tracks.length);
+  audio.src = tracks[currentTrack].file;
+  trackTitle.textContent = tracks[currentTrack].title;
   audio.play();
-}
-
-playBtn.onclick = () => {
-  if(audio.paused){audio.play(); playBtn.textContent='⏸';}
-  else{audio.pause(); playBtn.textContent='▶';}
 };
 
-prevBtn.onclick = () => {
-  currentTrack = (currentTrack-1+tracks.length)%tracks.length;
-  loadTrack(currentTrack);
-};
-nextBtn.onclick = () => {
-  currentTrack = (currentTrack+1)%tracks.length;
-  loadTrack(currentTrack);
+// ПЛЕЙ / ПАУЗА
+playBtn.onclick = () => { 
+  if(audio.paused) audio.play();
+  else audio.pause();
 };
 
-audio.ontimeupdate = () => {
-  if(audio.duration){
-    const pct = audio.currentTime/audio.duration*100;
-    bar.style.width = pct+'%';
+audio.onplay = ()=> playBtn.textContent='PAUSE';
+audio.onpause = ()=> playBtn.textContent='PLAY';
+
+// Прогресс
+audio.ontimeupdate = ()=>{ 
+  if(audio.duration){ 
+    const pct = audio.currentTime/audio.duration*100; 
+    bar.style.width = pct+'%'; 
     const m = Math.floor(audio.currentTime/60);
     const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
     const dm = Math.floor(audio.duration/60);
     const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
-    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
-  }
+    timeEl.textContent = m+':'+s+' / '+dm+':'+ds; 
+  } 
 };
-audio.onplay = ()=> playBtn.textContent='⏸';
-audio.onpause = ()=> playBtn.textContent='▶';
 
-// -------------------------
-// КНОПКИ BIO/OTHER/SOCIALS
-// -------------------------
+// Следующая/предыдущая песня
+nextBtn.onclick = ()=> { currentTrack = (currentTrack+1)%tracks.length; audio.src=tracks[currentTrack].file; trackTitle.textContent = tracks[currentTrack].title; audio.play();}
+prevBtn.onclick = ()=> { currentTrack = (currentTrack-1+tracks.length)%tracks.length; audio.src=tracks[currentTrack].file; trackTitle.textContent = tracks[currentTrack].title; audio.play();}
+
+// Анимация звезд
+const canvas = document.getElementById('stars');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+const ctx = canvas.getContext('2d');
+
+const stars = Array.from({length:150}, ()=>({
+  x: Math.random()*canvas.width,
+  y: Math.random()*canvas.height,
+  r: Math.random()*1.5+0.5,
+  d: Math.random()*0.5
+}));
+
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  ctx.fillStyle='white';
+  stars.forEach(s=>{
+    ctx.globalAlpha = s.d;
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fill();
+    s.y += 0.2;
+    if(s.y>canvas.height) s.y=0;
+  });
+  requestAnimationFrame(drawStars);
+}
+drawStars();
+
+// Хакерский код
+const hackerDiv = document.createElement('div');
+hackerDiv.style.position='fixed';
+hackerDiv.style.top='0';
+hackerDiv.style.left='0';
+hackerDiv.style.width='100%';
+hackerDiv.style.height='100%';
+hackerDiv.style.pointerEvents='none';
+hackerDiv.style.fontFamily='monospace';
+hackerDiv.style.fontSize='14px';
+hackerDiv.style.color='#0f0';
+hackerDiv.style.whiteSpace='pre';
+document.body.appendChild(hackerDiv);
+
+let hackerText = Array.from({length:40}, ()=>Math.round(Math.random()).toString());
+
+function updateHacker(){
+  hackerText = hackerText.map(c => c==='1'?'0':'1');
+  hackerDiv.textContent = hackerText.join('')+'\n'+hackerDiv.textContent.split('\n').slice(0,40).join('\n');
+  setTimeout(updateHacker,2000);
+}
+updateHacker();
+</script>
+<!-- Кнопка смены темы -->
+<button id="themeBtn" class="btn" style="position:fixed;top:14px;right:14px;">🌞</button>
+
+<script>
+// Смена темы
+let darkTheme = true; // по умолчанию темная
+const themeBtn = document.getElementById('themeBtn');
+themeBtn.onclick = ()=>{
+  darkTheme = !darkTheme;
+  if(darkTheme){
+    document.body.style.background = 'black';
+    document.body.style.color = 'white';
+    themeBtn.textContent = '🌞';
+    // кнопки белые
+    document.querySelectorAll('.btn').forEach(b=>b.style.color='white');
+  } else {
+    document.body.style.background = 'white';
+    document.body.style.color = 'black';
+    themeBtn.textContent = '🌙';
+    document.querySelectorAll('.btn').forEach(b=>b.style.color='black');
+  }
+}
+
+// Пасхалка "Well" каждые 25 секунд на 5 секунд
+const wellDiv = document.createElement('div');
+wellDiv.style.position='fixed';
+wellDiv.style.top='50%';
+wellDiv.style.left='50%';
+wellDiv.style.transform='translate(-50%,-50%)';
+wellDiv.style.fontSize='48px';
+wellDiv.style.fontWeight='bold';
+wellDiv.style.color='#0f0';
+wellDiv.style.opacity='0';
+wellDiv.style.transition='opacity 0.5s';
+document.body.appendChild(wellDiv);
+
+function showWell(){
+  wellDiv.textContent = 'Well';
+  wellDiv.style.opacity='1';
+  setTimeout(()=>wellDiv.style.opacity='0',5000);
+  setTimeout(showWell,25000);
+}
+showWell();
+</script>
+<script>
+// Карточки и кнопки
 const panels = {
-  bio: document.getElementById('panel-bio'),
-  other: document.getElementById('panel-other'),
-  socials: document.getElementById('panel-socials')
+  bio:document.getElementById('panel-bio'),
+  other:document.getElementById('panel-other'),
+  goals:document.getElementById('panel-goals'),
+  socials:document.getElementById('panel-socials')
 };
 const btns = {
-  bio: document.getElementById('btn-bio'),
-  other: document.getElementById('btn-other'),
-  socials: document.getElementById('btn-socials')
+  bio:document.getElementById('btn-bio'),
+  other:document.getElementById('btn-other'),
+  goals:document.getElementById('btn-goals'),
+  socials:document.getElementById('btn-socials')
 };
 
-function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'));}
-btns.bio.onclick = () => {hideAll(); panels.bio.classList.add('show');};
-btns.other.onclick = () => {hideAll(); panels.other.classList.add('show');};
-btns.socials.onclick = () => {hideAll(); panels.socials.classList.add('show');};
+function hideAll(){
+  Object.values(panels).forEach(p=>{
+    p.style.maxHeight='0px';
+    p.style.transform='translateY(-10px)';
+  });
+}
 
-// -------------------------
-// ПЕРЕКЛЮЧЕНИЕ ТЕМЫ
-// -------------------------
-const themeToggle = document.getElementById('themeToggle');
-let darkMode = true; // стартуем с темной темы
-
-function setTheme(dark){
-  darkMode = dark;
-  if(dark){
-    document.body.style.background = '#000';
-    document.body.style.color = 'white';
-    themeToggle.textContent = '🌞';
-  }else{
-    document.body.style.background = '#fff';
-    document.body.style.color = '#000';
-    themeToggle.textContent = '🌙';
+function togglePanel(panelKey){
+  const panel = panels[panelKey];
+  if(panel.style.maxHeight && panel.style.maxHeight!=='0px'){
+    panel.style.maxHeight='0px';
+    panel.style.transform='translateY(-10px)';
+  } else {
+    hideAll();
+    panel.style.maxHeight = panel.scrollHeight+'px';
+    panel.style.transform='translateY(0)';
   }
 }
-themeToggle.onclick = ()=> setTheme(!darkMode);
-setTheme(darkMode);
 
-// -------------------------
-// ХАКЕРСКИЙ ЭФФЕКТ
-// -------------------------
-const canvas = document.getElementById('matrix');
-const ctx = canvas.getContext('2d');
-let W = canvas.width = window.innerWidth;
-let H = canvas.height = window.innerHeight;
-const fontSize = 16;
-const columns = Math.floor(W/fontSize);
-const drops = Array(columns).fill(1);
-const chars = ['0','1'];
+// Привязываем к кнопкам
+btns.bio.onclick=()=>togglePanel('bio');
+btns.other.onclick=()=>togglePanel('other');
+btns.goals.onclick=()=>togglePanel('goals');
+btns.socials.onclick=()=>togglePanel('socials');
 
-function draw(){
-  if(!darkMode){ctx.clearRect(0,0,W,H); return;}
-  ctx.fillStyle = 'rgba(0,0,0,0.05)';
-  ctx.fillRect(0,0,W,H);
-  ctx.fillStyle = '#0f0';
-  ctx.font = fontSize+'px monospace';
-  for(let i=0;i<columns;i++){
-    const text = chars[Math.floor(Math.random()*chars.length)];
-    ctx.fillText(text,i*fontSize,drops[i]*fontSize);
-    drops[i]++;
-    if(drops[i]*fontSize>H && Math.random()>0.975){drops[i]=0;}
+// Мобильные кнопки сворачивания (⬇️)
+Object.values(panels).forEach(panel=>{
+  const toggleBtn = document.createElement('button');
+  toggleBtn.className='toggle-btn';
+  toggleBtn.textContent='⬇️';
+  toggleBtn.onclick=()=>{
+    if(panel.style.maxHeight && panel.style.maxHeight!=='0px'){
+      panel.style.maxHeight='0px';
+      panel.style.transform='translateY(-10px)';
+    } else {
+      panel.style.maxHeight = panel.scrollHeight+'px';
+      panel.style.transform='translateY(0)';
+    }
   }
-}
-setInterval(draw,50);
-
-// -------------------------
-// ПОСХАЛКА "Well"
-// -------------------------
-let wellTimer = 0;
-function showWell(){
-  if(!darkMode) return;
-  wellTimer++;
-  if(wellTimer%500 === 0){ // каждые ~25 секунд (50ms*500)
-    const x = Math.random()*W;
-    const y = Math.random()*H;
-    ctx.fillStyle = '#0f0';
-    ctx.font = 'bold 30px monospace';
-    ctx.fillText('Well',x,y);
-    setTimeout(()=>{ctx.clearRect(x,y-30,100,40);},5000);
-  }
-}
-setInterval(showWell,50);
+  panel.insertBefore(toggleBtn,panel.firstChild);
+});
 </script>
 </body>
 </html>
