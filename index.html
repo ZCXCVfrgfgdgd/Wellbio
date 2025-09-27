@@ -1,59 +1,49 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
-:root{--accent:#7ee7ff;--accent2:#ff6b9a}
-*{box-sizing:border-box}
-body{
-  margin:0;
-  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  padding:24px;
-  animation: bgLoop 10s infinite alternate;
-  transition: background 2s, color 2s;
-}
-@keyframes bgLoop{
-  0%{background:white; color:black;}
-  50%{background:black; color:white;}
-  100%{background:white; color:black;}
-}
-.wrap{width:100%;max-width:980px}
-.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.18));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(12px)}
-.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06)}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.info{display:flex;flex-direction:column;gap:6px}
-.nick{font-weight:800;color:var(--accent);letter-spacing:1px}
-.sub{opacity:0.85;font-size:13px}
-.controls{display:flex;gap:16px;margin-top:12px}
-.btn{padding:14px 20px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:transform .25s, box-shadow .25s, color 2s;font-size:16px;color:inherit}
-.btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
-.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px)}
-.card.show{display:block;animation:panelIn .36s ease}
+:root{--accent:#7ee7ff;--accent2:#ff6b9a;}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;}
+body{background:#000;color:white;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;height:100vh;overflow:hidden;transition:background 1s,color 1s;}
+.wrap{width:100%;max-width:980px;margin-top:80px;z-index:2;position:relative;}
+.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.05);backdrop-filter:blur(12px);}
+.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.info{display:flex;flex-direction:column;gap:6px;}
+.nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
+.sub{opacity:0.85;font-size:13px;}
+.controls{display:flex;gap:16px;margin-top:12px;}
+.btn{padding:14px 20px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s,color 1s;font-size:16px;color:inherit;}
+.btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
+.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05);backdrop-filter:blur(10px);}
+.card.show{display:block;animation:panelIn .36s ease;}
 @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.col{flex:1 1 220px;min-width:180px}
-h3{margin:0 0 6px 0;color:#bfefff}
-.socials{display:flex;flex-direction:column;gap:8px}
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03)}
-.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800}
-footer{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:linear-gradient(180deg,rgba(3,8,15,0.9),rgba(8,12,20,0.7));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(8px);display:flex;gap:12px;align-items:center}
-.pbtn{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);transition:transform .22s;font-size:20px}
-.pbtn:hover{transform:translateY(-6px)}
-.play{width:64px;height:64px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800;border:none;font-size:22px}
-.meta{flex:1;min-width:0}
-.track{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.progress{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-.time{font-size:12px;opacity:0.85;min-width:70px;text-align:right}
-@media(max-width:720px){.top{flex-direction:column;align-items:center}.avatar{width:120px;height:120px}.player{width:100%;left:0;transform:none;border-radius:0}}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.col{flex:1 1 220px;min-width:180px;}
+h3{margin:0 0 6px 0;color:#bfefff;}
+.socials{display:flex;flex-direction:column;gap:8px;}
+.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);}
+.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
+#themeToggle{position:fixed;top:14px;right:14px;width:48px;height:48px;border-radius:50%;background:linear-gradient(90deg,var(--accent),var(--accent2));border:none;cursor:pointer;font-size:24px;color:#061018;display:flex;align-items:center;justify-content:center;z-index:999;}
+canvas#matrix{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;}
+footer.player{position:fixed;bottom:14px;left:50%;transform:translateX(-50%);width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:linear-gradient(180deg,rgba(3,8,15,0.9),rgba(8,12,20,0.7));border:1px solid rgba(255,255,255,0.04);backdrop-filter:blur(8px);display:flex;gap:12px;align-items:center;z-index:2;}
+.pbtn{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);transition:transform .22s;font-size:20px;}
+.pbtn:hover{transform:translateY(-6px);}
+.play{width:64px;height:64px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800;border:none;font-size:22px;display:flex;align-items:center;justify-content:center;}
+.meta{flex:1;min-width:0;}
+.track{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.progress{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px;}
+.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .2s;}
+.time{font-size:12px;opacity:0.85;min-width:70px;text-align:right;}
 </style>
 </head>
 <body>
+<canvas id="matrix"></canvas>
+<button id="themeToggle">🌞</button>
+
 <div class="wrap">
   <div class="top">
     <div class="avatar"><img id="avatar" src="avatar.jpg" alt="avatar"></div>
@@ -102,66 +92,141 @@ footer{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc
 
 <footer class="player">
   <div class="pbtn" id="btn-prev">⟲</div>
-  <div class="pbtn play" id="btn-play">▶</div>
+  <div class="play" id="btn-play">▶</div>
   <div class="pbtn" id="btn-next">✦</div>
-  <div class="meta"><div class="track">Dope17 — Болен</div><div class="progress" id="prog"><div class="bar" id="bar"></div></div></div>
+  <div class="meta"><div class="track" id="trackName">Dope17 — Болен</div>
+    <div class="progress"><div class="bar" id="bar"></div></div>
+  </div>
   <div class="time" id="time">0:00 / 0:00</div>
 </footer>
 
 <script>
-const audio = new Audio('bolen.mp3'); // правильное название файла
-audio.loop = true;
+// ----------------- Табы -----------------
+const panels={bio:document.getElementById('panel-bio'),other:document.getElementById('panel-other'),socials:document.getElementById('panel-socials')};
+const btns={bio:document.getElementById('btn-bio'),other:document.getElementById('btn-other'),socials:document.getElementById('btn-socials')};
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'));Object.values(btns).forEach(b=>b.classList.remove('active'))}
+btns.bio.onclick=()=>{const s=panels.bio.classList.contains('show');hideAll();if(!s){panels.bio.classList.add('show');btns.bio.classList.add('active');panels.bio.scrollIntoView({behavior:'smooth',block:'center'})}}
+btns.other.onclick=()=>{const s=panels.other.classList.contains('show');hideAll();if(!s){panels.other.classList.add('show');btns.other.classList.add('active');panels.other.scrollIntoView({behavior:'smooth',block:'center'})}}
+btns.socials.onclick=()=>{const s=panels.socials.classList.contains('show');hideAll();if(!s){panels.socials.classList.add('show');btns.socials.classList.add('active');panels.socials.scrollIntoView({behavior:'smooth',block:'center'})}}
 
-const playBtn = document.getElementById('btn-play');
-const bar = document.getElementById('bar');
-const timeEl = document.getElementById('time');
-
-const panels = {bio: document.getElementById('panel-bio'), other: document.getElementById('panel-other'), socials: document.getElementById('panel-socials')};
-const btns = {bio: document.getElementById('btn-bio'), other: document.getElementById('btn-other'), socials: document.getElementById('btn-socials')};
-
-let audioStarted = false;
-
-// Скрыть все панели
-function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('active'))}
-
-// Кнопки панели
-Object.keys(btns).forEach(key=>{
-  btns[key].onclick = ()=>{
-    const panel = panels[key];
-    const isVisible = panel.classList.contains('show');
-    hideAll();
-    if(!isVisible){panel.classList.add('show'); btns[key].classList.add('active'); panel.scrollIntoView({behavior:'smooth', block:'center'})}
-    if(!audioStarted){audio.play().catch(()=>{}); audioStarted=true;}
-  }
-});
-
-// Play/Pause кнопка
-playBtn.onclick = ()=>{if(audio.paused) audio.play(); else audio.pause();}
-
-// Прогресс музыка
-audio.ontimeupdate = ()=>{
-  if(audio.duration){
-    const pct = (audio.currentTime/audio.duration)*100;
-    bar.style.width = pct+'%';
-    const m = Math.floor(audio.currentTime/60);
-    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-    const dm = Math.floor(audio.duration/60);
-    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
-    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
-  }
+// ----------------- Тема -----------------
+const themeToggle=document.getElementById('themeToggle');
+let dark=true;
+themeToggle.onclick=()=>{
+    dark=!dark;
+    if(dark){
+        document.body.style.background='#000';
+        document.body.style.color='white';
+        themeToggle.textContent='🌞';
+    }else{
+        document.body.style.background='white';
+        document.body.style.color='black';
+        themeToggle.textContent='🌙';
+    }
 }
-audio.onplay = ()=>playBtn.textContent='⏸';
-audio.onpause = ()=>playBtn.textContent='▶';
 
-// Плавное изменение цвета текста кнопок под фон
-function updateButtonColor(){
-  const bgColor = window.getComputedStyle(document.body).backgroundColor;
-  const isBlack = bgColor.includes('0, 0, 0');
-  Object.values(btns).forEach(b=>b.style.color = isBlack?'white':'black');
-  requestAnimationFrame(updateButtonColor);
+// ----------------- Хакерский код -----------------
+const canvas=document.getElementById('matrix');
+const ctx=canvas.getContext('2d');
+let w,h;
+function resizeCanvas(){w=canvas.width=window.innerWidth;h=canvas.height=window.innerHeight;}
+window.onresize=resizeCanvas;resizeCanvas();
+
+const cols=Math.floor(w/20);
+const ypos=Array(cols).fill(0);
+let symbols=['0','1'];
+
+function drawMatrix(){
+    ctx.fillStyle='rgba(0,0,0,0.05)';
+    ctx.fillRect(0,0,w,h);
+    ctx.fillStyle=dark?'#0f0':'#0f0';
+    ctx.font='20px monospace';
+    for(let i=0;i<cols;i++){
+        let text=symbols[Math.floor(Math.random()*symbols.length)];
+        ctx.fillText(text,i*20,ypos[i]*20);
+        if(ypos[i]*20>h && Math.random()>0.975)ypos[i]=0;
+        else ypos[i]++;
+    }
 }
-requestAnimationFrame(updateButtonColor);
+setInterval(drawMatrix,50);
+setInterval(()=>{symbols=symbols.map(s=>s==='0'?'1':'0')},2000);
+
+// ----------------- Пасхалка Well -----------------
+function showWell(){
+    const txt='WELL';
+    const startX=Math.floor(cols/2-2);
+    const startY=Math.floor(h/2/20);
+    for(let i=0;i<txt.length;i++){
+        ctx.fillText(txt[i],(startX+i)*20,startY*20);
+    }
+}
+setInterval(showWell,25000);
+
+// ----------------- Плеер -----------------
+const playlist=[
+{title:"Dope17 — Болен",file:"болен.mp3"},
+{title:"MOON — Crystals",file:"2_5321416586563717473.mp3"},
+{title:"Vtornik — Хороший",file:"2_5375374187688907798.mp3"},
+{title:"Токсік (Mulancore)",file:"Токсік(Mulancore).mp3"},
+{title:"Мы — Возможно",file:"Мы - Возможно.mp3"},
+{title:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 — 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16",file:"𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3"}
+];
+
+let current=0;
+const audio=new Audio();
+audio.src=playlist[current].file;
+audio.autoplay=true;
+
+const playBtn=document.getElementById('btn-play');
+const prevBtn=document.getElementById('btn-prev');
+const nextBtn=document.getElementById('btn-next');
+const trackName=document.getElementById('trackName');
+const bar=document.getElementById('bar');
+const timeEl=document.getElementById('time');
+
+function loadTrack(index){
+    audio.src=playlist[index].file;
+    trackName.textContent=playlist[index].title;
+    audio.play();
+}
+
+playBtn.onclick=()=>{
+    if(audio.paused) audio.play();
+    else audio.pause();
+}
+
+prevBtn.onclick=()=>{
+    current=(current-1+playlist.length)%playlist.length;
+    loadTrack(current);
+}
+
+nextBtn.onclick=()=>{
+    current=(current+1)%playlist.length;
+    loadTrack(current);
+}
+
+audio.ontimeupdate=()=>{
+    if(audio.duration){
+        const pct=(audio.currentTime/audio.duration)*100;
+        bar.style.width=pct+'%';
+        const m=Math.floor(audio.currentTime/60);
+        const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+        const dm=Math.floor(audio.duration/60);
+        const ds=Math.floor(audio.duration%60).toString().padStart(2,'0');
+        timeEl.textContent=`${m}:${s} / ${dm}:${ds}`;
+    }
+}
+
+audio.onplay=()=>playBtn.textContent='⏵';
+audio.onpause=()=>playBtn.textContent='⏸';
+
+// Автовоспроизведение при заходе на сайт
+window.onload=()=>audio.play();
 </script>
 </body>
 </html>
+
+ 
   
+
+
