@@ -1,234 +1,284 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
-:root{--accent:#7ee7ff;--accent2:#ff6b9a;--dark:#071018;--light:#ffffff;--button-bg:rgba(255,255,255,0.05)}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;}
-body{background:#000;color:#fff;display:flex;justify-content:center;align-items:flex-start;padding:24px;overflow-x:hidden;}
-.wrap{width:100%;max-width:980px;position:relative;}
-.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(12px);}
-.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
-.avatar img{width:100%;height:100%;object-fit:cover;}
-.info{display:flex;flex-direction:column;gap:6px;flex:1;}
-.nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
-.sub{opacity:0.85;font-size:13px;}
-.controls{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
-.btn{padding:12px 18px;border-radius:12px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s;color:#fff;}
-.btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
-.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px);}
-.card.show{display:block;animation:panelIn .36s ease;}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.row{display:flex;gap:12px;flex-wrap:wrap;}
-.col{flex:1 1 220px;min-width:180px;}
-h3{margin-bottom:6px;color:#bfefff;}
-.socials{display:flex;flex-direction:column;gap:8px;}
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);}
-.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
-/* ПАДАЮЩИЕ ЗВЕЗДЫ */
-#stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;}
-.star{position:absolute;background:linear-gradient(90deg, #0f0, #080);width:2px;height:12px;opacity:0.5;animation:fall linear infinite;}
-@keyframes fall{0%{transform:translateY(0)}100%{transform:translateY(100vh)}}
-/* Кнопки i для игр */
-.info-btn{margin-left:8px;cursor:pointer;color:var(--accent);font-weight:700;}
-.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--button-bg);padding:18px;border-radius:12px;display:none;flex-direction:column;gap:12px;z-index:1000;}
-.popup button{padding:6px 10px;border-radius:8px;border:none;background:var(--accent);color:#000;cursor:pointer;}
+  :root{--accent:#7ee7ff;--accent2:#ff6b9a;}
+  *{box-sizing:border-box;}
+  body{
+    margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
+    background:black;overflow-x:hidden;color:white;
+    display:flex;align-items:center;justify-content:center;padding:24px;
+  }
+  canvas{position:fixed;top:0;left:0;z-index:-1;}
+
+  .wrap{width:100%;max-width:980px;position:relative;z-index:1;}
+  .top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.02);}
+  .avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
+  .avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+  .info{display:flex;flex-direction:column;gap:6px;}
+  .nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
+  .sub{opacity:0.85;font-size:13px;}
+  .controls{display:flex;gap:12px;margin-top:10px;}
+  .btn{
+    padding:12px 18px;border-radius:12px;
+    background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);
+    cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s,opacity .5s,transform .5s;
+    opacity:0;transform:translateY(10px);
+  }
+  .btn.show-btn{opacity:1;transform:translateY(0);}
+  .btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5);}
+  .card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.03);backdrop-filter:blur(10px);}
+  .card.show{display:block;animation:panelIn .36s ease;}
+  @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .row{display:flex;gap:12px;flex-wrap:wrap;}
+  .col{flex:1 1 220px;min-width:180px;}
+  h3{margin:0 0 6px 0;color:#bfefff;opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
+  .show h3{opacity:1;transform:translateY(0);}
+  .card p{opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
+  .show p{opacity:1;transform:translateY(0);}
+  .socials{display:flex;flex-direction:column;gap:8px;}
+  .social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);opacity:0;transform:translateY(10px);transition:opacity 0.5s,transform 0.5s;}
+  .show .social{opacity:1;transform:translateY(0);}
+  .icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
+  
+  footer.player{
+    position:fixed;left:50%;transform:translateX(-50%);
+    bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:rgba(0,0,0,0.7);
+    display:flex;gap:12px;align-items:center;
+  }
+  .pbtn{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.03);}
+  .pbtn:hover{transform:translateY(-6px);}
+  .play{width:58px;height:58px;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800;border:none;display:flex;align-items:center;justify-content:center;font-size:24px;}
+
+  /* POPUP */
+  #game-popup{
+    display:none;position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.8);align-items:center;justify-content:center;
+    z-index:999;color:white;flex-direction:column;
+  }
+  #popup-text{margin-bottom:16px;text-align:center;}
+  #popup-close{padding:8px 12px;background:rgba(255,255,255,0.1);border-radius:8px;cursor:pointer;}
+  #game-popup.show-popup{display:flex;opacity:1;transition:opacity 0.4s;}
+  
+  @media(max-width:720px){
+    .top{flex-direction:column;align-items:center;}
+    .avatar{width:120px;height:120px;}
+    .player{width:100%;left:0;transform:none;border-radius:0;}
+  }
 </style>
 </head>
 <body>
 <canvas id="stars"></canvas>
 <div class="wrap">
   <div class="top">
-    <div class="avatar"><img id="avatar" src="avatar.jpg" alt="avatar"></div>
+    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
     <div class="info">
       <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
       <div class="sub">Максим — Львов, Украина</div>
       <div class="controls">
         <button class="btn" id="btn-bio">BIO</button>
+        <button class="btn" id="btn-goals">Цели</button>
         <button class="btn" id="btn-other">OTHER</button>
         <button class="btn" id="btn-socials">SOCIALS</button>
       </div>
     </div>
   </div>
 
-  <!-- BIO -->
+  <!-- ПАНЕЛИ -->
   <div class="card" id="panel-bio">
     <div class="row">
-      <div class="col"><h3>Основное</h3><div>Имя: Максим<br>Страна: Украина<br>Город: Львов<br>Дата рождения: 28/08/2012<br>Возраст: 13 лет</div></div>
-      <div class="col"><h3>Занимаюсь</h3>
-        <div>
-          Игры: <span class="game">Roblox <span class="info-btn" data-game="Roblox">i</span></span><br>
-          DBD <span class="info-btn" data-game="DBD">i</span><br>
-          CS2 <span class="info-btn" data-game="CS2">i</span><br>
-          The Forest <span class="info-btn" data-game="The Forest">i</span><br>
-          Sons of the Forest <span class="info-btn" data-game="Sons of the Forest">i</span>
-        </div>
-      </div>
-      <div class="col"><h3>Цели и достижения</h3>
-        <div>
-          №1: Стать успешным программистом (заработок от 7000$*)<br>
-          №2: Купить Porsche 911 и Tesla model S<br>
-          №3: Обеспечить родителей
-        </div>
-      </div>
+      <div class="col"><h3>Имя</h3><p>Максим</p></div>
+      <div class="col"><h3>Страна</h3><p>Украина</p></div>
+      <div class="col"><h3>Город</h3><p>Львов</p></div>
     </div>
   </div>
 
-  <!-- OTHER -->
+  <div class="card" id="panel-goals">
+    <h3>Цели и достижения</h3>
+    <p>№1: Стать успешным программистом (зароботок от 7000$*)</p>
+    <p>№2: Купить Porsche 911 и Tesla model S</p>
+    <p>№3: Сделать так, чтобы родители больше не работали и я их обеспечивал</p>
+  </div>
+
   <div class="card" id="panel-other">
     <h3>OTHER</h3>
-    <div>📱 Телефон: Tecno Povo 6</div>
-    <div>🎮 Игры: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</div>
-    <div>✨ Увлечения: Видео, монтаж, обучение новым вещам</div>
-    <div>➕ INK GAME WIN|26</div>
+    <p>📱 Телефон: Tecno Povo 6</p>
+    <p>🎮 Игры:</p>
+    <p>Roblox <button class="info-btn" data-game="Roblox">i</button></p>
+    <p>DBD <button class="info-btn" data-game="DBD">i</button></p>
+    <p>CS2 <button class="info-btn" data-game="CS2">i</button></p>
+    <p>The Forest <button class="info-btn" data-game="The Forest">i</button></p>
+    <p>Sons of the Forest <button class="info-btn" data-game="Sons of the Forest">i</button></p>
   </div>
 
-  <!-- SOCIALS -->
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
-    <a class="social" href="https://www.roblox.com" target="_blank"><div class="icon">R</div><div>Roblox</div></a>
-    <a class="social" href="https://www.tiktok.com" target="_blank"><div class="icon">𝕋</div><div>TikTok</div></a>
-    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>Telegram</div></a>
+    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
+    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
   </div>
 </div>
 
-<!-- POPUP ДЛЯ ИГР -->
-<div class="popup" id="game-popup">
+<!-- POPUP -->
+<div id="game-popup">
   <div id="popup-text"></div>
-  <button id="popup-close">⬅️</button>
+  <div id="popup-close">⬅️</div>
 </div>
+
+<!-- ПЛЕЕР -->
+<footer class="player">
+  <div class="pbtn" id="btn-prev">⟲</div>
+  <div class="pbtn play" id="btn-play">▶</div>
+  <div class="pbtn" id="btn-next">✦</div>
+  <div class="meta"><div class="track">Трек</div>
+    <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
+  </div>
+  <div class="time" id="time">0:00 / 0:00</div>
+</footer>
 <script>
-// ===== ПАДАЮЩИЕ ЗВЁЗДЫ =====
-const starsCanvas = document.getElementById('stars');
-const ctx = starsCanvas.getContext('2d');
-let w = starsCanvas.width = window.innerWidth;
-let h = starsCanvas.height = window.innerHeight;
-const starsCount = 120;
-let stars = [];
-for(let i=0;i<starsCount;i++){
-    stars.push({x:Math.random()*w,y:Math.random()*h,length:2+Math.random()*10,speed:0.5+Math.random()*1.5});
+// ======================= ЗВЁЗДЫ =======================
+const canvas = document.getElementById('stars');
+const ctx = canvas.getContext('2d');
+let w = canvas.width = window.innerWidth;
+let h = canvas.height = window.innerHeight;
+
+window.addEventListener('resize', () => {
+  w = canvas.width = window.innerWidth;
+  h = canvas.height = window.innerHeight;
+});
+
+const stars = [];
+for(let i=0;i<200;i++){
+  stars.push({x:Math.random()*w, y:Math.random()*h, r:Math.random()*1.2, dx:(Math.random()-0.5)*0.5});
 }
+
 function drawStars(){
-    ctx.clearRect(0,0,w,h);
-    ctx.fillStyle = '#0f0';
-    stars.forEach(s=>{
-        ctx.fillRect(s.x,s.y,2,s.length);
-        s.y += s.speed;
-        if(s.y>h){s.y=0;s.x=Math.random()*w;}
-    });
-    requestAnimationFrame(drawStars);
+  ctx.clearRect(0,0,w,h);
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle='white';
+    ctx.fill();
+    s.x += s.dx;
+    if(s.x<0) s.x=w;
+    if(s.x>w) s.x=0;
+  });
+  requestAnimationFrame(drawStars);
 }
 drawStars();
-window.addEventListener('resize',()=>{w=starsCanvas.width=window.innerWidth;h=starsCanvas.height=window.innerHeight;});
 
-// ===== КНОПКИ BIO, OTHER, SOCIALS =====
+// ======================= ПАНЕЛИ =======================
 const panels = {
-    bio: document.getElementById('panel-bio'),
-    other: document.getElementById('panel-other'),
-    socials: document.getElementById('panel-socials')
+  bio:document.getElementById('panel-bio'),
+  goals:document.getElementById('panel-goals'),
+  other:document.getElementById('panel-other'),
+  socials:document.getElementById('panel-socials')
 };
 const btns = {
-    bio: document.getElementById('btn-bio'),
-    other: document.getElementById('btn-other'),
-    socials: document.getElementById('btn-socials')
+  bio:document.getElementById('btn-bio'),
+  goals:document.getElementById('btn-goals'),
+  other:document.getElementById('btn-other'),
+  socials:document.getElementById('btn-socials')
 };
-function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'));}
-btns.bio.onclick = ()=>{hideAll(); panels.bio.classList.add('show');}
-btns.other.onclick = ()=>{hideAll(); panels.other.classList.add('show');}
-btns.socials.onclick = ()=>{hideAll(); panels.socials.classList.add('show');}
 
-// ===== POPUP ДЛЯ ИГР =====
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('show-btn'));}
+Object.keys(btns).forEach(key=>{
+  btns[key].addEventListener('click',()=>{
+    const s = panels[key].classList.contains('show');
+    hideAll();
+    if(!s){
+      panels[key].classList.add('show');
+      btns[key].classList.add('show-btn');
+    }
+  });
+});
+
+// ======================= POPUP для игр =======================
 const popup = document.getElementById('game-popup');
 const popupText = document.getElementById('popup-text');
+const popupClose = document.getElementById('popup-close');
 document.querySelectorAll('.info-btn').forEach(btn=>{
-    btn.addEventListener('click',()=>{
-        const game = btn.dataset.game;
-        let hours;
-        switch(game){
-            case 'Roblox': hours='3000+ часов'; break;
-            case 'DBD': hours='20 часов'; break;
-            case 'CS2': hours='120 часов'; break;
-            case 'The Forest': hours='80+ часов'; break;
-            case 'Sons of the Forest': hours='30+ часов'; break;
-        }
-        popupText.innerHTML = `<strong>${game}</strong><br>Наиграно: ${hours}`;
-        popup.style.display='flex';
-    });
-});
-document.getElementById('popup-close').onclick = ()=>{popup.style.display='none';}
-
-// ===== ПЛЕЕР =====
-/* ПЛЕЕР */
-const tracks = [
-    {file:'болен.mp3',title:'Dope17 — Болен'},
-    {file:'2_5321416586563717473.mp3',title:'MOON | Crystals'},
-    {file:'2_5375374187688907798.mp3',title:'Vtornik | Хороший'},
-    {file:'Токсік(Mulancore).mp3',title:'Токсік(Mulancore)'},
-    {file:'Мы - Возможно.mp3',title:'Мы - Возможно'},
-    {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3',title:'АКА-SHGS — NAM VSЕГО 16'}
-];
-let currentTrack = 0;
-const audio = new Audio();
-audio.src = tracks[currentTrack].file;
-audio.autoplay = true;
-
-const playBtn = document.createElement('div');
-playBtn.textContent = '▶';
-playBtn.style.padding='10px 20px';
-playBtn.style.borderRadius='12px';
-playBtn.style.background='linear-gradient(90deg,#7ee7ff,#ff6b9a)';
-playBtn.style.color='#061018';
-playBtn.style.fontWeight='800';
-playBtn.style.cursor='pointer';
-playBtn.style.userSelect='none';
-document.body.appendChild(playBtn);
-
-const progressBar = document.createElement('div');
-progressBar.style.height='8px';
-progressBar.style.width='300px';
-progressBar.style.background='rgba(255,255,255,0.2)';
-progressBar.style.borderRadius='8px';
-progressBar.style.marginTop='8px';
-document.body.appendChild(progressBar);
-
-const bar = document.createElement('div');
-bar.style.height='100%';
-bar.style.width='0%';
-bar.style.background='linear-gradient(90deg,#7ee7ff,#ff6b9a)';
-progressBar.appendChild(bar);
-
-const timeEl = document.createElement('div');
-timeEl.style.marginTop='4px';
-timeEl.style.fontSize='14px';
-timeEl.style.color='#fff';
-document.body.appendChild(timeEl);
-
-playBtn.onclick=()=>{if(audio.paused) audio.play(); else audio.pause();}
-audio.onplay = ()=> playBtn.textContent='⏸';
-audio.onpause = ()=> playBtn.textContent='▶';
-audio.ontimeupdate=()=>{
-    if(audio.duration){
-        const pct = audio.currentTime/audio.duration*100;
-        bar.style.width=pct+'%';
-        const m=Math.floor(audio.currentTime/60);
-        const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-        const dm=Math.floor(audio.duration/60);
-        const ds=Math.floor(audio.duration%60).toString().padStart(2,'0');
-        timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
+  btn.addEventListener('click',()=>{
+    const game = btn.dataset.game;
+    let text = '';
+    switch(game){
+      case 'Roblox': text='Наиграно 3000+ часов'; break;
+      case 'DBD': text='Наиграно 20 часов, любимый ман: Майкл Маерс, любимый сурв: Сейбл'; break;
+      case 'CS2': text='Наиграно 120 часов, любимая карта Anubis, роль: опорник'; break;
+      case 'The Forest': text='80+ часов'; break;
+      case 'Sons of the Forest': text='30+ часов'; break;
     }
+    popupText.textContent = text;
+    popup.classList.add('show-popup');
+  });
+});
+popupClose.addEventListener('click',()=>{popup.classList.remove('show-popup');});
+
+// ======================= ПЛЕЕР =======================
+const playlist = [
+  {file:'болен.mp3', name:'Dope17 — Болен'},
+  {file:'2_5321416586563717473.mp3', name:'MOON | Crystals'},
+  {file:'2_5375374187688907798.mp3', name:'Vtornik | Хороший'},
+  {file:'Токсік(Mulancore).mp3', name:'Токсік (Mulancore)'},
+  {file:'Мы - Возможно.mp3', name:'Мы - Возможно'},
+  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3', name:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16'}
+];
+
+const audio = new Audio();
+const playBtn = document.getElementById('btn-play');
+const prevBtn = document.getElementById('btn-prev');
+const nextBtn = document.getElementById('btn-next');
+const bar = document.getElementById('bar');
+const prog = document.getElementById('prog');
+const timeEl = document.getElementById('time');
+const trackEl = document.querySelector('.track');
+
+let currentIndex = 0;
+
+// ФУНКЦИИ
+function loadTrack(index){
+  audio.src = playlist[index].file;
+  trackEl.textContent = playlist[index].name;
+  audio.play();
+}
+function playPause(){
+  if(audio.paused) audio.play();
+  else audio.pause();
+}
+function nextTrack(){
+  currentIndex = Math.floor(Math.random()*playlist.length);
+  loadTrack(currentIndex);
+}
+function prevTrack(){
+  currentIndex = (currentIndex-1+playlist.length)%playlist.length;
+  loadTrack(currentIndex);
+}
+
+// СОБЫТИЯ
+playBtn.addEventListener('click',playPause);
+nextBtn.addEventListener('click',nextTrack);
+prevBtn.addEventListener('click',prevTrack);
+audio.ontimeupdate = ()=>{
+  if(audio.duration){
+    const pct = audio.currentTime/audio.duration*100;
+    bar.style.width = pct+'%';
+    const m = Math.floor(audio.currentTime/60);
+    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+    const dm = Math.floor(audio.duration/60);
+    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
+  }
 };
-progressBar.onclick = e=>{
-    const rect = progressBar.getBoundingClientRect();
-    const pct = (e.clientX - rect.left)/rect.width;
-    audio.currentTime = pct*audio.duration;
-};
-audio.onended=()=>{
-    currentTrack=Math.floor(Math.random()*tracks.length);
-    audio.src=tracks[currentTrack].file;
-    audio.play();
-};
+audio.onplay = ()=>playBtn.textContent='⏸';
+audio.onpause = ()=>playBtn.textContent='▶';
+audio.onended = nextTrack;
+
+// Автозапуск при входе
+window.addEventListener('load',()=>{loadTrack(currentIndex);});
 </script>
 </body>
 </html>
