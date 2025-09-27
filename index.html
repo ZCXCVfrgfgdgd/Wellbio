@@ -30,7 +30,7 @@ body{
 .nick{font-weight:800;color:var(--accent);letter-spacing:1px}
 .sub{opacity:0.85;font-size:13px}
 .controls{display:flex;gap:16px;margin-top:12px}
-.btn{padding:14px 20px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s;font-size:16px;color:inherit}
+.btn{padding:14px 20px;border-radius:14px;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:transform .25s, box-shadow .25s, color 2s;font-size:16px;color:inherit}
 .btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.5)}
 .card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:linear-gradient(180deg,rgba(255,255,255,0.02),rgba(0,0,0,0.12));border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px)}
 .card.show{display:block;animation:panelIn .36s ease}
@@ -109,7 +109,7 @@ footer{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc
 </footer>
 
 <script>
-const audio = new Audio('dope17, mapt0v - болен.mp3');
+const audio = new Audio('болен.mp3'); // правильное название файла
 audio.loop = true;
 
 const playBtn = document.getElementById('btn-play');
@@ -119,19 +119,26 @@ const timeEl = document.getElementById('time');
 const panels = {bio: document.getElementById('panel-bio'), other: document.getElementById('panel-other'), socials: document.getElementById('panel-socials')};
 const btns = {bio: document.getElementById('btn-bio'), other: document.getElementById('btn-other'), socials: document.getElementById('btn-socials')};
 
+let audioStarted = false;
+
+// Скрыть все панели
 function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show')); Object.values(btns).forEach(b=>b.classList.remove('active'))}
+
+// Кнопки панели
 Object.keys(btns).forEach(key=>{
   btns[key].onclick = ()=>{
     const panel = panels[key];
     const isVisible = panel.classList.contains('show');
     hideAll();
     if(!isVisible){panel.classList.add('show'); btns[key].classList.add('active'); panel.scrollIntoView({behavior:'smooth', block:'center'})}
-    if(!audioStarted){audio.play().catch(()=>{}); audioStarted=true;} // старт музыки при первом клике
+    if(!audioStarted){audio.play().catch(()=>{}); audioStarted=true;}
   }
 });
 
+// Play/Pause кнопка
 playBtn.onclick = ()=>{if(audio.paused) audio.play(); else audio.pause();}
 
+// Прогресс музыка
 audio.ontimeupdate = ()=>{
   if(audio.duration){
     const pct = (audio.currentTime/audio.duration)*100;
@@ -146,15 +153,15 @@ audio.ontimeupdate = ()=>{
 audio.onplay = ()=>playBtn.textContent='⏸';
 audio.onpause = ()=>playBtn.textContent='▶';
 
-// Цвет кнопок под фон
+// Плавное изменение цвета текста кнопок под фон
 function updateButtonColor(){
   const bgColor = window.getComputedStyle(document.body).backgroundColor;
   const isBlack = bgColor.includes('0, 0, 0');
   Object.values(btns).forEach(b=>b.style.color = isBlack?'white':'black');
+  requestAnimationFrame(updateButtonColor);
 }
-setInterval(updateButtonColor,100);
-
-let audioStarted=false;
+requestAnimationFrame(updateButtonColor);
 </script>
 </body>
 </html>
+  
