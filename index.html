@@ -1,32 +1,47 @@
-
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
 :root {
   --accent:#7ee7ff;
   --accent2:#ff6b9a;
-  --glow:white;
+  --glow:#ffffff;
 }
-
-*{box-sizing:border-box;}
-body{
+* { box-sizing:border-box; }
+body {
   margin:0;
   font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
   background:black;
   color:white;
   display:flex;
   justify-content:center;
-  padding:20px;
+  padding:24px;
   cursor:none;
   overflow-x:hidden;
+  position: relative;
 }
 
-/* Курсор */
-body::after{
+/* ============ ЗВЁЗДНЫЙ ФОН ============ */
+.star {
+  position: absolute;
+  width: 2px;
+  height: 2px;
+  background: white;
+  border-radius: 50%;
+  opacity: 0.8;
+  animation: fall linear infinite;
+}
+@keyframes fall {
+  0% { transform: translateY(-5px); opacity:0; }
+  50% { opacity:1; }
+  100% { transform: translateY(110vh); opacity:0; }
+}
+
+/* Glow cursor */
+body::after {
   content:'';
   position:fixed;
   width:12px;
@@ -39,96 +54,153 @@ body::after{
   z-index:9999;
 }
 
-/* Обертка */
-.wrap{width:100%; max-width:980px; text-align:center;}
-
-/* Аватарка */
-.avatar{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  overflow:hidden;
-  border:2px solid rgba(255,255,255,0.1);
-  margin:0 auto;
-  transition:0.3s;
-}
-.avatar:hover{
-  box-shadow:0 0 20px var(--glow);
-}
-.avatar img{
-  width:100%; height:100%; object-fit:cover;
-}
-
-/* Кнопки под аватаркой */
-.controls{
-  margin-top:20px;
+.wrap { width:100%; max-width:980px; }
+.top {
   display:flex;
-  justify-content:center;
-  gap:12px;
+  gap:18px;
+  align-items:center;
+  padding:18px;
+  border-radius:14px;
+  background: rgba(255,255,255,0.02);
+  backdrop-filter:blur(12px);
   flex-wrap:wrap;
 }
-.btn{
-  padding:12px 18px;
+.avatar {
+  width:128px;
+  height:128px;
+  border-radius:50%;
+  overflow:hidden;
+  border:2px solid rgba(255,255,255,0.06);
+  transition:box-shadow .3s;
+}
+.avatar:hover {
+  box-shadow:0 0 25px white;
+}
+.avatar img { width:100%; height:100%; object-fit:cover; display:block; }
+.info { display:flex; flex-direction:column; gap:6px; flex:1; }
+.nick { font-weight:800; color:var(--accent); letter-spacing:1px; }
+.sub { opacity:0.85; font-size:13px; }
+.controls { display:flex; gap:12px; margin-top:10px; flex-wrap:wrap; justify-content:center; }
+.btn {
+  padding:10px 16px;
   border-radius:12px;
   background:rgba(255,255,255,0.05);
   border:1px solid rgba(255,255,255,0.1);
   cursor:pointer;
   font-weight:700;
-  color:white;
   transition:transform .25s, box-shadow .25s, background .25s;
+  color:white;
   position:relative;
+  box-shadow:0 0 6px rgba(255,255,255,0.5);
 }
-.btn:hover{
+.btn:hover {
   transform:translateY(-4px);
-  box-shadow:0 8px 20px rgba(255,255,255,0.3);
-  background:rgba(255,255,255,0.15);
+  box-shadow:0 0 20px rgba(255,255,255,0.9), 0 0 30px rgba(255,255,255,0.6);
 }
-
-/* Панели */
-.card{
+.card {
   display:none;
   margin-top:16px;
-  padding:16px;
+  padding:14px;
   border-radius:12px;
   background: rgba(255,255,255,0.03);
   border:1px solid rgba(255,255,255,0.05);
   backdrop-filter:blur(10px);
 }
-.card.show{
-  display:block;
-  animation:panelIn .36s ease;
-}
-@keyframes panelIn{from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);}}
+.card.show { display:block; animation:panelIn .36s ease; }
+@keyframes panelIn { from{opacity:0; transform:translateY(8px);} to{opacity:1; transform:translateY(0);} }
 
-/* Игровой текст, заголовки */
-h3{margin:0 0 6px 0; color:#bfefff;}
+.row { display:flex; gap:12px; flex-wrap:wrap; }
+.col { flex:1 1 220px; min-width:180px; }
+h3 { margin:0 0 6px 0; color:#bfefff; }
+.socials { display:flex; flex-direction:column; gap:8px; }
+.social {
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:8px;
+  border-radius:10px;
+  background:rgba(255,255,255,0.02);
+  text-decoration:none;
+  color:white;
+  border:1px solid rgba(255,255,255,0.03);
+  transition:0.25s;
+}
+.social:hover { background:rgba(255,255,255,0.1); }
+.icon {
+  width:36px;
+  height:36px;
+  border-radius:8px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(90deg,var(--accent),var(--accent2));
+  color:#071018;
+  font-weight:800;
+}
+
+/* ============ ПЛЕЕР ============ */
+.player {
+  margin-top:24px;
+  padding:12px;
+  border-radius:12px;
+  background:rgba(255,255,255,0.05);
+  border:1px solid rgba(255,255,255,0.1);
+  display:flex;
+  align-items:center;
+  gap:12px;
+  flex-wrap:wrap;
+}
+.play-btn, .prev-btn, .next-btn {
+  cursor:pointer;
+  background:var(--accent);
+  border:none;
+  padding:8px 12px;
+  border-radius:8px;
+  color:#071018;
+  font-weight:700;
+}
+.progress-container {
+  flex:1;
+  height:8px;
+  background:rgba(255,255,255,0.1);
+  border-radius:6px;
+  cursor:pointer;
+  position:relative;
+}
+.progress-bar {
+  height:100%;
+  width:0%;
+  background:var(--accent2);
+  border-radius:6px;
+}
+.track-title { min-width:120px; text-align:center; }
 </style>
-</head>
 <body>
 <div class="wrap">
-  <div class="avatar">
-    <img src="1000038711-removebg-preview.png" alt="avatar">
+  <div class="top">
+    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
+    <div class="info">
+      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
+      <div class="sub">Максим — Львов, Украина</div>
+      <div class="controls">
+        <button class="btn" id="btn-bio">BIO</button>
+        <button class="btn" id="btn-goals">Goals</button>
+        <button class="btn" id="btn-other">OTHER</button>
+        <button class="btn" id="btn-socials">SOCIALS</button>
+      </div>
+    </div>
   </div>
 
-  <div class="controls">
-    <button class="btn" id="btn-bio">BIO</button>
-    <button class="btn" id="btn-goals">Goals</button>
-    <button class="btn" id="btn-other">OTHER</button>
-    <button class="btn" id="btn-socials">SOCIALS</button>
-  </div>
-
-  <!-- Панели -->
   <div class="card" id="panel-bio">
-    <h3>Имя</h3>
-    <div>Максим</div>
-    <h3>Город</h3>
-    <div>Львов</div>
-    <h3>Страна</h3>
-    <div>Украина</div>
-    <h3>Дата рождения</h3>
-    <div>28.08.2012</div>
-    <h3>Возраст</h3>
-    <div>13 лет</div>
+    <div class="row">
+      <div class="col"><h3>Имя</h3><div>Максим</div></div>
+      <div class="col"><h3>Страна</h3><div>Украина</div></div>
+      <div class="col"><h3>Город</h3><div>Львов</div></div>
+    </div>
+    <div class="row">
+      <div class="col"><h3>Дата рождения</h3><div>28.08.2012</div></div>
+      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
+    </div>
   </div>
 
   <div class="card" id="panel-goals">
@@ -142,229 +214,129 @@ h3{margin:0 0 6px 0; color:#bfefff;}
     <h3>OTHER</h3>
     <p>📱 Phone: Tecno Povo 6</p>
     <p>🎮 Games: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</p>
-    <p>✨ Hobbies: making videos, editing, learning new things, making people happy</p>
+    <p>✨ Hobbies: videos, editing, learning new things at 13, making people happy.</p>
     <p>➕ INK GAME WIN|26</p>
   </div>
 
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
-    <p>Roblox, TikTok, TG, Discord...</p>
+    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
+    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+  </div>
+<!-- =================== ПЛЕЕР =================== -->
+  <div class="player">
+    <button class="prev-btn">⏮</button>
+    <button class="play-btn">▶️</button>
+    <button class="next-btn">⏭</button>
+    <div class="track-title">Bolen</div>
+    <div class="progress-container">
+      <div class="progress-bar"></div>
+    </div>
   </div>
 </div>
+
 <script>
-/* ================= ПАНЕЛИ ================= */
-const panels = {
-  bio: document.getElementById('panel-bio'),
-  goals: document.getElementById('panel-goals'),
-  other: document.getElementById('panel-other'),
-  socials: document.getElementById('panel-socials')
-};
-
-const btns = {
-  bio: document.getElementById('btn-bio'),
-  goals: document.getElementById('btn-goals'),
-  other: document.getElementById('btn-other'),
-  socials: document.getElementById('btn-socials')
-};
-
-function hideAll() {
-  Object.values(panels).forEach(p => p.classList.remove('show'));
+/* =================== ЗВЁЗДЫ =================== */
+const starsCount = 100;
+for(let i=0;i<starsCount;i++){
+  const star = document.createElement('div');
+  star.className='star';
+  star.style.left=Math.random()*100+'vw';
+  star.style.top=Math.random()*100+'vh';
+  star.style.animationDuration=(Math.random()*5+5)+'s';
+  star.style.width=star.style.height=(Math.random()*2+1)+'px';
+  document.body.appendChild(star);
 }
 
-btns.bio.onclick = () => {
-  const s = panels.bio.classList.contains('show');
-  hideAll();
-  if (!s) panels.bio.classList.add('show');
+/* =================== КНОПКИ =================== */
+const panels = {
+  bio:document.getElementById('panel-bio'),
+  goals:document.getElementById('panel-goals'),
+  other:document.getElementById('panel-other'),
+  socials:document.getElementById('panel-socials')
 };
-btns.goals.onclick = () => {
-  const s = panels.goals.classList.contains('show');
-  hideAll();
-  if (!s) panels.goals.classList.add('show');
+const btns = {
+  bio:document.getElementById('btn-bio'),
+  goals:document.getElementById('btn-goals'),
+  other:document.getElementById('btn-other'),
+  socials:document.getElementById('btn-socials')
 };
-btns.other.onclick = () => {
-  const s = panels.other.classList.contains('show');
-  hideAll();
-  if (!s) panels.other.classList.add('show');
-};
-btns.socials.onclick = () => {
-  const s = panels.socials.classList.contains('show');
-  hideAll();
-  if (!s) panels.socials.classList.add('show');
-};
+function hideAll(){ Object.values(panels).forEach(p=>p.classList.remove('show')); }
+btns.bio.onclick=()=>{ const s=panels.bio.classList.contains('show'); hideAll(); if(!s) panels.bio.classList.add('show'); }
+btns.goals.onclick=()=>{ const s=panels.goals.classList.contains('show'); hideAll(); if(!s) panels.goals.classList.add('show'); }
+btns.other.onclick=()=>{ const s=panels.other.classList.contains('show'); hideAll(); if(!s) panels.other.classList.add('show'); }
+btns.socials.onclick=()=>{ const s=panels.socials.classList.contains('show'); hideAll(); if(!s) panels.socials.classList.add('show'); }
 
-/* ================= КУРСОР ================= */
-const cursor = document.createElement('div');
-cursor.style.width = '12px';
-cursor.style.height = '12px';
-cursor.style.borderRadius = '50%';
-cursor.style.background = 'white';
-cursor.style.position = 'fixed';
-cursor.style.pointerEvents = 'none';
-cursor.style.transform = 'translate(-50%, -50%)';
-cursor.style.zIndex = '9999';
-document.body.appendChild(cursor);
-
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
+/* =================== КУРСОР =================== */
+const cursor = document.body.querySelector('::after');
+document.addEventListener('mousemove', e=>{
+  const c = document.querySelector('body::after');
+  document.body.style.setProperty('--cursorX', e.clientX+'px');
+  document.body.style.setProperty('--cursorY', e.clientY+'px');
 });
 
-/* ================= ПЛЕЕР ================= */
-// ====== ПЛЕЕР ======
-const tracks = [
-  {title:'BOLEN', file:'bolen.mp3'},
+/* =================== ПЛЕЕР =================== */
+// ПЛЕЕР
+const tracks=[
+  {title:'Bolen', file:'bolen.mp3'},
   {title:'MOON | Crystals', file:'2_5321416586563717473.mp3'},
   {title:'Vtornik | Хороший', file:'2_5375374187688907798.mp3'},
-  {title:'Токсік(Mulancore)', file:'Токсік(Mulancore).mp3'},
+  {title:'Toxic (Mulancore)', file:'Токсік(Mulancore).mp3'},
   {title:'Мы - Возможно', file:'Мы - Возможно.mp3'},
-  {title:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'}
+  {title:'AKA-SHGSH - NAM VSEGO 16', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'}
 ];
 
-let currentTrack = 0;
+const audio=new Audio();
+let currentTrack=0;
+const playBtn=document.querySelector('.play-btn');
+const prevBtn=document.querySelector('.prev-btn');
+const nextBtn=document.querySelector('.next-btn');
+const progressContainer=document.querySelector('.progress-container');
+const progressBar=document.querySelector('.progress-bar');
+const trackTitle=document.querySelector('.track-title');
 
-const audio = new Audio();
-audio.src = tracks[currentTrack].file;
-audio.autoplay = true;
-
-const playerContainer = document.createElement('div');
-playerContainer.style.marginTop = '24px';
-playerContainer.style.display = 'flex';
-playerContainer.style.flexDirection = 'column';
-playerContainer.style.alignItems = 'center';
-playerContainer.style.gap = '8px';
-document.querySelector('.wrap').appendChild(playerContainer);
-
-const trackTitle = document.createElement('div');
-trackTitle.innerText = tracks[currentTrack].title;
-trackTitle.style.fontWeight = '700';
-trackTitle.style.fontSize = '14px';
-playerContainer.appendChild(trackTitle);
-
-const progress = document.createElement('input');
-progress.type = 'range';
-progress.min = 0;
-progress.max = 100;
-progress.value = 0;
-progress.style.width = '100%';
-playerContainer.appendChild(progress);
-
-const controlsDiv = document.createElement('div');
-controlsDiv.style.display = 'flex';
-controlsDiv.style.gap = '12px';
-playerContainer.appendChild(controlsDiv);
-
-const playBtn = document.createElement('button');
-playBtn.innerText = '▶️';
-playBtn.className = 'btn';
-controlsDiv.appendChild(playBtn);
-
-const prevBtn = document.createElement('button');
-prevBtn.innerText = '⏮️';
-prevBtn.className = 'btn';
-controlsDiv.appendChild(prevBtn);
-
-const nextBtn = document.createElement('button');
-nextBtn.innerText = '⏭️';
-nextBtn.className = 'btn';
-controlsDiv.appendChild(nextBtn);
-
-/* Функции */
-playBtn.onclick = () => {
-  if(audio.paused){
-    audio.play();
-    playBtn.innerText = '⏸️';
-  } else {
-    audio.pause();
-    playBtn.innerText = '▶️';
-  }
-};
-prevBtn.onclick = () => {
-  currentTrack = (currentTrack-1+tracks.length)%tracks.length;
-  audio.src = tracks[currentTrack].file;
-  trackTitle.innerText = tracks[currentTrack].title;
+function loadTrack(i){
+  audio.src=tracks[i].file;
+  trackTitle.textContent=tracks[i].title;
   audio.play();
-  playBtn.innerText='⏸️';
-};
-nextBtn.onclick = () => {
-  currentTrack = (currentTrack+1)%tracks.length;
-  audio.src = tracks[currentTrack].file;
-  trackTitle.innerText = tracks[currentTrack].title;
-  audio.play();
-  playBtn.innerText='⏸️';
+  playBtn.textContent='⏸️';
+}
+loadTrack(currentTrack);
+
+playBtn.onclick=()=>{
+  if(audio.paused){ audio.play(); playBtn.textContent='⏸️'; }
+  else{ audio.pause(); playBtn.textContent='▶️'; }
 };
 
-/* Обновление прогресса */
-audio.ontimeupdate = () => {
-  progress.value = (audio.currentTime/audio.duration)*100 || 0;
+prevBtn.onclick=()=>{
+  currentTrack=(currentTrack-1+tracks.length)%tracks.length;
+  loadTrack(currentTrack);
 };
 
-progress.oninput = () => {
-  audio.currentTime = (progress.value/100)*audio.duration;
+nextBtn.onclick=()=>{
+  currentTrack=(currentTrack+1)%tracks.length;
+  loadTrack(currentTrack);
 };
 
-/* Автопереключение на следующий трек */
-audio.onended = () => {
-  currentTrack = (currentTrack+1)%tracks.length;
-  audio.src = tracks[currentTrack].file;
-  trackTitle.innerText = tracks[currentTrack].title;
-  audio.play();
+audio.ontimeupdate=()=>{
+  const percent=(audio.currentTime/audio.duration)*100;
+  progressBar.style.width=percent+'%';
+};
+
+progressContainer.onclick=(e)=>{
+  const w=progressContainer.clientWidth;
+  const clickX=e.offsetX;
+  const duration=audio.duration;
+  audio.currentTime=(clickX/w)*duration;
+};
+
+audio.onended=()=>{
+  currentTrack=Math.floor(Math.random()*tracks.length);
+  loadTrack(currentTrack);
 };
 </script>
 </body>
 </html>
-<style>
-  /* ============ ЗВЁЗДНЫЙ ФОН ============ */
-  body {
-    background: black;
-    overflow: hidden;
-    position: relative;
-  }
-  .star {
-    position: absolute;
-    width: 2px;
-    height: 2px;
-    background: white;
-    border-radius: 50%;
-    opacity: 0.8;
-    animation: fall linear infinite;
-  }
-  @keyframes fall {
-    0% { transform: translateY(-5px); opacity:0; }
-    50% { opacity:1; }
-    100% { transform: translateY(110vh); opacity:0; }
-  }
-
-  /* ============ GLOW НА КНОПКАХ ============ */
-  .btn {
-    box-shadow: 0 0 6px rgba(255,255,255,0.5);
-    transition: 0.25s all;
-  }
-  .btn:hover {
-    box-shadow: 0 0 20px rgba(255,255,255,0.9), 0 0 30px rgba(255,255,255,0.6);
-  }
-</style>
-
-<script>
-  /* ============ СПАВН ЗВЁЗД ============ */
-  const starCount = 120; // количество звёзд
-  for(let i=0;i<starCount;i++){
-    const star = document.createElement('div');
-    star.className = 'star';
-    star.style.left = Math.random()*100+'vw';
-    star.style.top = Math.random()*100+'vh';
-    star.style.animationDuration = (Math.random()*3+2)+'s';
-    star.style.width = (Math.random()*2+1)+'px';
-    star.style.height = star.style.width;
-    star.style.opacity = Math.random();
-    document.body.appendChild(star);
-  }
-
-  /* ============ AVATAR GLOW ON HOVER ============ */
-  const avatar = document.querySelector('.avatar');
-  avatar.addEventListener('mouseenter', ()=>{
-    avatar.style.boxShadow = '0 0 25px 6px white';
-  });
-  avatar.addEventListener('mouseleave', ()=>{
-    avatar.style.boxShadow = '0 0 20px var(--glow)';
-  });
-</script>
