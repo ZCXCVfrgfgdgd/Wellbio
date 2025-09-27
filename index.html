@@ -24,7 +24,7 @@ body {
   position: relative;
 }
 
-/* ============ ЗВЁЗДНЫЙ ФОН ============ */
+/* =================== ЗВЁЗДНЫЙ ФОН =================== */
 .star {
   position: absolute;
   width: 2px;
@@ -138,7 +138,7 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
   font-weight:800;
 }
 
-/* ============ ПЛЕЕР ============ */
+/* =================== Плеер (имба) =================== */
 .player {
   margin-top:24px;
   padding:12px;
@@ -175,6 +175,7 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
 }
 .track-title { min-width:120px; text-align:center; }
 </style>
+</head>
 <body>
 <div class="wrap">
   <div class="top">
@@ -220,13 +221,20 @@ h3 { margin:0 0 6px 0; color:#bfefff; }
 
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
-    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
-    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
-    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>
-    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>
-    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ff
+14&type=Profile&source=ProfileShare" target="_blank">
+      <div class="icon">R</div><div>Roblox — профиль</div></a>
+    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank">
+      <div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank">
+      <div class="icon">TG</div><div>TG (личка)</div></a>
+    <a class="social" href="https://t.me/wellbioink" target="_blank">
+      <div class="icon">TG</div><div>TG (BIO)</div></a>
+    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank">
+      <div class="icon">D</div><div>Discord — invite</div></a>
   </div>
-<!-- =================== ПЛЕЕР =================== -->
+
+  <!-- =================== ПЛЕЕР (имба) =================== -->
   <div class="player">
     <button class="prev-btn">⏮</button>
     <button class="play-btn">▶️</button>
@@ -271,15 +279,13 @@ btns.other.onclick=()=>{ const s=panels.other.classList.contains('show'); hideAl
 btns.socials.onclick=()=>{ const s=panels.socials.classList.contains('show'); hideAll(); if(!s) panels.socials.classList.add('show'); }
 
 /* =================== КУРСОР =================== */
-const cursor = document.body.querySelector('::after');
 document.addEventListener('mousemove', e=>{
-  const c = document.querySelector('body::after');
+  const cursor = document.body.querySelector('::after');
   document.body.style.setProperty('--cursorX', e.clientX+'px');
   document.body.style.setProperty('--cursorY', e.clientY+'px');
 });
 
-/* =================== ПЛЕЕР =================== */
-// ПЛЕЕР
+/* =================== ИМБА-ПЛЕЕР =================== */
 const tracks=[
   {title:'Bolen', file:'bolen.mp3'},
   {title:'MOON | Crystals', file:'2_5321416586563717473.mp3'},
@@ -289,52 +295,51 @@ const tracks=[
   {title:'AKA-SHGSH - NAM VSEGO 16', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'}
 ];
 
-const audio=new Audio();
-let currentTrack=0;
-const playBtn=document.querySelector('.play-btn');
-const prevBtn=document.querySelector('.prev-btn');
-const nextBtn=document.querySelector('.next-btn');
-const progressContainer=document.querySelector('.progress-container');
-const progressBar=document.querySelector('.progress-bar');
-const trackTitle=document.querySelector('.track-title');
+const audio = new Audio();
+let currentTrack = 0;
+const playBtn = document.querySelector('.play-btn');
+const prevBtn = document.querySelector('.prev-btn');
+const nextBtn = document.querySelector('.next-btn');
+const progressContainer = document.querySelector('.progress-container');
+const progressBar = document.querySelector('.progress-bar');
+const trackTitle = document.querySelector('.track-title');
 
 function loadTrack(i){
-  audio.src=tracks[i].file;
-  trackTitle.textContent=tracks[i].title;
+  audio.src = tracks[i].file;
+  trackTitle.textContent = tracks[i].title;
   audio.play();
   playBtn.textContent='⏸️';
 }
 loadTrack(currentTrack);
 
-playBtn.onclick=()=>{
+playBtn.onclick = () => {
   if(audio.paused){ audio.play(); playBtn.textContent='⏸️'; }
-  else{ audio.pause(); playBtn.textContent='▶️'; }
+  else { audio.pause(); playBtn.textContent='▶️'; }
 };
 
-prevBtn.onclick=()=>{
-  currentTrack=(currentTrack-1+tracks.length)%tracks.length;
+prevBtn.onclick = () => {
+  currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
   loadTrack(currentTrack);
 };
 
-nextBtn.onclick=()=>{
-  currentTrack=(currentTrack+1)%tracks.length;
+nextBtn.onclick = () => {
+  currentTrack = (currentTrack + 1) % tracks.length;
   loadTrack(currentTrack);
 };
 
-audio.ontimeupdate=()=>{
-  const percent=(audio.currentTime/audio.duration)*100;
-  progressBar.style.width=percent+'%';
+audio.ontimeupdate = () => {
+  const percent = (audio.currentTime/audio.duration)*100;
+  progressBar.style.width = percent+'%';
 };
 
-progressContainer.onclick=(e)=>{
-  const w=progressContainer.clientWidth;
-  const clickX=e.offsetX;
-  const duration=audio.duration;
-  audio.currentTime=(clickX/w)*duration;
+progressContainer.onclick = (e) => {
+  const w = progressContainer.clientWidth;
+  const clickX = e.offsetX;
+  audio.currentTime = (clickX / w) * audio.duration;
 };
 
-audio.onended=()=>{
-  currentTrack=Math.floor(Math.random()*tracks.length);
+audio.onended = () => {
+  currentTrack = (currentTrack + 1) % tracks.length;
   loadTrack(currentTrack);
 };
 </script>
