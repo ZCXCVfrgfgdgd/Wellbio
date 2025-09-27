@@ -1,466 +1,234 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="ru">
 <head>
-<meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
-:root{--accent:#7ee7ff;--accent2:#ff6b9a}
-*{box-sizing:border-box}
-html,body{height:100%}
-body{
-  margin:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-  background:#000;color:#e7f8ff;display:flex;flex-direction:column;align-items:center;
-  overflow-x:hidden;transition:background .4s,color .4s;
-}
-/* canvas layers */
-#stars, #hacker { position:fixed; top:0; left:0; width:100%; height:100%; pointer-events:none; z-index:0; }
-
-/* layout */
-.container{width:100%;max-width:980px;padding:22px;position:relative;z-index:3}
-.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-  border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px);flex-wrap:wrap}
-.avatar{width:120px;height:120px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06)}
-.avatar img{width:100%;height:100%;object-fit:cover;display:block}
-.info{display:flex;flex-direction:column;gap:6px;flex:1;min-width:180px}
-.nick{font-weight:800;color:var(--accent);letter-spacing:1px}
-.sub{opacity:.85;font-size:13px}
-.controls{display:flex;gap:12px;margin-top:8px;flex-wrap:wrap}
-
-/* custom button */
-.btn{
-  padding:10px 16px;border-radius:12px;background:rgba(255,255,255,0.03);
-  border:1px solid rgba(255,255,255,0.04);cursor:pointer;font-weight:700;transition:all .25s;
-  color:inherit;
-}
-.btn:hover{transform:translateY(-6px);box-shadow:0 12px 30px rgba(0,0,0,0.45)}
-
-/* panels */
-.panel{overflow:hidden;max-height:0;transition:max-height .45s ease, padding .25s ease;margin-top:14px;
-  border-radius:12px;background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(0,0,0,0.06));
-  border:1px solid rgba(255,255,255,0.03);backdrop-filter: blur(8px);padding:0 14px}
-.panel.open{padding:14px;max-height:800px}
-
-/* games list style */
-.games{display:flex;flex-direction:column;gap:8px;margin-top:6px}
-.infoBtn{
-  margin-left:10px;padding:4px 8px;border-radius:8px;border:1px solid rgba(255,255,255,0.06);
-  background:rgba(255,255,255,0.02);color:var(--accent);cursor:pointer;font-weight:700;
-}
-
-/* socials */
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);margin-top:6px}
-.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800}
-
-/* player area */
-.player{
-  position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 40px);max-width:820px;
-  background:linear-gradient(180deg, rgba(0,0,0,0.7), rgba(0,0,0,0.5));padding:10px;border-radius:14px;display:flex;gap:12px;align-items:center;z-index:4;
-  border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(6px)
-}
-.pbtn{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;cursor:pointer;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.03);font-weight:800}
-.playMain{width:64px;height:64px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:900;font-size:18px;border:none}
-.meta{flex:1;min-width:0}
-.track{font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.progress{height:8px;background:rgba(255,255,255,0.03);border-radius:8px;overflow:hidden;margin-top:8px;cursor:pointer}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2));transition:width .1s}
-.time{min-width:90px;text-align:right;font-size:13px;opacity:.9}
-
-/* theme toggle */
-.themeToggle{position:fixed;top:14px;right:14px;width:48px;height:48px;border-radius:12px;border:none;background:rgba(255,255,255,0.04);cursor:pointer;z-index:5}
-
-/* small screens */
-@media(max-width:720px){
-  .top{flex-direction:column;align-items:center}
-  .avatar{width:110px;height:110px}
-  .controls{justify-content:center}
-  .player{left:12px;right:12px;transform:none;width:calc(100% - 24px)}
-}
-
-/* simple visible overlay for enabling audio if autoplay blocked */
-#audio-permission{
-  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);z-index:10;background:rgba(0,0,0,0.85);
-  padding:18px;border-radius:12px;color:white;display:none;flex-direction:column;align-items:center;gap:8px;
-}
-#audio-permission button{padding:8px 12px;border-radius:8px;border:none;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800}
+:root{--accent:#7ee7ff;--accent2:#ff6b9a;--dark:#071018;--light:#ffffff;--button-bg:rgba(255,255,255,0.05)}
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;}
+body{background:#000;color:#fff;display:flex;justify-content:center;align-items:flex-start;padding:24px;overflow-x:hidden;}
+.wrap{width:100%;max-width:980px;position:relative;}
+.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(12px);}
+.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);}
+.avatar img{width:100%;height:100%;object-fit:cover;}
+.info{display:flex;flex-direction:column;gap:6px;flex:1;}
+.nick{font-weight:800;color:var(--accent);letter-spacing:1px;}
+.sub{opacity:0.85;font-size:13px;}
+.controls{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;}
+.btn{padding:12px 18px;border-radius:12px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);cursor:pointer;font-weight:700;transition:transform .25s,box-shadow .25s;color:#fff;}
+.btn:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,0.5);}
+.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:var(--button-bg);border:1px solid rgba(255,255,255,0.03);backdrop-filter:blur(10px);}
+.card.show{display:block;animation:panelIn .36s ease;}
+@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.row{display:flex;gap:12px;flex-wrap:wrap;}
+.col{flex:1 1 220px;min-width:180px;}
+h3{margin-bottom:6px;color:#bfefff;}
+.socials{display:flex;flex-direction:column;gap:8px;}
+.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;border:1px solid rgba(255,255,255,0.03);}
+.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#071018;font-weight:800;}
+/* ПАДАЮЩИЕ ЗВЕЗДЫ */
+#stars{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:-1;}
+.star{position:absolute;background:linear-gradient(90deg, #0f0, #080);width:2px;height:12px;opacity:0.5;animation:fall linear infinite;}
+@keyframes fall{0%{transform:translateY(0)}100%{transform:translateY(100vh)}}
+/* Кнопки i для игр */
+.info-btn{margin-left:8px;cursor:pointer;color:var(--accent);font-weight:700;}
+.popup{position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:var(--button-bg);padding:18px;border-radius:12px;display:none;flex-direction:column;gap:12px;z-index:1000;}
+.popup button{padding:6px 10px;border-radius:8px;border:none;background:var(--accent);color:#000;cursor:pointer;}
 </style>
 </head>
 <body>
-
-<!-- CANVASES FOR BG -->
 <canvas id="stars"></canvas>
-<canvas id="hacker"></canvas>
-
-<!-- AUDIO PERMISSION PROMPT (shows if autoplay blocked) -->
-<div id="audio-permission">
-  <div>Браузер заблокировал автозапуск музыки.</div>
-  <button id="enable-sound">Включить звук</button>
-</div>
-
-<div class="container">
+<div class="wrap">
   <div class="top">
-    <div class="avatar"><img id="avatarImg" src="avatar.jpg" alt="avatar"></div>
+    <div class="avatar"><img id="avatar" src="avatar.jpg" alt="avatar"></div>
     <div class="info">
       <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
       <div class="sub">Максим — Львов, Украина</div>
       <div class="controls">
         <button class="btn" id="btn-bio">BIO</button>
         <button class="btn" id="btn-other">OTHER</button>
-        <button class="btn" id="btn-goals">ЦЕЛИ</button>
         <button class="btn" id="btn-socials">SOCIALS</button>
       </div>
     </div>
   </div>
 
-  <!-- PANELS (closed by default) -->
-  <div id="panel-bio" class="panel" aria-hidden="true">
-    <!-- content only visible when panel open -->
-    <div>
-      <p><strong>Имя:</strong> Максим</p>
-      <p><strong>Страна:</strong> Украина</p>
-      <p><strong>Город:</strong> Львов</p>
-      <p><strong>Дата рождения:</strong> 28/08/2012</p>
-      <p><strong>Возраст:</strong> 13 лет</p>
-    </div>
-  </div>
-
-  <div id="panel-other" class="panel" aria-hidden="true">
-    <div>
-      <p><strong>Игры и время:</strong></p>
-      <div class="games">
-        <div>Roblox <button class="infoBtn" data-info="С 2019 года, >3000 часов">i</button></div>
-        <div>DBD <button class="infoBtn" data-info="20 часов, любимый ман: Майкл Маерс, любимый сурв: Сейбл">i</button></div>
-        <div>CS2 <button class="infoBtn" data-info="120 часов, любимая карта: Anubis, роль: опорник">i</button></div>
-        <div>The Forest <button class="infoBtn" data-info="80+ часов">i</button></div>
-        <div>Sons of the Forest <button class="infoBtn" data-info="30+ часов">i</button></div>
-        <div>Hotline Miami <button class="infoBtn" data-info="N часов">i</button></div>
+  <!-- BIO -->
+  <div class="card" id="panel-bio">
+    <div class="row">
+      <div class="col"><h3>Основное</h3><div>Имя: Максим<br>Страна: Украина<br>Город: Львов<br>Дата рождения: 28/08/2012<br>Возраст: 13 лет</div></div>
+      <div class="col"><h3>Занимаюсь</h3>
+        <div>
+          Игры: <span class="game">Roblox <span class="info-btn" data-game="Roblox">i</span></span><br>
+          DBD <span class="info-btn" data-game="DBD">i</span><br>
+          CS2 <span class="info-btn" data-game="CS2">i</span><br>
+          The Forest <span class="info-btn" data-game="The Forest">i</span><br>
+          Sons of the Forest <span class="info-btn" data-game="Sons of the Forest">i</span>
+        </div>
       </div>
-      <p style="margin-top:8px">✨ Увлечения: монтирование видео, создание контента, изучаю программирование.</p>
+      <div class="col"><h3>Цели и достижения</h3>
+        <div>
+          №1: Стать успешным программистом (заработок от 7000$*)<br>
+          №2: Купить Porsche 911 и Tesla model S<br>
+          №3: Обеспечить родителей
+        </div>
+      </div>
     </div>
   </div>
 
-  <div id="panel-goals" class="panel" aria-hidden="true">
-    <div>
-      <p>№1: Стать успешным программистом (заработок от $7)</p>
-      <p>№2: Купить Porsche 911 и Tesla Model S</p>
-      <p>№3: Обеспечить родителей</p>
-    </div>
+  <!-- OTHER -->
+  <div class="card" id="panel-other">
+    <h3>OTHER</h3>
+    <div>📱 Телефон: Tecno Povo 6</div>
+    <div>🎮 Игры: Roblox, DBD, Hotline Miami, THE FOREST / SONS OF THE FOREST</div>
+    <div>✨ Увлечения: Видео, монтаж, обучение новым вещам</div>
+    <div>➕ INK GAME WIN|26</div>
   </div>
 
-  <div id="panel-socials" class="panel" aria-hidden="true">
-    <div>
-      <a class="social" href="https://www.roblox.com/" target="_blank"><div class="icon">R</div><div>Roblox</div></a>
-      <a class="social" href="https://www.tiktok.com/" target="_blank"><div class="icon">T</div><div>TikTok</div></a>
-      <a class="social" href="https://t.me/" target="_blank"><div class="icon">TG</div><div>Telegram</div></a>
-      <a class="social" href="https://discord.com/" target="_blank"><div class="icon">D</div><div>Discord</div></a>
-    </div>
+  <!-- SOCIALS -->
+  <div class="card" id="panel-socials">
+    <h3>SOCIALS</h3>
+    <a class="social" href="https://www.roblox.com" target="_blank"><div class="icon">R</div><div>Roblox</div></a>
+    <a class="social" href="https://www.tiktok.com" target="_blank"><div class="icon">𝕋</div><div>TikTok</div></a>
+    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>Telegram</div></a>
   </div>
 </div>
 
-<!-- THEME TOGGLE -->
-<button class="themeToggle" id="themeToggle">🌙</button>
-
-<!-- === ПЛЕЕР === -->
-<footer class="player" id="player" aria-label="Аудиоплеер">
-  <div class="pbtn" id="prevBtn">⟲</div>
-  <button class="playMain" id="playBtn">▶</button>
-  <div class="pbtn" id="nextBtn">✦</div>
-
-  <div class="meta">
-    <div class="track" id="trackTitle">—</div>
-    <div class="progress" id="progress" title="Клик — перемотать">
-      <div class="bar" id="bar"></div>
-    </div>
-  </div>
-
-  <div class="time" id="timeText">0:00 / 0:00</div>
-</footer>
-
+<!-- POPUP ДЛЯ ИГР -->
+<div class="popup" id="game-popup">
+  <div id="popup-text"></div>
+  <button id="popup-close">⬅️</button>
+</div>
 <script>
-/* =========================
-   Функции отображения панелей (toggle)
-   ========================= */
-const panels = {
-  bio: document.getElementById('panel-bio'),
-  other: document.getElementById('panel-other'),
-  goals: document.getElementById('panel-goals'),
-  socials: document.getElementById('panel-socials')
-};
-const buttons = {
-  bio: document.getElementById('btn-bio'),
-  other: document.getElementById('btn-other'),
-  goals: document.getElementById('btn-goals'),
-  socials: document.getElementById('btn-socials')
-};
-
-function closeAllPanels(){
-  Object.values(panels).forEach(p => {
-    p.classList.remove('open');
-    p.setAttribute('aria-hidden','true');
-  });
-}
-function togglePanel(name){
-  const p = panels[name];
-  const isOpen = p.classList.contains('open');
-  closeAllPanels();
-  if(!isOpen){
-    p.classList.add('open');
-    p.setAttribute('aria-hidden','false');
-    // ensure smooth height
-    p.style.maxHeight = p.scrollHeight + 40 + 'px';
-    setTimeout(()=>{ p.style.maxHeight = p.scrollHeight + 'px'; }, 50);
-  } else {
-    p.style.maxHeight = '0px';
-  }
-}
-
-buttons.bio.addEventListener('click', ()=> togglePanel('bio'));
-buttons.other.addEventListener('click', ()=> togglePanel('other'));
-buttons.goals.addEventListener('click', ()=> togglePanel('goals'));
-buttons.socials.addEventListener('click', ()=> togglePanel('socials'));
-
-/* info buttons for games */
-document.querySelectorAll('.infoBtn').forEach(b=>{
-  b.addEventListener('click', ()=> alert(b.dataset.info));
-});
-
-/* =========================
-   ФОН: звезды и хакерский код
-   (хакер 1/0 показывается только в тёмной теме)
-   ========================= */
+// ===== ПАДАЮЩИЕ ЗВЁЗДЫ =====
 const starsCanvas = document.getElementById('stars');
-const hackerCanvas = document.getElementById('hacker');
-const sctx = starsCanvas.getContext('2d');
-const hctx = hackerCanvas.getContext('2d');
-
-function resizeCanvases(){
-  starsCanvas.width = window.innerWidth;
-  starsCanvas.height = window.innerHeight;
-  hackerCanvas.width = window.innerWidth;
-  hackerCanvas.height = window.innerHeight;
+const ctx = starsCanvas.getContext('2d');
+let w = starsCanvas.width = window.innerWidth;
+let h = starsCanvas.height = window.innerHeight;
+const starsCount = 120;
+let stars = [];
+for(let i=0;i<starsCount;i++){
+    stars.push({x:Math.random()*w,y:Math.random()*h,length:2+Math.random()*10,speed:0.5+Math.random()*1.5});
 }
-window.addEventListener('resize', resizeCanvases);
-resizeCanvases();
-
-/* stars */
-const stars = Array.from({length:160}, ()=>({
-  x: Math.random()*starsCanvas.width,
-  y: Math.random()*starsCanvas.height,
-  r: Math.random()*1.6 + 0.4,
-  a: Math.random()
-}));
 function drawStars(){
-  sctx.clearRect(0,0,starsCanvas.width,starsCanvas.height);
-  stars.forEach(st=>{
-    sctx.globalAlpha = st.a;
-    sctx.fillStyle = '#fff';
-    sctx.beginPath();
-    sctx.arc(st.x, st.y, st.r, 0, Math.PI*2);
-    sctx.fill();
-    // tiny twinkle
-    st.a += (Math.random()-0.5)*0.02;
-    if(st.a<0.1) st.a=0.1;
-    if(st.a>1) st.a=1;
-  });
-  requestAnimationFrame(drawStars);
+    ctx.clearRect(0,0,w,h);
+    ctx.fillStyle = '#0f0';
+    stars.forEach(s=>{
+        ctx.fillRect(s.x,s.y,2,s.length);
+        s.y += s.speed;
+        if(s.y>h){s.y=0;s.x=Math.random()*w;}
+    });
+    requestAnimationFrame(drawStars);
 }
 drawStars();
+window.addEventListener('resize',()=>{w=starsCanvas.width=window.innerWidth;h=starsCanvas.height=window.innerHeight;});
 
-/* hacker code */
-let hackerCols = Math.floor(hackerCanvas.width / 18);
-let hackerRows = Math.floor(hackerCanvas.height / 18);
-let hackerGrid = [];
-function initHacker(){
-  hackerCols = Math.floor(hackerCanvas.width / 18);
-  hackerRows = Math.floor(hackerCanvas.height / 18);
-  hackerGrid = new Array(hackerRows).fill(0).map(()=> new Array(hackerCols).fill('0').map(()=> Math.random()>0.5?'1':'0'));
-}
-initHacker();
-function drawHacker(){
-  hctx.clearRect(0,0,hackerCanvas.width,hackerCanvas.height);
-  // draw only if dark theme
-  if(document.body.dataset.theme === 'dark'){
-    hctx.font = '14px monospace';
-    hctx.fillStyle = 'rgba(0,0,0,0.15)';
-    hctx.fillRect(0,0,hackerCanvas.width,hackerCanvas.height);
-    hctx.fillStyle = '#00ff33';
-    const cell = 18;
-    for(let r=0;r<hackerRows;r++){
-      for(let c=0;c<hackerCols;c++){
-        hctx.fillText(hackerGrid[r][c], c*cell, r*cell + 14);
-      }
-    }
-  }
-  requestAnimationFrame(drawHacker);
-}
-drawHacker();
-// flip bits every 2s
-setInterval(()=> {
-  for(let r=0;r<hackerRows;r++) for(let c=0;c<hackerCols;c++) hackerGrid[r][c] = hackerGrid[r][c] === '1' ? '0' : '1';
-}, 2000);
+// ===== КНОПКИ BIO, OTHER, SOCIALS =====
+const panels = {
+    bio: document.getElementById('panel-bio'),
+    other: document.getElementById('panel-other'),
+    socials: document.getElementById('panel-socials')
+};
+const btns = {
+    bio: document.getElementById('btn-bio'),
+    other: document.getElementById('btn-other'),
+    socials: document.getElementById('btn-socials')
+};
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'));}
+btns.bio.onclick = ()=>{hideAll(); panels.bio.classList.add('show');}
+btns.other.onclick = ()=>{hideAll(); panels.other.classList.add('show');}
+btns.socials.onclick = ()=>{hideAll(); panels.socials.classList.add('show');}
 
-/* =========================
-   THEME TOGGLE
-   ========================= */
-const themeToggle = document.getElementById('themeToggle');
-document.body.dataset.theme = 'dark'; // default
-themeToggle.addEventListener('click', ()=>{
-  if(document.body.dataset.theme === 'dark'){
-    document.body.dataset.theme = 'light';
-    document.body.style.background = '#fff';
-    document.body.style.color = '#081018';
-    themeToggle.textContent = '🌙';
-    // hide hacker by clearing canvas (drawHacker already checks dataset)
-  } else {
-    document.body.dataset.theme = 'dark';
-    document.body.style.background = '#000';
-    document.body.style.color = '#e7f8ff';
-    themeToggle.textContent = '☀️';
-  }
+// ===== POPUP ДЛЯ ИГР =====
+const popup = document.getElementById('game-popup');
+const popupText = document.getElementById('popup-text');
+document.querySelectorAll('.info-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+        const game = btn.dataset.game;
+        let hours;
+        switch(game){
+            case 'Roblox': hours='3000+ часов'; break;
+            case 'DBD': hours='20 часов'; break;
+            case 'CS2': hours='120 часов'; break;
+            case 'The Forest': hours='80+ часов'; break;
+            case 'Sons of the Forest': hours='30+ часов'; break;
+        }
+        popupText.innerHTML = `<strong>${game}</strong><br>Наиграно: ${hours}`;
+        popup.style.display='flex';
+    });
 });
+document.getElementById('popup-close').onclick = ()=>{popup.style.display='none';}
 
-/* =========================
-   === ПЛЕЕР ===
-   (autoplay attempt, fallback to "enable sound" prompt if blocked)
-   - progress bar clickable & draggable
-   - show current time / duration
-   - random next on end
-   ========================= */
-const playBtn = document.getElementById('playBtn');
-const prevBtn = document.getElementById('prevBtn');
-const nextBtn = document.getElementById('nextBtn');
-const bar = document.getElementById('bar');
-const progressWrap = document.getElementById('progress');
-const trackTitle = document.getElementById('trackTitle');
-const timeText = document.getElementById('timeText');
-const audioPermission = document.getElementById('audio-permission');
-const enableSoundBtn = document.getElementById('enable-sound');
-
-const playlist = [
-  {file:'bolen.mp3', title:'Dope17 — Болен'},
-  {file:'2_5321416586563717473.mp3', title:'MOON | Crystals'},
-  {file:'2_5375374187688907798.mp3', title:'Vtornik | Хороший'},
-  {file:'Токсік(Mulancore).mp3', title:'Токсік (Mulancore)'},
-  {file:'Мы - Возможно.mp3', title:'Мы — Возможно'},
-  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3', title:'AKA — NAM VSEGO 16'}
+// ===== ПЛЕЕР =====
+/* ПЛЕЕР */
+const tracks = [
+    {file:'болен.mp3',title:'Dope17 — Болен'},
+    {file:'2_5321416586563717473.mp3',title:'MOON | Crystals'},
+    {file:'2_5375374187688907798.mp3',title:'Vtornik | Хороший'},
+    {file:'Токсік(Mulancore).mp3',title:'Токсік(Mulancore)'},
+    {file:'Мы - Возможно.mp3',title:'Мы - Возможно'},
+    {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3',title:'АКА-SHGS — NAM VSЕГО 16'}
 ];
-
-let current = 0;
+let currentTrack = 0;
 const audio = new Audio();
-audio.src = playlist[current].file;
-audio.preload = 'auto';
-audio.volume = 0.7;
+audio.src = tracks[currentTrack].file;
+audio.autoplay = true;
 
-function updateTrackInfo(){
-  trackTitle.textContent = playlist[current].title;
-}
-updateTrackInfo();
+const playBtn = document.createElement('div');
+playBtn.textContent = '▶';
+playBtn.style.padding='10px 20px';
+playBtn.style.borderRadius='12px';
+playBtn.style.background='linear-gradient(90deg,#7ee7ff,#ff6b9a)';
+playBtn.style.color='#061018';
+playBtn.style.fontWeight='800';
+playBtn.style.cursor='pointer';
+playBtn.style.userSelect='none';
+document.body.appendChild(playBtn);
 
-function playCurrent(){
-  audio.play().then(()=> {
-    audioPermission.style.display = 'none';
-  }).catch(()=> {
-    // autoplay blocked — show overlay button to enable sound
-    audioPermission.style.display = 'flex';
-  });
-}
+const progressBar = document.createElement('div');
+progressBar.style.height='8px';
+progressBar.style.width='300px';
+progressBar.style.background='rgba(255,255,255,0.2)';
+progressBar.style.borderRadius='8px';
+progressBar.style.marginTop='8px';
+document.body.appendChild(progressBar);
 
-playBtn.addEventListener('click', ()=>{
-  if(audio.paused) playCurrent();
-  else audio.pause();
-});
-prevBtn.addEventListener('click', ()=>{
-  current = (current - 1 + playlist.length) % playlist.length;
-  audio.src = playlist[current].file;
-  updateTrackInfo();
-  playCurrent();
-});
-nextBtn.addEventListener('click', ()=>{
-  // choose random different track
-  let idx = Math.floor(Math.random()*playlist.length);
-  if(idx === current) idx = (idx+1)%playlist.length;
-  current = idx;
-  audio.src = playlist[current].file;
-  updateTrackInfo();
-  playCurrent();
-});
+const bar = document.createElement('div');
+bar.style.height='100%';
+bar.style.width='0%';
+bar.style.background='linear-gradient(90deg,#7ee7ff,#ff6b9a)';
+progressBar.appendChild(bar);
 
-audio.addEventListener('play', ()=> playBtn.textContent = '❚❚');
-audio.addEventListener('pause', ()=> playBtn.textContent = '▶');
+const timeEl = document.createElement('div');
+timeEl.style.marginTop='4px';
+timeEl.style.fontSize='14px';
+timeEl.style.color='#fff';
+document.body.appendChild(timeEl);
 
-audio.addEventListener('timeupdate', ()=>{
-  if(!audio.duration || isNaN(audio.duration)) return;
-  const pct = (audio.currentTime / audio.duration) * 100;
-  bar.style.width = pct + '%';
-  timeText.textContent = formatTime(audio.currentTime) + ' / ' + formatTime(audio.duration);
-});
-
-audio.addEventListener('ended', ()=>{
-  // random next
-  let idx = Math.floor(Math.random() * playlist.length);
-  if(idx === current) idx = (idx + 1) % playlist.length;
-  current = idx;
-  audio.src = playlist[current].file;
-  updateTrackInfo();
-  playCurrent();
-});
-
-// progress click/drag (single bar)
-let isSeeking = false;
-function seekAtClientX(clientX){
-  const rect = progressWrap.getBoundingClientRect();
-  let pct = (clientX - rect.left) / rect.width;
-  pct = Math.max(0, Math.min(1, pct));
-  if(audio.duration){
-    audio.currentTime = pct * audio.duration;
-  }
-}
-progressWrap.addEventListener('mousedown', (e)=>{ isSeeking = true; seekAtClientX(e.clientX); });
-window.addEventListener('mousemove', (e)=>{ if(isSeeking) seekAtClientX(e.clientX); });
-window.addEventListener('mouseup', ()=>{ if(isSeeking) isSeeking=false; });
-
-// touch support
-progressWrap.addEventListener('touchstart', (e)=>{ seekAtClientX(e.touches[0].clientX); });
-progressWrap.addEventListener('touchmove', (e)=>{ seekAtClientX(e.touches[0].clientX); });
-
-// enable sound button
-enableSoundBtn.addEventListener('click', ()=>{
-  playCurrent();
-  audioPermission.style.display = 'none';
-});
-
-// try autoplay on load
-window.addEventListener('load', ()=>{
-  // attempt to autoplay once
-  audio.play().then(()=> {
-    audioPermission.style.display = 'none';
-  }).catch(()=> {
-    audioPermission.style.display = 'none'; // keep hidden — only show when play attempted and blocked
-    // Show permission only when first user interaction? we show explicit button instead:
-    // display the permission prompt so user can enable
-    audioPermission.style.display = 'flex';
-  });
-});
-
-/* helper */
-function formatTime(sec){
-  if(!sec || isNaN(sec)) return '0:00';
-  const m = Math.floor(sec/60);
-  const s = Math.floor(sec%60).toString().padStart(2,'0');
-  return m + ':' + s;
-}
-
-/* ensure canvases adapt on resize and update hacker grid */
-window.addEventListener('resize', ()=>{
-  hackerCanvas.width = window.innerWidth;
-  hackerCanvas.height = window.innerHeight;
-  starsCanvas.width = window.innerWidth;
-  starsCanvas.height = window.innerHeight;
-  initHacker();
-});
-
-/* end of script */
+playBtn.onclick=()=>{if(audio.paused) audio.play(); else audio.pause();}
+audio.onplay = ()=> playBtn.textContent='⏸';
+audio.onpause = ()=> playBtn.textContent='▶';
+audio.ontimeupdate=()=>{
+    if(audio.duration){
+        const pct = audio.currentTime/audio.duration*100;
+        bar.style.width=pct+'%';
+        const m=Math.floor(audio.currentTime/60);
+        const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+        const dm=Math.floor(audio.duration/60);
+        const ds=Math.floor(audio.duration%60).toString().padStart(2,'0');
+        timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
+    }
+};
+progressBar.onclick = e=>{
+    const rect = progressBar.getBoundingClientRect();
+    const pct = (e.clientX - rect.left)/rect.width;
+    audio.currentTime = pct*audio.duration;
+};
+audio.onended=()=>{
+    currentTrack=Math.floor(Math.random()*tracks.length);
+    audio.src=tracks[currentTrack].file;
+    audio.play();
+};
 </script>
 </body>
 </html>
