@@ -1,15 +1,90 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
   <meta charset="UTF-8">
   <title>My Site</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: black;
+      font-family: Arial, sans-serif;
+      color: white;
+      text-align: center;
+    }
+
+    #starfield {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 0;
+    }
+
+    .container {
+      position: relative;
+      z-index: 1;
+      padding-top: 30px;
+    }
+
+    /* ==== Кнопки ==== */
+    button {
+      background: none;
+      border: 1px solid white;
+      color: white;
+      margin: 5px;
+      padding: 8px 14px;
+      cursor: pointer;
+      text-shadow: 0 0 10px white, 0 0 20px white;
+      transition: 0.3s;
+    }
+    button:hover {
+      box-shadow: 0 0 15px white, 0 0 30px white;
+      transform: scale(1.1);
+    }
+
+    /* ==== Аватарка ==== */
+    .avatar {
+      width: 120px;
+      border-radius: 50%;
+      transition: 0.3s;
+      box-shadow: 0 0 15px white, 0 0 30px white;
+    }
+    .avatar:hover {
+      box-shadow: 0 0 25px white, 0 0 50px white;
+      transform: scale(1.05);
+    }
+
+    /* ==== Текст секций ==== */
+    .section {
+      display: none;
+      margin-top: 20px;
+      text-shadow: 0 0 8px white, 0 0 15px white;
+    }
+    .section.active {
+      display: block;
+    }
+
+    /* ==== Плеер ==== */
+    .player {
+      margin-top: 30px;
+    }
+    #progress {
+      width: 80%;
+    }
+    #track-title {
+      font-size: 18px;
+      margin-bottom: 8px;
+      text-shadow: 0 0 10px white, 0 0 20px white;
+    }
+  </style>
 </head>
 <body>
   <canvas id="starfield"></canvas>
 
   <div class="container">
-    <img src="avatar.png" alt="Avatar" class="avatar">
+    <img src="1000038711-removebg-preview.png" alt="Avatar" class="avatar">
 
     <div class="buttons">
       <button data-section="bio">Bio</button>
@@ -18,21 +93,34 @@
       <button data-section="other">Other</button>
     </div>
 
-    <!-- Переключатель языка -->
-    <div class="lang-switcher">
-      <img src="ua.png" alt="UA" data-lang="ua">
-      <img src="ru.png" alt="RU" data-lang="ru">
-      <img src="us.png" alt="EN" data-lang="en">
-    </div>
-
     <div class="sections">
-      <div id="bio" class="section active">My bio text...</div>
-      <div id="goals" class="section">My goals text...</div>
-      <div id="socials" class="section">My socials...</div>
-      <div id="other" class="section">Other info...</div>
+      <div id="bio" class="section active">
+        <p>Имя: Femscout</p>
+        <p>Дата рождения: 28.08.2012</p>
+        <p>Возраст: 13 лет</p>
+        <p>Обо мне: Я увлекаюсь технологиями, играми и хочу развиваться в программировании.</p>
+      </div>
+      <div id="goals" class="section">
+        <p>Стать успешным программистом (заработок от 7000$)</p>
+        <p>Купить Porsche 911 и Tesla Model S</p>
+        <p>Сделать так, чтобы родители больше не работали</p>
+      </div>
+      <div id="socials" class="section">
+        <p>Telegram: @femscout</p>
+        <p>GitHub: github.com/femscout</p>
+      </div>
+      <div id="other" class="section">
+        <p>Любимые игры:</p>
+        <ul>
+          <li>Roblox</li>
+          <li>Dead by Daylight</li>
+          <li>CS2</li>
+          <li>The Forest / Sons of the Forest</li>
+        </ul>
+      </div>
     </div>
 
-    <!-- ⚡ Твой имба-плеер -->
+    <!-- ⚡ ПЛЕЕР -->
     <div class="player">
       <div id="track-title">Track name</div>
       <audio id="audio"></audio>
@@ -46,207 +134,102 @@
     </div>
   </div>
 
-  <script src="script.js"></script>
+  <script>
+    // ===== ЗВЁЗДНЫЙ ФОН =====
+    const canvas = document.getElementById("starfield");
+    const ctx = canvas.getContext("2d");
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    let stars = Array.from({length: 150}, () => ({
+      x: Math.random() * canvas.width,
+      y: Math.random() * canvas.height,
+      r: Math.random() * 2,
+      dx: (Math.random() - 0.5) * 0.3,
+      dy: (Math.random() - 0.5) * 0.3
+    }));
+
+    function animateStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(s => {
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+        s.x += s.dx;
+        s.y += s.dy;
+        if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
+        if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
+      });
+      requestAnimationFrame(animateStars);
+    }
+    animateStars();
+
+    // ===== МЕНЮ =====
+    const sections = document.querySelectorAll(".section");
+    const buttons = document.querySelectorAll(".buttons button");
+
+    buttons.forEach(btn => {
+      btn.onclick = () => {
+        sections.forEach(s => s.classList.remove("active"));
+        document.getElementById(btn.dataset.section).classList.add("active");
+      };
+    });
+
+    // ===== ПЛЕЕР (имба 💿) =====
+    const audio = document.getElementById("audio");
+    const progress = document.getElementById("progress");
+    const time = document.getElementById("time");
+    const playPauseBtn = document.getElementById("playPauseBtn");
+    const prevBtn = document.getElementById("prevBtn");
+    const nextBtn = document.getElementById("nextBtn");
+    const trackTitle = document.getElementById("track-title");
+
+    const tracks = [
+      {title: "Bolen", file: "bolen.mp3"},
+      {title: "MOON | Crystals", file: "2_5321416586563717473.mp3"},
+      {title: "Vtornik | Хороший", file: "2_5375374187688907798.mp3"},
+      {title: "Токсик (Mulancore)", file: "Токсік(Mulancore).mp3"},
+      {title: "Мы - Возможно", file: "Мы - Возможно.mp3"},
+      {title: "AKA-SHGSH - Nam Vsego 16", file: "𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3"}
+    ];
+
+    let currentTrack = 0;
+    audio.src = tracks[currentTrack].file;
+    trackTitle.innerText = tracks[currentTrack].title;
+
+    function playTrack() {
+      audio.play();
+      playPauseBtn.innerText = "⏸";
+    }
+    function pauseTrack() {
+      audio.pause();
+      playPauseBtn.innerText = "▶️";
+    }
+    playPauseBtn.onclick = () => audio.paused ? playTrack() : pauseTrack();
+
+    prevBtn.onclick = () => {
+      currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
+      audio.src = tracks[currentTrack].file;
+      trackTitle.innerText = tracks[currentTrack].title;
+      playTrack();
+    };
+    nextBtn.onclick = () => {
+      currentTrack = (currentTrack + 1) % tracks.length;
+      audio.src = tracks[currentTrack].file;
+      trackTitle.innerText = tracks[currentTrack].title;
+      playTrack();
+    };
+
+    audio.ontimeupdate = () => {
+      progress.value = (audio.currentTime / audio.duration) * 100 || 0;
+      let cur = Math.floor(audio.currentTime / 60) + ":" + String(Math.floor(audio.currentTime % 60)).padStart(2,"0");
+      let dur = Math.floor(audio.duration / 60) + ":" + String(Math.floor(audio.duration % 60)).padStart(2,"0");
+      time.innerText = cur + " / " + dur;
+    };
+    progress.oninput = () => {
+      audio.currentTime = (progress.value / 100) * audio.duration;
+    };
+  </script>
 </body>
 </html>
-body {
-  margin: 0;
-  overflow: hidden;
-  background: black;
-  font-family: Arial, sans-serif;
-  color: white;
-  text-align: center;
-}
-
-#starfield {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-.container {
-  position: relative;
-  z-index: 1;
-  padding-top: 30px;
-}
-
-button {
-  background: none;
-  border: 1px solid white;
-  color: white;
-  margin: 5px;
-  padding: 8px 14px;
-  cursor: pointer;
-  text-shadow: 0 0 10px white;
-}
-button:hover {
-  box-shadow: 0 0 15px white;
-}
-
-.avatar {
-  width: 120px;
-  border-radius: 50%;
-  transition: 0.3s;
-}
-.avatar:hover {
-  box-shadow: 0 0 25px white;
-}
-
-.lang-switcher {
-  margin: 15px;
-}
-.lang-switcher img {
-  width: 30px;
-  margin: 0 5px;
-  cursor: pointer;
-  border-radius: 5px;
-  transition: 0.2s;
-}
-.lang-switcher img:hover {
-  box-shadow: 0 0 10px white;
-}
-
-.section {
-  display: none;
-  margin-top: 20px;
-  text-shadow: 0 0 8px white;
-}
-.section.active {
-  display: block;
-}
-
-.player {
-  margin-top: 30px;
-}
-#progress {
-  width: 80%;
-}
-// ===== ЗВЁЗДНЫЙ ФОН =====
-const canvas = document.getElementById("starfield");
-const ctx = canvas.getContext("2d");
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
-
-let stars = Array.from({length: 150}, () => ({
-  x: Math.random() * canvas.width,
-  y: Math.random() * canvas.height,
-  r: Math.random() * 2,
-  dx: (Math.random() - 0.5) * 0.3,
-  dy: (Math.random() - 0.5) * 0.3
-}));
-
-function animateStars() {
-  ctx.clearRect(0, 0, canvas.width, canvas.height);
-  ctx.fillStyle = "white";
-  stars.forEach(s => {
-    ctx.beginPath();
-    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-    ctx.fill();
-    s.x += s.dx;
-    s.y += s.dy;
-    if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
-    if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
-  });
-  requestAnimationFrame(animateStars);
-}
-animateStars();
-
-// ===== МЕНЮ =====
-const sections = document.querySelectorAll(".section");
-const buttons = document.querySelectorAll(".buttons button");
-
-buttons.forEach(btn => {
-  btn.onclick = () => {
-    sections.forEach(s => s.classList.remove("active"));
-    document.getElementById(btn.dataset.section).classList.add("active");
-  };
-});
-
-// ===== ЯЗЫКИ =====
-const langBtns = document.querySelectorAll(".lang-switcher img");
-let currentLang = "en";
-
-const texts = {
-  en: {
-    bio: "My biography text...",
-    goals: "My goals here...",
-    socials: "Links to my socials...",
-    other: "Other information..."
-  },
-  ua: {
-    bio: "Моя біографія...",
-    goals: "Мої цілі...",
-    socials: "Посилання на соцмережі...",
-    other: "Інша інформація..."
-  },
-  ru: {
-    bio: "Моя биография...",
-    goals: "Мои цели...",
-    socials: "Ссылки на соцсети...",
-    other: "Другая информация..."
-  }
-};
-
-langBtns.forEach(flag => {
-  flag.onclick = () => {
-    currentLang = flag.dataset.lang;
-    document.getElementById("bio").innerText = texts[currentLang].bio;
-    document.getElementById("goals").innerText = texts[currentLang].goals;
-    document.getElementById("socials").innerText = texts[currentLang].socials;
-    document.getElementById("other").innerText = texts[currentLang].other;
-  };
-});
-
-// ===== ПЛЕЕР (имба, не трогаю логику) =====
-const audio = document.getElementById("audio");
-const progress = document.getElementById("progress");
-const time = document.getElementById("time");
-const playPauseBtn = document.getElementById("playPauseBtn");
-const prevBtn = document.getElementById("prevBtn");
-const nextBtn = document.getElementById("nextBtn");
-const trackTitle = document.getElementById("track-title");
-
-const tracks = [
-  {title: "Track 1", file: "track1.mp3"},
-  {title: "Track 2", file: "track2.mp3"}
-];
-
-let currentTrack = 0;
-audio.src = tracks[currentTrack].file;
-trackTitle.innerText = tracks[currentTrack].title;
-
-function playTrack() {
-  audio.play();
-  playPauseBtn.innerText = "⏸";
-}
-function pauseTrack() {
-  audio.pause();
-  playPauseBtn.innerText = "▶️";
-}
-playPauseBtn.onclick = () => audio.paused ? playTrack() : pauseTrack();
-
-prevBtn.onclick = () => {
-  currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-  audio.src = tracks[currentTrack].file;
-  trackTitle.innerText = tracks[currentTrack].title;
-  playTrack();
-};
-nextBtn.onclick = () => {
-  currentTrack = (currentTrack + 1) % tracks.length;
-  audio.src = tracks[currentTrack].file;
-  trackTitle.innerText = tracks[currentTrack].title;
-  playTrack();
-};
-
-// Обновление прогресс-бара
-audio.ontimeupdate = () => {
-  progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-  let cur = Math.floor(audio.currentTime / 60) + ":" + String(Math.floor(audio.currentTime % 60)).padStart(2,"0");
-  let dur = Math.floor(audio.duration / 60) + ":" + String(Math.floor(audio.duration % 60)).padStart(2,"0");
-  time.innerText = cur + " / " + dur;
-};
-progress.oninput = () => {
-  audio.currentTime = (progress.value / 100) * audio.duration;
-};
