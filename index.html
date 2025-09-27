@@ -6,230 +6,271 @@
   <style>
     body {
       margin: 0;
-      overflow: hidden;
+      padding: 0;
       background: black;
-      font-family: Arial, sans-serif;
       color: white;
-      text-align: center;
+      font-family: Arial, sans-serif;
+      overflow: hidden;
     }
 
-    #starfield {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      z-index: 0;
+    /* Glow текст */
+    h1, h2, p {
+      text-shadow: 0 0 10px #fff, 0 0 20px #0ff;
     }
 
+    /* Контейнер */
     .container {
       position: relative;
-      z-index: 1;
-      padding-top: 30px;
+      z-index: 2;
+      text-align: center;
+      padding-top: 20px;
     }
 
-    /* ==== Кнопки ==== */
-    button {
-      background: none;
-      border: 1px solid white;
-      color: white;
-      margin: 5px;
-      padding: 8px 14px;
-      cursor: pointer;
-      text-shadow: 0 0 10px white, 0 0 20px white;
-      transition: 0.3s;
-    }
-    button:hover {
-      box-shadow: 0 0 15px white, 0 0 30px white;
-      transform: scale(1.1);
-    }
-
-    /* ==== Аватарка ==== */
+    /* Аватар */
     .avatar {
-      width: 120px;
+      width: 150px;
       border-radius: 50%;
-      transition: 0.3s;
-      box-shadow: 0 0 15px white, 0 0 30px white;
+      transition: 0.3s ease-in-out;
+      box-shadow: 0 0 20px transparent;
     }
     .avatar:hover {
-      box-shadow: 0 0 25px white, 0 0 50px white;
-      transform: scale(1.05);
+      box-shadow: 0 0 40px #0ff, 0 0 80px #0ff;
     }
 
-    /* ==== Текст секций ==== */
-    .section {
+    /* Кнопки */
+    .menu {
+      margin-top: 20px;
+    }
+    .menu button {
+      margin: 10px;
+      padding: 10px 20px;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      text-shadow: 0 0 5px #0ff;
+      transition: 0.3s;
+    }
+    .menu button:hover {
+      background: rgba(0,255,255,0.2);
+      box-shadow: 0 0 15px #0ff, 0 0 30px #0ff;
+    }
+
+    /* Меню контент */
+    .content {
       display: none;
       margin-top: 20px;
-      text-shadow: 0 0 8px white, 0 0 15px white;
+      font-size: 18px;
     }
-    .section.active {
+    .content.active {
       display: block;
     }
 
-    /* ==== Плеер ==== */
+    /* Плеер */
     .player {
       margin-top: 30px;
+      background: rgba(255,255,255,0.05);
+      padding: 15px;
+      border-radius: 15px;
+      width: 350px;
+      margin-left: auto;
+      margin-right: auto;
+      box-shadow: 0 0 15px #0ff;
     }
-    #progress {
-      width: 80%;
+    .progress {
+      width: 100%;
     }
-    #track-title {
-      font-size: 18px;
-      margin-bottom: 8px;
-      text-shadow: 0 0 10px white, 0 0 20px white;
+    .controls {
+      margin-top: 10px;
+    }
+    .controls button {
+      margin: 0 10px;
+      padding: 8px 15px;
+      border: none;
+      border-radius: 8px;
+      background: #0ff;
+      color: black;
+      cursor: pointer;
+      font-weight: bold;
+    }
+    .controls button:hover {
+      background: #fff;
+    }
+
+    /* Звезды */
+    canvas {
+      position: fixed;
+      top: 0;
+      left: 0;
+      z-index: 0;
     }
   </style>
 </head>
 <body>
-  <canvas id="starfield"></canvas>
+  <canvas id="stars"></canvas>
 
   <div class="container">
-    <img src="1000038711-removebg-preview.png" alt="Avatar" class="avatar">
+    <img src="1000038711-removebg-preview.png" alt="avatar" class="avatar">
+    <h1>Welcome to my site</h1>
 
-    <div class="buttons">
-      <button data-section="bio">Bio</button>
-      <button data-section="goals">Goals</button>
-      <button data-section="socials">Socials</button>
-      <button data-section="other">Other</button>
+    <div class="menu">
+      <button onclick="showContent('bio')">BIO</button>
+      <button onclick="showContent('goals')">Goals</button>
+      <button onclick="showContent('socials')">Socials</button>
+      <button onclick="showContent('other')">OTHER</button>
     </div>
 
-    <div class="sections">
-      <div id="bio" class="section active">
-        <p>Имя: Femscout</p>
-        <p>Дата рождения: 28.08.2012</p>
-        <p>Возраст: 13 лет</p>
-        <p>Обо мне: Я увлекаюсь технологиями, играми и хочу развиваться в программировании.</p>
-      </div>
-      <div id="goals" class="section">
-        <p>Стать успешным программистом (заработок от 7000$)</p>
-        <p>Купить Porsche 911 и Tesla Model S</p>
-        <p>Сделать так, чтобы родители больше не работали</p>
-      </div>
-      <div id="socials" class="section">
-        <p>Telegram: @femscout</p>
-        <p>GitHub: github.com/femscout</p>
-      </div>
-      <div id="other" class="section">
-        <p>Любимые игры:</p>
-        <ul>
-          <li>Roblox</li>
-          <li>Dead by Daylight</li>
-          <li>CS2</li>
-          <li>The Forest / Sons of the Forest</li>
-        </ul>
-      </div>
+    <div id="bio" class="content">
+      <p><b>Имя:</b> Максим</p>
+      <p><b>Возраст:</b> 13 лет</p>
+      <p><b>Дата рождения:</b> 28.08.2012</p>
+      <p><b>Хобби:</b> Игры, программирование</p>
     </div>
 
-    <!-- ⚡ ПЛЕЕР -->
+    <div id="goals" class="content">
+      <p>Стать успешным программистом (зароботок от 7000$)</p>
+    </div>
+
+    <div id="socials" class="content">
+      <p>Telegram: @example</p>
+      <p>GitHub: github.com/example</p>
+    </div>
+
+    <div id="other" class="content">
+      <p>INK GAME WIN | 26</p>
+    </div>
+
+    <!-- ПЛЕЕР -->
     <div class="player">
-      <div id="track-title">Track name</div>
-      <audio id="audio"></audio>
-      <input type="range" id="progress" value="0">
-      <div id="time">0:00 / 0:00</div>
+      <h2 id="track-title">Загрузка...</h2>
+      <input type="range" id="progress" class="progress" value="0" step="1">
+      <div>
+        <span id="current-time">0:00</span> / <span id="duration">0:00</span>
+      </div>
       <div class="controls">
         <button id="prevBtn">⏮</button>
-        <button id="playPauseBtn">▶️</button>
+        <button id="playBtn">▶</button>
         <button id="nextBtn">⏭</button>
       </div>
     </div>
   </div>
 
   <script>
-    // ===== ЗВЁЗДНЫЙ ФОН =====
-    const canvas = document.getElementById("starfield");
-    const ctx = canvas.getContext("2d");
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-
-    let stars = Array.from({length: 150}, () => ({
-      x: Math.random() * canvas.width,
-      y: Math.random() * canvas.height,
-      r: Math.random() * 2,
-      dx: (Math.random() - 0.5) * 0.3,
-      dy: (Math.random() - 0.5) * 0.3
-    }));
-
-    function animateStars() {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = "white";
-      stars.forEach(s => {
-        ctx.beginPath();
-        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
-        ctx.fill();
-        s.x += s.dx;
-        s.y += s.dy;
-        if (s.x < 0 || s.x > canvas.width) s.dx *= -1;
-        if (s.y < 0 || s.y > canvas.height) s.dy *= -1;
-      });
-      requestAnimationFrame(animateStars);
+    /* === Система меню === */
+    function showContent(id) {
+      document.querySelectorAll('.content').forEach(el => el.classList.remove('active'));
+      document.getElementById(id).classList.add('active');
     }
-    animateStars();
 
-    // ===== МЕНЮ =====
-    const sections = document.querySelectorAll(".section");
-    const buttons = document.querySelectorAll(".buttons button");
-
-    buttons.forEach(btn => {
-      btn.onclick = () => {
-        sections.forEach(s => s.classList.remove("active"));
-        document.getElementById(btn.dataset.section).classList.add("active");
-      };
-    });
-
-    // ===== ПЛЕЕР (имба 💿) =====
-    const audio = document.getElementById("audio");
-    const progress = document.getElementById("progress");
-    const time = document.getElementById("time");
-    const playPauseBtn = document.getElementById("playPauseBtn");
-    const prevBtn = document.getElementById("prevBtn");
-    const nextBtn = document.getElementById("nextBtn");
-    const trackTitle = document.getElementById("track-title");
-
+    /* === ПЛЕЕР === */
     const tracks = [
-      {title: "Bolen", file: "bolen.mp3"},
-      {title: "MOON | Crystals", file: "2_5321416586563717473.mp3"},
-      {title: "Vtornik | Хороший", file: "2_5375374187688907798.mp3"},
-      {title: "Токсик (Mulancore)", file: "Токсік(Mulancore).mp3"},
-      {title: "Мы - Возможно", file: "Мы - Возможно.mp3"},
-      {title: "AKA-SHGSH - Nam Vsego 16", file: "𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3"}
+      {title: "Track 1", file: "music1.mp3"},
+      {title: "Track 2", file: "music2.mp3"},
+      {title: "Track 3", file: "music3.mp3"}
     ];
 
-    let currentTrack = 0;
-    audio.src = tracks[currentTrack].file;
-    trackTitle.innerText = tracks[currentTrack].title;
+    let currentTrack = Math.floor(Math.random() * tracks.length);
+    const audio = new Audio(tracks[currentTrack].file);
+    const playBtn = document.getElementById('playBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const nextBtn = document.getElementById('nextBtn');
+    const progress = document.getElementById('progress');
+    const trackTitle = document.getElementById('track-title');
+    const currentTimeEl = document.getElementById('current-time');
+    const durationEl = document.getElementById('duration');
 
-    function playTrack() {
+    function loadTrack(index) {
+      audio.src = tracks[index].file;
+      trackTitle.textContent = tracks[index].title;
+      audio.load();
       audio.play();
-      playPauseBtn.innerText = "⏸";
+      playBtn.textContent = "⏸";
     }
-    function pauseTrack() {
-      audio.pause();
-      playPauseBtn.innerText = "▶️";
-    }
-    playPauseBtn.onclick = () => audio.paused ? playTrack() : pauseTrack();
+
+    playBtn.onclick = () => {
+      if (audio.paused) {
+        audio.play();
+        playBtn.textContent = "⏸";
+      } else {
+        audio.pause();
+        playBtn.textContent = "▶";
+      }
+    };
 
     prevBtn.onclick = () => {
       currentTrack = (currentTrack - 1 + tracks.length) % tracks.length;
-      audio.src = tracks[currentTrack].file;
-      trackTitle.innerText = tracks[currentTrack].title;
-      playTrack();
+      loadTrack(currentTrack);
     };
+
     nextBtn.onclick = () => {
       currentTrack = (currentTrack + 1) % tracks.length;
-      audio.src = tracks[currentTrack].file;
-      trackTitle.innerText = tracks[currentTrack].title;
-      playTrack();
+      loadTrack(currentTrack);
     };
 
     audio.ontimeupdate = () => {
-      progress.value = (audio.currentTime / audio.duration) * 100 || 0;
-      let cur = Math.floor(audio.currentTime / 60) + ":" + String(Math.floor(audio.currentTime % 60)).padStart(2,"0");
-      let dur = Math.floor(audio.duration / 60) + ":" + String(Math.floor(audio.duration % 60)).padStart(2,"0");
-      time.innerText = cur + " / " + dur;
+      progress.value = audio.currentTime;
+      progress.max = audio.duration;
+      currentTimeEl.textContent = formatTime(audio.currentTime);
+      durationEl.textContent = formatTime(audio.duration);
     };
+
     progress.oninput = () => {
-      audio.currentTime = (progress.value / 100) * audio.duration;
+      audio.currentTime = progress.value;
     };
+
+    audio.onended = () => {
+      currentTrack = Math.floor(Math.random() * tracks.length);
+      loadTrack(currentTrack);
+    };
+
+    function formatTime(sec) {
+      if (isNaN(sec)) return "0:00";
+      let m = Math.floor(sec / 60);
+      let s = Math.floor(sec % 60);
+      return `${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    loadTrack(currentTrack);
+
+    /* === Звезды === */
+    const canvas = document.getElementById("stars");
+    const ctx = canvas.getContext("2d");
+    let stars = [];
+
+    function resizeCanvas() {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    }
+    resizeCanvas();
+    window.onresize = resizeCanvas;
+
+    for (let i = 0; i < 150; i++) {
+      stars.push({
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
+        size: Math.random() * 2,
+        speed: Math.random() * 0.5 + 0.2
+      });
+    }
+
+    function drawStars() {
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      ctx.fillStyle = "white";
+      stars.forEach(star => {
+        ctx.beginPath();
+        ctx.arc(star.x, star.y, star.size, 0, Math.PI * 2);
+        ctx.fill();
+        star.y += star.speed;
+        if (star.y > canvas.height) {
+          star.y = 0;
+          star.x = Math.random() * canvas.width;
+        }
+      });
+      requestAnimationFrame(drawStars);
+    }
+    drawStars();
   </script>
 </body>
 </html>
