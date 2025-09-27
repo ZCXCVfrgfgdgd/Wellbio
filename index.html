@@ -5,198 +5,367 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка</title>
 <style>
-:root{--accent:#7ee7ff;--accent2:#ff6b9a}
-*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Segoe UI,Roboto,Arial,sans-serif}
-body{background:black;color:white;overflow-x:hidden;cursor:none}
-.wrap{width:100%;max-width:980px;margin:auto;padding:20px}
-.top{display:flex;gap:18px;align-items:center;padding:18px;border-radius:14px;background:rgba(255,255,255,0.05)}
-.avatar{width:128px;height:128px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.1);transition:0.3s}
-.avatar:hover{box-shadow:0 0 20px rgba(255,255,255,0.6)}
-.avatar img{width:100%;height:100%;object-fit:cover}
-.info{display:flex;flex-direction:column;gap:6px}
-.nick{font-weight:800;color:var(--accent);letter-spacing:1px}
-.sub{opacity:0.85;font-size:13px}
-.controls{display:flex;gap:12px;margin-top:10px;flex-wrap:wrap}
-.btn{padding:12px 18px;border-radius:12px;background:rgba(255,255,255,0.1);border:none;color:white;font-weight:700;cursor:pointer;transition:0.3s}
-.btn:hover{background:rgba(255,255,255,0.3)}
-.card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05)}
-.card.show{display:block;animation:panelIn .36s ease}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
-.row{display:flex;gap:12px;flex-wrap:wrap}
-.col{flex:1 1 220px;min-width:180px}
-h3{margin:0 0 6px 0;color:#bfefff}
-.socials{display:flex;flex-direction:column;gap:8px}
-.social{display:flex;align-items:center;gap:10px;padding:8px;border-radius:10px;background:rgba(255,255,255,0.05);text-decoration:none;color:inherit}
-.icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;background:linear-gradient(90deg,var(--accent),var(--accent2));color:#061018;font-weight:800}
-footer.player{position:fixed;left:50%;transform:translateX(-50%);bottom:14px;width:calc(100% - 48px);max-width:760px;padding:12px;border-radius:14px;background:rgba(255,255,255,0.05);display:flex;gap:12px;align-items:center;backdrop-filter:blur(4px)}
-footer.player button{background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:48px;height:48px;color:white;font-size:18px;cursor:pointer;transition:0.3s}
-footer.player button:hover{background:rgba(255,255,255,0.3)}
-.progress{flex:1;height:8px;background:rgba(255,255,255,0.2);border-radius:8px;overflow:hidden;cursor:pointer}
-.bar{height:100%;width:0%;background:linear-gradient(90deg,var(--accent),var(--accent2))}
-.time{font-size:12px;opacity:0.85;min-width:70px;text-align:right}
-#cursor{width:8px;height:8px;border-radius:50%;position:fixed;background:white;pointer-events:none;z-index:9999;transform:translate(-50%,-50%)}
-.game-info-btn{background:rgba(255,255,255,0.1);border:none;border-radius:50%;width:20px;height:20px;color:white;cursor:pointer;transition:0.2s}
-.game-info-btn:hover{background:rgba(255,255,255,0.4)}
-canvas#star-canvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1}
-@media(max-width:720px){.top{flex-direction:column;align-items:center}.avatar{width:120px;height:120px}}
+  /* Общие стили */
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:black;color:white;font-family:Arial,sans-serif;overflow-x:hidden;cursor:none;position:relative;}
+  
+  /* Курсор */
+  .cursor{
+    width:8px;
+    height:8px;
+    background:white;
+    border-radius:50%;
+    position:fixed;
+    pointer-events:none;
+    z-index:9999;
+    transform:translate(-50%,-50%);
+  }
+
+  /* Обёртка */
+  .wrap{max-width:980px;margin:50px auto;padding:20px;position:relative;}
+
+  /* Аватарка */
+  .avatar{
+    width:128px;height:128px;border-radius:50%;overflow:hidden;margin-bottom:20px;
+    border:2px solid rgba(255,255,255,0.5);
+    transition:0.3s;
+  }
+  .avatar img{
+    width:100%;height:100%;object-fit:cover;
+  }
+  .avatar:hover{
+    box-shadow:0 0 20px rgba(255,255,255,0.7);
+    transform:scale(1.05);
+  }
+
+  /* Кнопки */
+  .controls{display:flex;gap:12px;margin-top:10px;}
+  .btn{
+    padding:10px 16px;border-radius:12px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);
+    cursor:pointer;font-weight:700;transition:0.3s;
+  }
+  .btn:hover{
+    transform:translateY(-5px);
+    box-shadow:0 0 15px rgba(255,255,255,0.5);
+  }
+
+  /* Панели */
+  .card{display:none;margin-top:16px;padding:14px;border-radius:12px;background:rgba(255,255,255,0.05);}
+  .card.show{display:block;animation:panelIn .36s ease;}
+  @keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+  /* Плеер */
+  footer.player{
+    position:fixed;bottom:10px;left:50%;transform:translateX(-50%);
+    background:rgba(255,255,255,0.05);padding:10px 20px;border-radius:14px;
+    display:flex;align-items:center;gap:12px;z-index:999;
+  }
+  .play-btn,.prev-btn,.next-btn{width:50px;height:50px;border-radius:50%;border:none;cursor:pointer;background:linear-gradient(90deg,#7ee7ff,#ff6b9a);color:#061018;font-weight:800;font-size:18px;}
+  .progress-container{flex:1;height:8px;background:rgba(255,255,255,0.1);border-radius:4px;cursor:pointer;position:relative;}
+  .progress-bar{height:100%;width:0%;background:linear-gradient(90deg,#7ee7ff,#ff6b9a);border-radius:4px;}
+  .time{font-size:12px;opacity:0.8;min-width:60px;text-align:right;}
+
+  /* Звёзды */
+  canvas#stars{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
 </style>
 </head>
 <body>
-<div id="cursor"></div>
-<canvas id="star-canvas"></canvas>
+
+<div class="cursor" id="cursor"></div>
+
+<canvas id="stars"></canvas>
+
 <div class="wrap">
-  <div class="top">
-    <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
-    <div class="info">
-      <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
-      <div class="sub">Максим — Львов, Украина</div>
-      <div class="controls">
-        <button class="btn" id="btn-bio">BIO</button>
-        <button class="btn" id="btn-goals">Цели</button>
-        <button class="btn" id="btn-other">OTHER</button>
-        <button class="btn" id="btn-socials">SOCIALS</button>
-      </div>
-    </div>
+  <div class="avatar"><img src="1000038711-removebg-preview.png" alt="avatar"></div>
+  <div class="controls">
+    <button class="btn" id="btn-bio">BIO</button>
+    <button class="btn" id="btn-goals">ЦЕЛИ</button>
+    <button class="btn" id="btn-other">OTHER</button>
+    <button class="btn" id="btn-socials">SOCIALS</button>
   </div>
 
   <div class="card" id="panel-bio">
-    <div class="row">
-      <div class="col"><h3>Имя</h3><div>Максим</div></div>
-      <div class="col"><h3>Страна</h3><div>Украина</div></div>
-      <div class="col"><h3>Город</h3><div>Львов</div></div>
-    </div>
-    <div class="row">
-      <div class="col"><h3>Дата рождения</h3><div>28.08.2012</div></div>
-      <div class="col"><h3>Возраст</h3><div>13 лет</div></div>
-    </div>
+    <h3>Основное</h3>
+    <p>Имя: Максим</p>
+    <p>Страна: Украина</p>
+    <p>Город: Львов</p>
+    <p>Дата рождения: 28.08.2012</p>
+    <p>Возраст: 13 лет</p>
   </div>
 
   <div class="card" id="panel-goals">
     <h3>Цели и достижения</h3>
-    <p>№1: Стать успешным программистом (зароботок от 7000$)</p>
-    <p>№2: Купить Porsche 911 и Tesla model S</p>
+    <p>№1: стать успешным программистом (зароботок от 7000$)</p>
+    <p>№2: Купить Porsche 911 и Tesla Model S</p>
     <p>№3: Сделать так чтобы родители больше не работали и я их обеспечивал</p>
   </div>
 
   <div class="card" id="panel-other">
-    <h3>Игры</h3>
-    <div class="row" style="flex-direction:column;gap:8px;">
-      <div class="col">
-        Roblox <button class="game-info-btn" data-info="Наиграно более 3000 часов">i</button>
-      </div>
-      <div class="col">
-        DBD <button class="game-info-btn" data-info="Наиграно 20 часов, любимый ман: Майкл Маерс, любимый сурв: Сейбл">i</button>
-      </div>
-      <div class="col">
-        CS2 <button class="game-info-btn" data-info="Наиграно 120 часов, любимая карта: Anubis, любимая роль: опорник">i</button>
-      </div>
-      <div class="col">
-        The Forest <button class="game-info-btn" data-info="80+ часов">i</button>
-      </div>
-      <div class="col">
-        Sons of the Forest <button class="game-info-btn" data-info="30+ часов">i</button>
-      </div>
-    </div>
+    <h3>OTHER</h3>
+    <p>📱 Телефон: Tecno Povo 6</p>
+    <p>🎮 Игры:</p>
+    <ul>
+      <li>Roblox <button class="info-btn" data-info="Наиграно больше чем 3000 часов">i</button></li>
+      <li>DBD <button class="info-btn" data-info="20 часов, любимый ман: Майкл Маерс">i</button></li>
+      <li>Hotline Miami <button class="info-btn" data-info="Любимая часть: 1">i</button></li>
+      <li>The Forest / Sons of the Forest <button class="info-btn" data-info="80+ / 30+ часов">i</button></li>
+    </ul>
+    <p>✨ Увлечения: Монтирую видео, делаю контент, учусь новому</p>
   </div>
 
   <div class="card" id="panel-socials">
     <h3>SOCIALS</h3>
-    <a class="social" href="https://www.roblox.com/share?code=8a51ea1c51fb414d8e11357ffbc47214&type=Profile&source=ProfileShare" target="_blank"><div class="icon">R</div><div>Roblox — профиль</div></a>
-    <a class="social" href="https://www.tiktok.com/@wellink6" target="_blank"><div class="icon">𝕋</div><div>TikTok — @wellink6</div></a>
-    <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка) — t.me/Femscout1</div></a>
-    <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO) — t.me/wellbioink</div></a>
-    <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>
+    <p>Roblox: <a href="#">профиль</a></p>
+    <p>TikTok: <a href="#">@wellink6</a></p>
+    <p>Telegram: <a href="#">t.me/Femscout1</a></p>
+    <p>Discord: <a href="#">invite</a></p>
   </div>
 </div>
 
-<!-- ======== ПЛЕЕР ========= -->
+<!-- ПЛЕЕР -->
 <footer class="player">
-  <button id="btn-prev">⟲</button>
-  <button id="btn-play">▶</button>
-  <button id="btn-next">✦</button>
-  <div class="progress" id="prog"><div class="bar" id="bar"></div></div>
+  <button class="prev-btn" id="btn-prev">⟲</button>
+  <button class="play-btn" id="btn-play">▶</button>
+  <button class="next-btn" id="btn-next">⟳</button>
+  <div class="progress-container" id="progress-container">
+    <div class="progress-bar" id="progress-bar"></div>
+  </div>
   <div class="time" id="time">0:00 / 0:00</div>
 </footer>
 
 <script>
-// ========== CURSOR ==========
+/* Курсор */
 const cursor = document.getElementById('cursor');
-document.addEventListener('mousemove', e => {
-  cursor.style.left = e.clientX + 'px';
-  cursor.style.top = e.clientY + 'px';
+document.addEventListener('mousemove', e=>{
+  cursor.style.left = e.clientX+'px';
+  cursor.style.top = e.clientY+'px';
 });
 
-// ========== STARS ==========
-const canvas = document.getElementById('star-canvas');
+/* Панели */
+const panels = {
+  bio: document.getElementById('panel-bio'),
+  goals: document.getElementById('panel-goals'),
+  other: document.getElementById('panel-other'),
+  socials: document.getElementById('panel-socials')
+};
+const btns = {
+  bio: document.getElementById('btn-bio'),
+  goals: document.getElementById('btn-goals'),
+  other: document.getElementById('btn-other'),
+  socials: document.getElementById('btn-socials')
+};
+function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'))}
+btns.bio.onclick=()=>{panels.bio.classList.toggle('show')};
+btns.goals.onclick=()=>{panels.goals.classList.toggle('show')};
+btns.other.onclick=()=>{panels.other.classList.toggle('show')};
+btns.socials.onclick=()=>{panels.socials.classList.toggle('show')};
+
+/* Игра info кнопки */
+document.querySelectorAll('.info-btn').forEach(btn=>{
+  btn.onclick=()=>{
+    alert(btn.dataset.info);
+  }
+});
+
+/* Звёзды на фоне */
+const canvas = document.getElementById('stars');
 const ctx = canvas.getContext('2d');
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
+
 let stars = [];
-for(let i=0;i<150;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1,s:Math.random()*0.5})}
-function drawStars(){ctx.clearRect(0,0,canvas.width,canvas.height);for(let s of stars){ctx.fillStyle='white';ctx.globalAlpha=s.s;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fill();s.y+=0.5;if(s.y>canvas.height)s.y=0;}}
-setInterval(drawStars,30);
-window.addEventListener('resize',()=>{canvas.width=window.innerWidth;canvas.height=window.innerHeight;});
-
-// ========== CARDS ==========
-const panels = {bio:document.getElementById('panel-bio'),goals:document.getElementById('panel-goals'),other:document.getElementById('panel-other'),socials:document.getElementById('panel-socials')};
-const btns = {bio:document.getElementById('btn-bio'),goals:document.getElementById('btn-goals'),other:document.getElementById('btn-other'),socials:document.getElementById('btn-socials')};
-function hideAll(){Object.values(panels).forEach(p=>p.classList.remove('show'))}
-btns.bio.onclick=()=>{panels.bio.classList.toggle('show')}
-btns.goals.onclick=()=>{panels.goals.classList.toggle('show')}
-btns.other.onclick=()=>{panels.other.classList.toggle('show')}
-btns.socials.onclick=()=>{panels.socials.classList.toggle('show')}
-
-// ========== GAME INFO ==========
-document.querySelectorAll('.game-info-btn').forEach(b=>{
-  b.onclick=()=>{alert(b.dataset.info)}
-});
-
-// ========== ПЛЕЕР ==========
+for(let i=0;i<200;i++){
+  stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*2+1});
+}
+function drawStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    ctx.beginPath();
+    ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    ctx.fillStyle='white';
+    ctx.fill();
+  });
+}
+drawStars();
+</script>
+<script>
+/* ПЛЕЕР */
 const playBtn = document.getElementById('btn-play');
 const prevBtn = document.getElementById('btn-prev');
 const nextBtn = document.getElementById('btn-next');
-const bar = document.getElementById('bar');
-const prog = document.getElementById('prog');
+const progressContainer = document.getElementById('progress-container');
+const progressBar = document.getElementById('progress-bar');
 const timeEl = document.getElementById('time');
 
 const tracks = [
-  {file:'bolen.mp3',title:'Dope17 — Болен'},
-  {file:'2_5321416586563717473.mp3',title:'MOON | Crystals'},
-  {file:'2_5375374187688907798.mp3',title:'Vtornik | Хороший'},
-  {file:'Токсік(Mulancore).mp3',title:'Токсік(Mulancore)'},
-  {file:'Мы - Возможно.mp3',title:'Мы - Возможно'},
-  {file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3',title:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16'}
+  {title:'Bolen', file:'bolen.mp3'},
+  {title:'MOON|Crystals', file:'2_5321416586563717473.mp3'},
+  {title:'Vtornik|Хороший', file:'2_5375374187688907798.mp3'},
+  {title:'Токсік(Mulancore)', file:'Токсік(Mulancore).mp3'},
+  {title:'Мы - Возможно', file:'Мы - Возможно.mp3'},
+  {title:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 16.mp3'}
 ];
 
 let currentTrack = 0;
 const audio = new Audio(tracks[currentTrack].file);
-audio.play();
+audio.autoplay = true;
 
-function updateBar(){
+/* Play/Pause */
+playBtn.onclick = ()=>{
+  if(audio.paused) audio.play();
+  else audio.pause();
+};
+audio.onplay = ()=> playBtn.textContent='❚❚';
+audio.onpause = ()=> playBtn.textContent='▶';
+
+/* Next / Prev */
+nextBtn.onclick = ()=>{
+  currentTrack = (currentTrack+1)%tracks.length;
+  audio.src = tracks[currentTrack].file;
+  audio.play();
+};
+prevBtn.onclick = ()=>{
+  currentTrack = (currentTrack-1+tracks.length)%tracks.length;
+  audio.src = tracks[currentTrack].file;
+  audio.play();
+};
+
+/* Прогресс и перемотка */
+audio.ontimeupdate = ()=>{
   if(audio.duration){
-    let pct = audio.currentTime/audio.duration*100;
-    bar.style.width=pct+'%';
-    const m=Math.floor(audio.currentTime/60);
-    const s=Math.floor(audio.currentTime%60).toString().padStart(2,'0');
-    const dm=Math.floor(audio.duration/60);
-    const ds=Math.floor(audio.duration%60).toString().padStart(2,'0');
-    timeEl.textContent=`${m}:${s} / ${dm}:${ds}`;
+    const pct = (audio.currentTime/audio.duration)*100;
+    progressBar.style.width = pct+'%';
+    const m = Math.floor(audio.currentTime/60);
+    const s = Math.floor(audio.currentTime%60).toString().padStart(2,'0');
+    const dm = Math.floor(audio.duration/60);
+    const ds = Math.floor(audio.duration%60).toString().padStart(2,'0');
+    timeEl.textContent = `${m}:${s} / ${dm}:${ds}`;
   }
-}
+};
+progressContainer.onclick = e=>{
+  const rect = progressContainer.getBoundingClientRect();
+  const pct = (e.clientX - rect.left)/rect.width;
+  audio.currentTime = pct * audio.duration;
+};
 
-audio.ontimeupdate=updateBar;
-audio.onended=()=>{currentTrack=Math.floor(Math.random()*tracks.length);audio.src=tracks[currentTrack].file;audio.play();}
+/* Автопереход на следующий трек */
+audio.onended = ()=>{
+  currentTrack = (currentTrack+1)%tracks.length;
+  audio.src = tracks[currentTrack].file;
+  audio.play();
+};
 
-playBtn.onclick=()=>{audio.paused?audio.play():audio.pause()}
-audio.onplay=()=>playBtn.textContent='❚❚';
-audio.onpause=()=>playBtn.textContent='▶';
+/* Клики на звезды — частицы */
+canvas.addEventListener('click', e=>{
+  const particles = [];
+  for(let i=0;i<30;i++){
+    particles.push({
+      x:e.clientX,
+      y:e.clientY,
+      vx:(Math.random()-0.5)*6,
+      vy:(Math.random()-0.5)*6,
+      r:Math.random()*2+1,
+      alpha:1
+    });
+  }
+  const anim = setInterval(()=>{
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    drawStars();
+    particles.forEach(p=>{
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.03;
+      ctx.beginPath();
+      ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+      ctx.fillStyle=`rgba(255,255,255,${p.alpha})`;
+      ctx.fill();
+    });
+    if(particles.every(p=>p.alpha<=0)) clearInterval(anim);
+  },30);
+});
 
-prog.onclick=(e)=>{
-  const pct = e.offsetX/prog.offsetWidth;
-  audio.currentTime = pct*audio.duration;
-}
-prevBtn.onclick=()=>{currentTrack=(currentTrack-1+tracks.length)%tracks.length;audio.src=tracks[currentTrack].file;audio.play();}
-nextBtn.onclick=()=>= (currentTrack+1)%tracks.length;audio.src=tracks[currentTrack].file;audio.play();}
+/* Ресайз окна */
+window.addEventListener('resize', ()=>{
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+  drawStars();
+});
 </script>
 </body>
 </html>
+<!-- ========================== CANVAS ЗВЁЗД / ФОН ========================== -->
+<canvas id="canvas"></canvas>
+
+<script>
+// ========================== CANVAS ЗВЁЗД ==========================
+const canvas = document.getElementById('canvas');
+const ctx = canvas.getContext('2d');
+canvas.width = window.innerWidth;
+canvas.height = window.innerHeight;
+
+let stars = [];
+for(let i=0;i<150;i++){
+  stars.push({x:Math.random()*canvas.width, y:Math.random()*canvas.height, size:Math.random()*2+1, speed:Math.random()*0.5+0.2});
+}
+
+function animateStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{
+    if(s.life!==undefined){
+      s.x += s.vx; s.y += s.vy; s.life--;
+      ctx.fillStyle='white';
+      ctx.fillRect(s.x,s.y,s.size,s.size);
+    } else {
+      s.y += s.speed;
+      if(s.y>canvas.height) s.y=0;
+      ctx.fillStyle='white';
+      ctx.fillRect(s.x,s.y,s.size,s.size);
+    }
+  });
+  stars = stars.filter(s=>s.life===undefined || s.life>0);
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+window.addEventListener('resize', ()=>{ canvas.width=window.innerWidth; canvas.height=window.innerHeight; });
+
+// ========================== AVATAR HOVER GLOW ==========================
+const avatar = document.getElementById('avatar');
+avatar.addEventListener('mouseenter', () => { avatar.style.boxShadow='0 0 25px white'; });
+avatar.addEventListener('mouseleave', () => { avatar.style.boxShadow='none'; });
+
+// ========================== BUTTON HOVER GLOW ==========================
+Object.values(btns).forEach(b=>{
+  b.addEventListener('mouseenter', ()=>{ b.style.textShadow='0 0 8px white'; });
+  b.addEventListener('mouseleave', ()=>{ b.style.textShadow='none'; });
+});
+
+// ========================== STAR EXPLOSION ON CLICK ==========================
+function explode(x,y){
+  for(let i=0;i<30;i++){
+    stars.push({
+      x:x,
+      y:y,
+      size:Math.random()*3+1,
+      speed:Math.random()*2,
+      vx:Math.cos(Math.random()*Math.PI*2)*2,
+      vy:Math.sin(Math.random()*Math.PI*2)*2,
+      life:30
+    });
+  }
+}
+avatar.addEventListener('click', e=>{ explode(e.clientX,e.clientY); });
+Object.values(btns).forEach(b=>{
+  b.addEventListener('click', e=>{ 
+    const rect = b.getBoundingClientRect();
+    explode(rect.left+rect.width/2, rect.top+rect.height/2); 
+  });
+});
+
+// ========================== CURSOR ==========================
+const cursor = document.getElementById('cursor');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX+'px';
+  cursor.style.top = e.clientY+'px';
+});
+</script>
