@@ -48,7 +48,7 @@ align-items:center;
 .avatar{width:150px;height:150px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);transition:box-shadow .25s, transform .18s}  
 .avatar img{width:100%;height:100%;object-fit:cover;display:block}  
 .avatar:hover{box-shadow:0 0 30px rgba(255,255,255,0.14); transform:translateY(-4px)}  
-.controls{display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:14px}  
+.controls{Display:flex;gap:12px;flex-wrap:wrap;justify-content:center;margin-top:14px}  
 .btn{  
 padding:12px 18px;border-radius:12px;background:var(--glass);border:1px solid rgba(255,255,255,0.04);  
 color:var(--text);font-weight:700;cursor:pointer;backdrop-filter:blur(6px);  
@@ -211,7 +211,7 @@ btns.socials.addEventListener('click', ()=>{const s=panels.socials.classList.con
 /* Имена файлов должны точно совпадать с этими значениями в той же папке, где HTML */  
 const tracks = [  
   {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},  
-  {title:'Мері - Я з Украины (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},  
+  {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},  
   {title:'LASKX3I - Против царя', artist:'LASKX3I', file:'LASKX3I - Против царя.mp3'},  
   {title:'Ягода', artist:'—', file:'Ягода.m4a'},  
   {title:'Шугар - BMW (HoodTrap Remix)', artist:'Шугар', file:'Шугар - BMW (HoodTrap Remix).mp3'},  
@@ -219,4 +219,160 @@ const tracks = [
   {title:'MOON | Crystals', artist:'MOON', file:'2_5321416586563717473.mp3'},  
   {title:'Vtornik | Хороший', artist:'Vtornik', file:'2_5375374187688907798.mp3'},  
   {title:'Токсік(Mulancore)', artist:'—', file:'Токсік(Mulancore).mp3'},  
-  {title:'
+  {title:'Мы - Возможно', artist:'—', file:'Мы - Возможно.mp3'},  
+  {title:'AKA-SHGSH - NAM VSEGO 16', artist:'AKA-SHGSH', file:'𝗔𝗞𝗔-𝗦𝗛𝗚𝗦𝗛 - 𝗡𝗔𝗠 𝗩𝗦𝗘𝗚𝗢 𝟭𝟲.mp3'},  
+  {title:'Олені (HoodTrap Remix)', artist:'TIK', file:'ТІК - Олені (HoodTrap Remix).mp3'},  
+  {title:'Больше не курю', artist:'Слава Мерлоув', file:'2_5346031138626369896 (3).mp3'},  
+  {title:'ghostbless', artist:'dabbackwood', file:'2_5215200877102528947.m4a'},  
+  {title:'Бледный', artist:'dabbackwood', file:'Бледный.m4a'}  
+];  
+  
+/* ---------------- PLAYER ---------------- */  
+const audio = new Audio();  
+audio.preload='auto';  
+let current = Math.floor(Math.random()*tracks.length); // стартовый рандом  
+let isPlaying = false;  
+  
+const titleEl = document.getElementById('track-title');  
+const artistEl = document.getElementById('track-artist');  
+const btnPlay = document.getElementById('btn-play');  
+const btnPrev = document.getElementById('btn-prev');  
+const btnNext = document.getElementById('btn-next');  
+const currTimeEl = document.getElementById('current-time');  
+const durEl = document.getElementById('duration');  
+const progressContainer = document.getElementById('progress-container');  
+const progressFilled = document.getElementById('progress-filled');  
+const progressThumb = document.getElementById('progress-thumb');  
+  
+function setPlayIconPlaying(){  
+  btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6h4v12H6V6zm8 0h4v12h-4V6z" fill="#061018"/></svg>`;  
+}  
+function setPlayIconPaused(){  
+  btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>`;  
+}  
+  
+function pickRandom(exclude){  
+  if(tracks.length <= 1) return 0;  
+  let idx;  
+  do {  
+    idx = Math.floor(Math.random()*tracks.length);  
+  } while(idx === exclude);  
+  return idx;  
+}  
+  
+function loadTrack(index, tryPlay=false){  
+  current = index;  
+  const track = tracks[current];  
+  audio.src = track.file;  
+  titleEl.textContent = track.title || '—';  
+  artistEl.textContent = track.artist || '—';  
+  audio.load();  
+  if(tryPlay){  
+    audio.play().then(()=>{  
+      isPlaying = true;  
+      setPlayIconPlaying();  
+      document.getElementById('autoplayOverlay').style.display='none';  
+    }).catch(()=>{  
+      // браузер заблокировал автозапуск — показываем оверлей  
+      document.getElementById('autoplayOverlay').style.display='flex';  
+      isPlaying = false;  
+      setPlayIconPaused();  
+    });  
+  } else {  
+    isPlaying = false;  
+    setPlayIconPaused();  
+  }  
+}  
+  
+function playTrack(){  
+  audio.play().then(()=>{  
+    isPlaying = true;  
+    setPlayIconPlaying();  
+  }).catch(()=>{  
+    document.getElementById('autoplayOverlay').style.display='flex';  
+  });  
+}  
+  
+function pauseTrack(){  
+  audio.pause();  
+  isPlaying = false;  
+  setPlayIconPaused();  
+}  
+  
+btnPlay.addEventListener('click', ()=>{  
+  if(isPlaying) pauseTrack();  
+  else playTrack();  
+});  
+  
+// Prev / Next — теперь рандомные треки (не равные текущему, если возможно)  
+btnPrev.addEventListener('click', ()=>{  
+  const next = pickRandom(current);  
+  loadTrack(next, true);  
+});  
+btnNext.addEventListener('click', ()=>{  
+  const next = pickRandom(current);  
+  loadTrack(next, true);  
+});  
+  
+/* progress seeking (click + drag) */  
+let dragging = false;  
+function seekByClientX(clientX){  
+  const rect = progressContainer.getBoundingClientRect();  
+  let x = clientX - rect.left;  
+  if(x < 0) x = 0;  
+  if(x > rect.width) x = rect.width;  
+  const pct = x / rect.width;  
+  progressFilled.style.width = (pct*100) + '%';  
+  progressThumb.style.left = (pct*100) + '%';  
+  if(audio.duration) audio.currentTime = pct * audio.duration;  
+}  
+  
+progressContainer.addEventListener('pointerdown', (e)=>{  
+  dragging = true;  
+  progressContainer.setPointerCapture(e.pointerId);  
+  seekByClientX(e.clientX);  
+});  
+progressContainer.addEventListener('pointermove', (e)=>{  
+  if(!dragging) return;  
+  seekByClientX(e.clientX);  
+});  
+progressContainer.addEventListener('pointerup', (e)=>{  
+  dragging = false;  
+  try{ progressContainer.releasePointerCapture(e.pointerId); }catch(e){}  
+});  
+progressContainer.addEventListener('click', (e)=>{  
+  seekByClientX(e.clientX);  
+});  
+  
+audio.addEventListener('timeupdate', ()=>{  
+  if(!audio.duration || isNaN(audio.duration)) return;  
+  const percent = (audio.currentTime / audio.duration) * 100;  
+  progressFilled.style.width = percent + '%';  
+  progressThumb.style.left = percent + '%';  
+  currTimeEl.textContent = formatTime(audio.currentTime);  
+  durEl.textContent = formatTime(audio.duration);  
+});  
+  
+function formatTime(t){  
+  if(!t || isNaN(t)) return '0:00';  
+  const m = Math.floor(t/60);  
+  const s = Math.floor(t%60).toString().padStart(2,'0');  
+  return `${m}:${s}`;  
+}  
+  
+audio.addEventListener('ended', ()=>{  
+  const next = pickRandom(current);  
+  loadTrack(next, true);  
+});  
+  
+/* autoplay overlay button */  
+document.getElementById('autoplayEnable').addEventListener('click', ()=>{  
+  document.getElementById('autoplayOverlay').style.display='none';  
+  playTrack();  
+});  
+  
+/* init — загрузить случайный трек и попытаться автозапустить */  
+loadTrack(current, true);  
+</script>  
+</body>  
+</html>
