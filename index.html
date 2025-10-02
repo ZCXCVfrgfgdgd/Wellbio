@@ -133,8 +133,8 @@ background:rgba(0,0,0,0.5);z-index:9999;backdrop-filter:blur(4px);
       <a class="social" href="https://t.me/Femscout1" target="_blank"><div class="icon">TG</div><div>TG (личка)</div></a>  
       <a class="social" href="https://t.me/wellbioink" target="_blank"><div class="icon">TG</div><div>TG (BIO)</div></a>  
       <a class="social" href="https://discord.gg/66rXGeXR" target="_blank"><div class="icon">D</div><div>Discord — invite</div></a>  
-    </div>  
-    <div class="player" aria-label="Плеер">  
+    </div>
+<div class="player" aria-label="Плеер">  
       <div class="track-meta">  
         <div style="display:flex;flex-direction:column;gap:4px;">  
           <div class="track-title" id="track-title">—</div>  
@@ -184,7 +184,7 @@ for(let i=0;i<120;i++){
   s.style.animationDuration=(Math.random()*6+4)+'s';  
   document.body.appendChild(s);  
 }  
-  
+
 /* ---------------- PANELS ---------------- */  
 const panels = {  
   bio: document.getElementById('panel-bio'),  
@@ -206,9 +206,8 @@ btns.bio.addEventListener('click', ()=>{const s=panels.bio.classList.contains('s
 btns.other.addEventListener('click', ()=>{const s=panels.other.classList.contains('show'); hideAllPanels(); if(!s){panels.other.classList.add('show'); btns.other.classList.add('active')}})  
 btns.goals.addEventListener('click', ()=>{const s=panels.goals.classList.contains('show'); hideAllPanels(); if(!s){panels.goals.classList.add('show'); btns.goals.classList.add('active')}})  
 btns.socials.addEventListener('click', ()=>{const s=panels.socials.classList.contains('show'); hideAllPanels(); if(!s){panels.socials.classList.add('show'); btns.socials.classList.add('active')}})  
-  
+
 /* ---------------- TRACKS ---------------- */  
-/* Имена файлов должны точно совпадать с этими значениями в той же папке, где HTML */  
 const tracks = [  
   {title:'Самый Лучший День', artist:'—', file:'Самый Лучший День.mp3'},  
   {title:'Мері - Я з України (HoodTrap Remix)', artist:'Мері', file:'Мері - Я з України (HoodTrap Remix).mp3'},  
@@ -226,13 +225,13 @@ const tracks = [
   {title:'ghostbless', artist:'dabbackwood', file:'2_5215200877102528947.m4a'},  
   {title:'Бледный', artist:'dabbackwood', file:'Бледный.m4a'}  
 ];  
-  
+
 /* ---------------- PLAYER ---------------- */  
 const audio = new Audio();  
 audio.preload='auto';  
-let current = Math.floor(Math.random()*tracks.length); // стартовый рандом  
+let current = Math.floor(Math.random()*tracks.length);  
 let isPlaying = false;  
-  
+
 const titleEl = document.getElementById('track-title');  
 const artistEl = document.getElementById('track-artist');  
 const btnPlay = document.getElementById('btn-play');  
@@ -243,14 +242,14 @@ const durEl = document.getElementById('duration');
 const progressContainer = document.getElementById('progress-container');  
 const progressFilled = document.getElementById('progress-filled');  
 const progressThumb = document.getElementById('progress-thumb');  
-  
+
 function setPlayIconPlaying(){  
   btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M6 6h4v12H6V6zm8 0h4v12h-4V6z" fill="#061018"/></svg>`;  
 }  
 function setPlayIconPaused(){  
   btnPlay.innerHTML = `<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M7 5v14l11-7L7 5z" fill="#061018"/></svg>`;  
 }  
-  
+
 function pickRandom(exclude){  
   if(tracks.length <= 1) return 0;  
   let idx;  
@@ -259,7 +258,7 @@ function pickRandom(exclude){
   } while(idx === exclude);  
   return idx;  
 }  
-  
+
 function loadTrack(index, tryPlay=false){  
   current = index;  
   const track = tracks[current];  
@@ -273,7 +272,6 @@ function loadTrack(index, tryPlay=false){
       setPlayIconPlaying();  
       document.getElementById('autoplayOverlay').style.display='none';  
     }).catch(()=>{  
-      // браузер заблокировал автозапуск — показываем оверлей  
       document.getElementById('autoplayOverlay').style.display='flex';  
       isPlaying = false;  
       setPlayIconPaused();  
@@ -283,7 +281,7 @@ function loadTrack(index, tryPlay=false){
     setPlayIconPaused();  
   }  
 }  
-  
+
 function playTrack(){  
   audio.play().then(()=>{  
     isPlaying = true;  
@@ -292,19 +290,18 @@ function playTrack(){
     document.getElementById('autoplayOverlay').style.display='flex';  
   });  
 }  
-  
+
 function pauseTrack(){  
   audio.pause();  
   isPlaying = false;  
   setPlayIconPaused();  
 }  
-  
+
 btnPlay.addEventListener('click', ()=>{  
   if(isPlaying) pauseTrack();  
   else playTrack();  
 });  
-  
-// Prev / Next — теперь рандомные треки (не равные текущему, если возможно)  
+
 btnPrev.addEventListener('click', ()=>{  
   const next = pickRandom(current);  
   loadTrack(next, true);  
@@ -313,8 +310,7 @@ btnNext.addEventListener('click', ()=>{
   const next = pickRandom(current);  
   loadTrack(next, true);  
 });  
-  
-/* progress seeking (click + drag) */  
+
 let dragging = false;  
 function seekByClientX(clientX){  
   const rect = progressContainer.getBoundingClientRect();  
@@ -326,7 +322,7 @@ function seekByClientX(clientX){
   progressThumb.style.left = (pct*100) + '%';  
   if(audio.duration) audio.currentTime = pct * audio.duration;  
 }  
-  
+
 progressContainer.addEventListener('pointerdown', (e)=>{  
   dragging = true;  
   progressContainer.setPointerCapture(e.pointerId);  
@@ -334,16 +330,16 @@ progressContainer.addEventListener('pointerdown', (e)=>{
 });  
 progressContainer.addEventListener('pointermove', (e)=>{  
   if(!dragging) return;  
-  seekByClientX(e.clientX);  
+  seekByClientX(e.clientX);
 });  
 progressContainer.addEventListener('pointerup', (e)=>{  
   dragging = false;  
-  try{ progressContainer.releasePointerCapture(e.pointerId); }catch(e){}  
+  try { progressContainer.releasePointerCapture(e.pointerId); } catch(e){}  
 });  
 progressContainer.addEventListener('click', (e)=>{  
   seekByClientX(e.clientX);  
 });  
-  
+
 audio.addEventListener('timeupdate', ()=>{  
   if(!audio.duration || isNaN(audio.duration)) return;  
   const percent = (audio.currentTime / audio.duration) * 100;  
@@ -352,26 +348,24 @@ audio.addEventListener('timeupdate', ()=>{
   currTimeEl.textContent = formatTime(audio.currentTime);  
   durEl.textContent = formatTime(audio.duration);  
 });  
-  
+
 function formatTime(t){  
   if(!t || isNaN(t)) return '0:00';  
   const m = Math.floor(t/60);  
   const s = Math.floor(t%60).toString().padStart(2,'0');  
   return `${m}:${s}`;  
 }  
-  
+
 audio.addEventListener('ended', ()=>{  
   const next = pickRandom(current);  
   loadTrack(next, true);  
 });  
-  
-/* autoplay overlay button */  
+
 document.getElementById('autoplayEnable').addEventListener('click', ()=>{  
   document.getElementById('autoplayOverlay').style.display='none';  
   playTrack();  
 });  
-  
-/* init — загрузить случайный трек и попытаться автозапустить */  
+
 loadTrack(current, true);  
 </script>  
 </body>  
