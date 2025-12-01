@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>ʙɪᴏ ᴡᴇʟʟᴀ — Реворк</title>
+
+<style>
+:root {
+  --bg: #000;
+  --glass: rgba(255,255,255,0.06);
+  --panel: rgba(255,255,255,0.03);
+  --accent1: #7ee7ff;
+  --accent2: #ff6b9a;
+  --text: #e7f8ff;
+  --blur: blur(14px);
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  background:var(--bg);
+  font-family:Inter,Segoe UI,Roboto,sans-serif;
+  color:var(--text);
+  display:flex;
+  justify-content:center;
+  padding:20px;
+  overflow:hidden;
+  position:relative;
+}
+
+/* ====== ФОН — ЗВЁЗДЫ ====== */
+.star{
+  position:absolute;
+  background:#fff;
+  opacity:.9;
+  border-radius:50%;
+  animation:fall linear infinite;
+}
+@keyframes fall{
+  0%{transform:translateY(-10px);opacity:0}
+  50%{opacity:1}
+  100%{transform:translateY(110vh);opacity:0}
+}
+
+/* ====== СТАРТОВОЕ МЕНЮ ====== */
+.start-screen{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.75);
+  backdrop-filter:blur(14px);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  text-align:center;
+  z-index:99999;
+}
+.start-box{
+  background:var(--panel);
+  backdrop-filter:var(--blur);
+  padding:28px 34px;
+  border-radius:16px;
+  border:1px solid rgba(255,255,255,0.05);
+  max-width:320px;
+}
+.start-box p{
+  font-size:15px;
+  line-height:1.5;
+  opacity:.92;
+}
+.start-btn{
+  margin-top:18px;
+  padding:10px 16px;
+  border-radius:12px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#061018;
+  font-weight:700;
+  cursor:pointer;
+  border:none;
+  transition:.15s;
+}
+.start-btn:hover{
+  transform:scale(1.04);
+}
+
+/* ====== CONTAINER ====== */
+.container{
+  width:100%;
+  max-width:900px;
+  margin-top:40px;
+  display:none;
+}
+
+.top{
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,0.03);
+  padding:20px;
+  border-radius:18px;
+  backdrop-filter:var(--blur);
+}
+
+.avatar{
+  width:140px;height:140px;
+  border-radius:50%;
+  overflow:hidden;
+  margin:auto;
+  border:2px solid rgba(255,255,255,0.07);
+  transition:.25s;
+}
+.avatar:hover{
+  transform:translateY(-4px);
+  box-shadow:0 0 30px rgba(255,255,255,0.25);
+}
+
+/* ====== BUTTONS ====== */
+.controls{
+  margin-top:20px;
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  justify-content:center;
+}
+.btn{
+  padding:12px 20px;
+  border-radius:12px;
+  background:var(--glass);
+  color:var(--text);
+  border:1px solid rgba(255,255,255,0.04);
+  cursor:pointer;
+  font-weight:700;
+  transition:.18s;
+}
+.btn:hover{
+  transform:translateY(-4px);
+}
+.btn.active{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#061018;
+}
+
+/* ====== PANELS ====== */
+.card{
+  margin-top:20px;
+  display:none;
+  background:var(--panel);
+  border:1px solid rgba(255,255,255,0.03);
+  padding:20px;
+  border-radius:14px;
+  backdrop-filter:var(--blur);
+  animation:fadeIn .3s;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:translateY(8px)}
+  to{opacity:1;transform:none}
+}
+
+h3{margin-bottom:6px;color:#bfefff;font-size:15px}
+
+/* ====== ПЛЕЕР ====== */
+.player{
+  margin-top:20px;
+  background:var(--glass);
+  backdrop-filter:blur(14px);
+  padding:20px;
+  border-radius:18px;
+  border:1px solid rgba(255,255,255,0.06);
+  box-shadow:0 0 34px rgba(0,0,0,0.5) inset;
+}
+
+.track-title{
+  font-weight:800;
+  font-size:16px;
+}
+
+.progress{
+  margin-top:14px;
+  height:10px;
+  background:rgba(255,255,255,0.08);
+  border-radius:999px;
+  position:relative;
+  overflow:hidden;
+}
+.progress-filled{
+  position:absolute;
+  inset:0;
+  width:0%;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+}
+
+.player-btns{
+  margin-top:16px;
+  display:flex;
+  gap:12px;
+  justify-content:center;
+}
+.icon-btn{
+  width:60px;height:60px;
+  border-radius:16px;
+  border:none;
+  cursor:pointer;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#061018;
+  font-weight:800;
+  font-size:20px;
+  transition:.15s;
+}
+.icon-btn:hover{transform:scale(1.05)}
+
+</style>
+</head>
+<body>
+
+<script>
+// ЗВЁЗДНЫЙ ФОН
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  s.style.width=s.style.height=(Math.random()*2+1)+'px';
+  s.style.left=Math.random()*100+'vw';
+  s.style.top=Math.random()*100+'vh';
+  s.style.animationDuration=(Math.random()*6+4)+'s';
+  document.body.appendChild(s);
+}
+</script>
+
+<!-- ====== START SCREEN ====== -->
+<div class="start-screen" id="start">
+  <div class="start-box">
+    <p>Сейчас тут практически ничего нету,<br>так как мы полностью всё меняем.</p>
+    <button class="start-btn" id="startBtn">Нажми, чтобы продолжить</button>
+  </div>
+</div>
+
+<!-- ====== MAIN CONTENT ====== -->
+<div class="container" id="main">
+  <div class="top">
+    <div class="avatar">
+      <img src="1000038711-removebg-preview.png" width="100%" />
+    </div>
+
+    <div class="controls">
+      <button class="btn" id="bioBtn">BIO</button>
+      <button class="btn" id="otherBtn">OTHER</button>
+      <button class="btn" id="goalsBtn">GOALS</button>
+      <button class="btn" id="socBtn">SOCIALS</button>
+    </div>
+
+    <div class="card" id="bio">
+      <h3>BIO</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <div class="card" id="other">
+      <h3>OTHER</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <div class="card" id="goals">
+      <h3>GOALS</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <div class="card" id="socials">
+      <h3>SOCIALS</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <!-- ====== ПЛЕЕР ====== -->
+    <div class="player">
+      <div class="track-title" id="trackName">—</div>
+      <div class="progress"><div class="progress-filled" id="prog"></div></div>
+
+      <div class="player-btns">
+        <button class="icon-btn" id="prev">⟨</button>
+        <button class="icon-btn" id="play">▶</button>
+        <button class="icon-btn" id="next">⟩</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+document.getElementById("startBtn").onclick = ()=>{
+  document.getElementById("start").style.display="none";
+  document.getElementById("main").style.display="block";
+};
+
+/* ПАНЕЛИ */
+const buttons={
+  bioBtn:"bio",
+  otherBtn:"other",
+  goalsBtn:"goals",
+  socBtn:"socials"
+};
+for(let b in buttons){
+  document.getElementById(b).onclick=()=>{
+    document.querySelectorAll(".card").forEach(c=>c.style.display="none");
+    document.getElementById(buttons[b]).style.display="block";
+    document.querySelectorAll(".btn").forEach(x=>x.classList.remove("active"));
+    document.getElementById(b).classList.add("active");
+  }
+}
+
+/* ПЛЕЕР */
+const tracks=["track1.mp3","track2.mp3","track3.mp3"];
+let idx=0;
+const audio=new Audio();
+audio.src=tracks[0];
+
+function load(i){
+  idx=i;
+  audio.src=tracks[idx];
+  document.getElementById("trackName").textContent = "Трек " + (idx+1);
+  audio.play();
+  document.getElementById("play").textContent="⏸";
+}
+document.getElementById("play").onclick=()=>{
+  if(audio.paused){audio.play();document.getElementById("play").textContent="⏸";}
+  else{audio.pause();document.getElementById("play").textContent="▶";}
+};
+document.getElementById("next").onclick=()=>load((idx+1)%tracks.length);
+document.getElementById("prev").onclick=()=>load((idx-1+tracks.length)%tracks.length);
+
+audio.addEventListener("timeupdate",()=>{
+  if(audio.duration){
+    const p=(audio.currentTime/audio.duration)*100;
+    document.getElementById("prog").style.width=p+"%";
+  }
+});
+</script>
+
+</body>
+</html>
