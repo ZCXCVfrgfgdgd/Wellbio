@@ -1,405 +1,439 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ru">
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width,initial-scale=1" />
-<title>ʙɪᴏ ᴡᴇʟʟᴀ — Визитка Реворк</title>
+<title>ʙɪᴏ ᴡᴇʟʟᴀ — Реворк (Pink-Violet Liquid Glass)</title>
+<meta name="color-scheme" content="dark">
+
 <style>
 :root{
-  --bg:#000;
-  --panel: rgba(255,255,255,0.03);
+  --bg:#05040a;
+  --card: rgba(255,255,255,0.04);
   --glass: rgba(255,255,255,0.06);
-  --accent1:#ff4eb3; /* розово-фиолетовый */
-  --accent2:#a76aff; /* розово-фиолетовый */
-  --text:#e7f8ff;
-  --ios-track: rgba(255,255,255,0.06);
-  --btn-size:56px;
+  --accent1: #ff79d1; /* pink */
+  --accent2: #9b6bff; /* violet */
+  --text:#e9f7ff;
+  --muted: rgba(233,247,255,0.65);
+  --glass-blur: 14px;
+  --btn-radius:14px;
+  --shadow-light: 0 6px 30px rgba(155,103,255,0.06);
 }
-*{box-sizing:border-box}
+
+/* RESET */
+*{box-sizing:border-box;margin:0;padding:0}
 html,body{height:100%}
 body{
-  margin:0;
-  background:var(--bg);
+  font-family: Inter, "Segoe UI", Roboto, system-ui, -apple-system, "Helvetica Neue", Arial;
+  background:
+    radial-gradient(1200px 500px at 10% 10%, rgba(155,103,255,0.06), transparent 6%),
+    radial-gradient(1000px 400px at 90% 90%, rgba(255,121,209,0.04), transparent 6%),
+    var(--bg);
   color:var(--text);
-  font-family:Inter,Segoe UI,Roboto,Arial,sans-serif;
-  display:flex;
-  justify-content:center;
-  padding:20px;
   -webkit-font-smoothing:antialiased;
   -moz-osx-font-smoothing:grayscale;
+  display:flex;
+  justify-content:center;
+  padding:28px;
   overflow-x:hidden;
+  min-height:100vh;
   position:relative;
 }
 
-/* ---------------- STARS ---------------- */
-.star{position:absolute;width:2px;height:2px;border-radius:50%;background:#fff;opacity:.9;animation:fall linear infinite}
-@keyframes fall{0%{transform:translateY(-5px);opacity:0}50%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
+/* Stars */
+.star{position:absolute;border-radius:50%;background:linear-gradient(#fff,#ffe6ff);opacity:.85;animation:fall linear infinite}
+@keyframes fall{0%{transform:translateY(-6px);opacity:0}50%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
 
-/* ---------------- CONTAINER ---------------- */
-.container{width:100%;max-width:980px}
-
-/* ---------------- TOP PANEL ---------------- */
-.top{
-  display:flex;
-  gap:18px;
-  align-items:center;
-  padding:18px;
-  border-radius:14px;
-  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0));
-  border:1px solid rgba(255,255,255,0.03);
-  backdrop-filter:blur(10px);
-  flex-direction:column;
-  align-items:center;
+/* Start screen overlay */
+.start-screen{
+  position:fixed;inset:0;display:flex;align-items:center;justify-content:center;
+  background:linear-gradient(180deg, rgba(0,0,0,0.55), rgba(0,0,0,0.65));
+  z-index:9999;backdrop-filter:blur(10px);
 }
-.avatar{
-  width:150px;
-  height:150px;
-  border-radius:50%;
-  overflow:hidden;
-  border:2px solid rgba(255,255,255,0.06);
-  transition:box-shadow .25s, transform .18s;
+.start-card{
+  width:min(420px,92vw);
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  border-radius:16px;
+  padding:22px;
+  text-align:center;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
+  backdrop-filter: blur(var(--glass-blur)) saturate(140%);
 }
-.avatar img{
-  width:100%;
-  height:100%;
-  object-fit:cover;
-  display:block;
-}
-.avatar:hover{
-  box-shadow:0 0 30px rgba(255,255,255,0.14);
-  transform:translateY(-4px);
-}
-
-/* ---------------- BUTTONS ---------------- */
-.controls{
-  display:flex;
-  gap:12px;
-  flex-wrap:wrap;
-  justify-content:center;
-  margin-top:14px;
-}
-.btn{
+.start-card p{color:var(--muted);font-size:15px;line-height:1.45;margin-bottom:18px}
+.start-action{
+  display:inline-block;
   padding:12px 18px;
   border-radius:12px;
-  background:var(--glass);
-  border:1px solid rgba(255,255,255,0.04);
-  color:var(--text);
-  font-weight:700;
-  cursor:pointer;
-  backdrop-filter:blur(10px);
-  transition:transform .18s, box-shadow .18s, background .18s;
-  min-width:84px;
-  text-align:center;
-}
-.btn:hover{
-  transform:translateY(-6px);
-  box-shadow:0 12px 30px rgba(0,0,0,0.6);
-}
-.btn.active{
-  box-shadow:0 18px 40px rgba(0,0,0,0.6);
   background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  color:#fff;
+  color:#071018;font-weight:800;border:none;cursor:pointer;
+  box-shadow:0 8px 26px rgba(155,103,255,0.12);
+  transition:transform .14s;
 }
+.start-action:active{transform:scale(.98)}
+.start-hint{font-size:13px;color:rgba(233,247,255,0.55);margin-top:10px}
 
-/* ---------------- CARDS ---------------- */
-.card{
-  display:none;
-  margin-top:16px;
-  padding:14px;
-  border-radius:12px;
-  background:var(--panel);
-  border:1px solid rgba(255,255,255,0.03);
-  backdrop-filter:blur(12px);
-  text-align:center;
-  font-size:14px;
-}
-.card.show{display:block;animation:panelIn .28s ease}
-@keyframes panelIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+/* main container */
+.container{width:100%;max-width:980px;display:flex;flex-direction:column;gap:18px}
 
-/* ---------------- PLAYER ---------------- */
-.player{
-  margin-top:20px;
-  padding:14px;
-  border-radius:14px;
-  background:rgba(255,255,255,0.04);
+/* top card */
+.top{
+  border-radius:16px;
+  padding:18px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.01), rgba(255,255,255,0.005));
   border:1px solid rgba(255,255,255,0.03);
-  backdrop-filter:blur(16px);
+  backdrop-filter:blur(var(--glass-blur)) saturate(130%);
   display:flex;
   flex-direction:column;
-  gap:12px;
+  align-items:center;
+  gap:14px;
+}
+
+/* avatar */
+.avatar{
+  width:150px;height:150px;border-radius:50%;overflow:hidden;border:2px solid rgba(255,255,255,0.06);
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  box-shadow:0 10px 30px rgba(0,0,0,0.6) inset, 0 8px 30px rgba(155,103,255,0.06);
+  display:flex;align-items:center;justify-content:center;
+}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block;}
+
+/* name & subtitle */
+.nick{font-weight:800;letter-spacing:0.6px;font-size:20px}
+.sub{font-size:13px;color:var(--muted)}
+
+/* controls row */
+.controls{display:flex;gap:10px;flex-wrap:wrap;justify-content:center;margin-top:6px}
+
+/* Liquid glass button */
+.btn{
+  padding:10px 16px;border-radius:var(--btn-radius);
+  background:linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.02));
+  border:1px solid rgba(255,255,255,0.06);
+  color:var(--text);font-weight:700;cursor:pointer;
+  transition:transform .18s, box-shadow .18s, background .18s;
+  position:relative;overflow:hidden;
+  backdrop-filter: blur(calc(var(--glass-blur) - 4px)) saturate(160%);
+  min-width:86px;text-align:center;
+}
+.btn:before{
+  content:"";position:absolute;left:-20%;top:-60%;width:140%;height:120%;
+  background: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.18), rgba(255,255,255,0) 40%);
+  transform:translateY(-8px);transition:transform .6s cubic-bezier(.2,.9,.2,1);
+}
+.btn:hover{transform:translateY(-6px);box-shadow:0 18px 40px rgba(0,0,0,0.55)}
+.btn:hover:before{transform:translateY(20%)}
+.btn.active{
+  background: linear-gradient(90deg, rgba(255,121,209,0.15), rgba(155,103,255,0.12));
+  box-shadow: 0 12px 40px rgba(155,103,255,0.12), 0 0 30px rgba(255,121,209,0.06) inset;
+  color:#071018;
+}
+.btn:active{transform:scale(.985)}
+
+/* cards */
+.card{
   width:100%;
+  border-radius:12px;
+  padding:14px;
+  background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.03);
+  display:none;
+  backdrop-filter: blur(var(--glass-blur));
 }
-.track-meta{
-  display:flex;
-  align-items:center;
-  gap:12px;
-  justify-content:space-between;
-  flex-wrap:wrap;
-}
-.track-title{font-weight:800;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
-.track-artist{opacity:.9;font-size:13px}
-.controls-row{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  gap:12px;
-  flex-wrap:wrap;
-}
-.icon-btn{
-  width:var(--btn-size);
-  height:var(--btn-size);
+
+/* card headings */
+h3{color:#ffd8f5;font-size:13px;margin-bottom:8px}
+
+/* player */
+.player{
+  width:100%;
   border-radius:14px;
-  border:none;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  color:#fff;
-  font-weight:800;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  font-size:20px;
-  cursor:pointer;
-  box-shadow:0 8px 24px rgba(0,0,0,0.5);
-  transition:transform .12s;
+  padding:14px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01));
+  border:1px solid rgba(255,255,255,0.04);
+  display:flex;gap:14px;align-items:center;
+  backdrop-filter: blur(var(--glass-blur));
 }
-.icon-btn:active{transform:scale(.98)}
-.time-row{
-  display:flex;
-  align-items:center;
-  gap:10px;
-  justify-content:space-between;
-  flex-wrap:wrap;
+.cover{
+  width:96px;height:96px;border-radius:12px;overflow:hidden;border:1px solid rgba(255,255,255,0.04);
+  background:linear-gradient(180deg, rgba(255,121,209,0.06), rgba(155,103,255,0.04));
+  display:flex;align-items:center;justify-content:center;
 }
-.time-left,.time-right{
-  font-size:13px;
-  color:var(--text);
-  opacity:.95;
-  min-width:40px;
-  text-align:center;
-}
-.progress-container{
-  width:100%;
-  height:8px;
-  background:var(--ios-track);
-  border-radius:999px;
-  position:relative;
-  overflow:hidden;
+.cover img{width:100%;height:100%;object-fit:cover}
+.track-info{flex:1;display:flex;flex-direction:column;gap:6px}
+.track-title{font-weight:800;font-size:15px}
+.track-artist{font-size:13px;color:var(--muted)}
+
+/* progress */
+.progress-wrap{width:100%;display:flex;align-items:center;gap:12px}
+.time{font-size:12px;color:var(--muted);min-width:42px;text-align:center}
+.progress{
+  flex:1;
+  height:10px;border-radius:999px;background:rgba(255,255,255,0.04);position:relative;overflow:visible;
   cursor:pointer;
 }
 .progress-filled{
-  position:absolute;
-  left:0;top:0;height:100%;width:0%;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  border-radius:999px;
+  position:absolute;left:0;top:0;height:100%;width:0%;
+  background: linear-gradient(90deg,var(--accent1),var(--accent2));
+  border-radius:999px;box-shadow:0 6px 24px rgba(155,103,255,0.12);
   transition:width .06s linear;
 }
 .progress-thumb{
-  width:16px;height:16px;
-  border-radius:50%;
-  background:#fff;
-  position:absolute;
-  top:50%;
-  transform:translate(-50%,-50%);
-  left:0;
-  box-shadow:0 6px 18px rgba(0,0,0,0.6);
-  transition:transform .08s;
+  width:18px;height:18px;border-radius:50%;position:absolute;top:50%;transform:translate(-50%,-50%);
+  background:linear-gradient(180deg,#fff, rgba(255,255,255,0.92));
+  box-shadow:0 6px 18px rgba(0,0,0,0.6), 0 0 18px rgba(255,121,209,0.12);
+  left:0%;
   touch-action:none;
 }
 
-/* ---------------- AUTOPLAY ---------------- */
-.autoplay-overlay{
-  position:fixed;
-  left:0;top:0;width:100%;height:100%;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:rgba(0,0,0,0.6);
-  z-index:9999;
-  backdrop-filter:blur(4px);
+/* player controls */
+.controls-player{display:flex;gap:12px;align-items:center}
+.icon-btn{
+  width:54px;height:54px;border-radius:12px;border:none;cursor:pointer;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#061018;font-weight:800;font-size:18px;display:flex;align-items:center;justify-content:center;
+  box-shadow:0 12px 30px rgba(155,103,255,0.12);
+  transition:transform .12s;
 }
-.autoplay-box{
-  background:#071018;
-  padding:18px 24px;
-  border-radius:12px;
-  color:white;
-  text-align:center;
-}
-.autoplay-box button{
-  margin-top:12px;
-  padding:8px 14px;
-  border-radius:8px;
-  border:none;
-  background:var(--accent1);
-  color:#fff;
-  font-weight:700;
-  cursor:pointer;
+.icon-btn:active{transform:scale(.98)}
+
+/* subtle glass shine for cards */
+.card .shine{
+  position:absolute;left:0;top:0;pointer-events:none;
 }
 
-/* ---------------- RESPONSIVE ---------------- */
-@media(max-width:720px){
+/* layout adjustments */
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.col{flex:1 1 220px;min-width:180px}
+
+/* footer small text */
+.small{font-size:12px;color:rgba(233,247,255,0.55);text-align:center;margin-top:4px}
+
+/* responsive */
+@media(max-width:760px){
   .avatar{width:120px;height:120px}
-  :root{--btn-size:48px}
+  .player{flex-direction:column;align-items:stretch}
+  .cover{width:100%;height:200px;border-radius:12px}
+  .progress-wrap{flex-direction:column;align-items:stretch}
+  .time{min-width:unset;text-align:left}
+  .controls{gap:8px}
 }
 </style>
 </head>
 <body>
 
-<div class="container">
-  <div class="top">
+<!-- Stars -->
+<script>
+for(let i=0;i<120;i++){
+  const s=document.createElement('div');
+  s.className='star';
+  const size=(Math.random()*2+0.8);
+  s.style.width=size+'px';s.style.height=size+'px';
+  s.style.left=(Math.random()*100)+'vw';
+  s.style.top=(Math.random()*100)+'vh';
+  s.style.animationDuration=(Math.random()*8+4)+'s';
+  s.style.opacity=(Math.random()*0.6+0.3);
+  document.body.appendChild(s);
+}
+</script>
 
-    <!-- Аватар -->
-    <div class="avatar"><img src="1764622595112.jpg" alt="avatar"></div>
-    <div class="info">
+<!-- START SCREEN -->
+<div class="start-screen" id="startScreen" aria-hidden="false">
+  <div class="start-card" role="dialog" aria-modal="true" aria-label="start">
+    <p><strong>Сейчас тут практически ничего нет —</strong><br>мы полностью меняем BIO. Когда всё будет готово — ты сможешь добавить информацию.</p>
+    <button class="start-action" id="startBtn">Нажми, чтобы продолжить</button>
+    <div class="start-hint">Нажми в любое место или на кнопку</div>
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="container" id="mainContent" style="display:none" aria-hidden="true">
+
+  <div class="top" role="banner" aria-label="profile header">
+    <div class="avatar" aria-hidden="true">
+      <img src="1000038711-removebg-preview.png" alt="avatar">
+    </div>
+
+    <div style="text-align:center">
       <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
       <div class="sub">Дата рождения: 2012/08/28</div>
     </div>
 
-    <!-- Кнопки -->
-    <div class="controls" role="tablist">
-      <button class="btn" id="btn-bio">BIO</button>
-      <button class="btn" id="btn-other">OTHER</button>
-      <button class="btn" id="btn-goals">Goals</button>
-      <button class="btn" id="btn-socials">SOCIALS</button>
+    <div class="controls" role="tablist" aria-label="tabs">
+      <button class="btn" id="tab-bio" role="tab" aria-controls="panel-bio" aria-selected="false">BIO</button>
+      <button class="btn" id="tab-other" role="tab" aria-controls="panel-other" aria-selected="false">OTHER</button>
+      <button class="btn" id="tab-goals" role="tab" aria-controls="panel-goals" aria-selected="false">GOALS</button>
+      <button class="btn" id="tab-socials" role="tab" aria-controls="panel-socials" aria-selected="false">SOCIALS</button>
     </div>
 
-    <!-- Панели -->
-    <div class="card" id="panel-bio">Информации пока нет так как это только бета реверка био</div>
-    <div class="card" id="panel-other">Информации пока нет</div>
-    <div class="card" id="panel-goals">Информации пока нет</div>
-    <div class="card" id="panel-socials">Информации пока нет</div>
-
-    <!-- Плеер -->
-    <div class="player" aria-label="Плеер">
-      <div class="track-meta">
-        <div style="display:flex;flex-direction:column;gap:4px;">
-          <div class="track-title" id="track-title">𝐏𝐇𝐀𝐒𝐄 𝟐</div>
-          <div class="track-artist" id="track-artist">𝐈𝐍𝐊•𝐆𝐀𝐌𝐄 | 𝐀𝐃𝐌𝐈𝐍 𝐀𝐁𝐔𝐒𝐄 𝐒𝐎𝐍𝐆</div>
+    <!-- panels -->
+    <div id="panel-bio" class="card" role="tabpanel" aria-hidden="true" style="display:block">
+      <h3>Основное</h3>
+      <div class="row" style="position:relative">
+        <div class="col">
+          <p>Информации пока нет — это бета реворка BIO.</p>
         </div>
       </div>
-      <div class="controls-row">
-        <button class="icon-btn" id="btn-prev">⏮</button>
-        <button class="icon-btn" id="btn-play">▶️</button>
-        <button class="icon-btn" id="btn-next">⏭</button>
+    </div>
+
+    <div id="panel-other" class="card" role="tabpanel" aria-hidden="true">
+      <h3>OTHER</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <div id="panel-goals" class="card" role="tabpanel" aria-hidden="true">
+      <h3>GOALS</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <div id="panel-socials" class="card" role="tabpanel" aria-hidden="true">
+      <h3>SOCIALS</h3>
+      <p>Информации пока нет — это бета реворка BIO.</p>
+    </div>
+
+    <!-- player -->
+    <div class="player" role="region" aria-label="Аудиоплеер">
+      <div class="cover" aria-hidden="true">
+        <img src="1764622595112.jpg" alt="cover">
       </div>
-      <div class="time-row">
-        <div class="time-left" id="current-time">0:00</div>
-        <div style="flex:1;padding:0 8px;">
-          <div class="progress-container" id="progress-container" aria-label="Прогресс">
-            <div class="progress-filled" id="progress-filled"></div>
-            <div class="progress-thumb" id="progress-thumb"></div>
+
+      <div style="flex:1;display:flex;flex-direction:column;gap:10px">
+        <div class="track-info">
+          <div class="track-title" id="trackTitle">𝐏𝐇𝐀𝐒𝐄 𝟐</div>
+          <div class="track-artist" id="trackArtist">𝐈𝐍𝐊•𝐆𝐀𝐌𝐄 | 𝐀𝐃𝐌𝐈𝐍 𝐀𝐁𝐔𝐒𝐄 𝐒𝐎𝐍𝐆</div>
+        </div>
+
+        <div class="progress-wrap" style="align-items:center">
+          <div class="time" id="timeCurrent">0:00</div>
+          <div class="progress" id="progressBar" aria-label="Прогресс">
+            <div class="progress-filled" id="progressFilled"></div>
+            <div class="progress-thumb" id="progressThumb" role="slider" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" tabindex="0"></div>
+          </div>
+          <div class="time" id="timeDuration">0:00</div>
+        </div>
+
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-top:6px">
+          <div class="controls-player">
+            <button class="icon-btn" id="btnPrev" title="Previous">⟨</button>
+            <button class="icon-btn" id="btnPlay" title="Play">▶</button>
+            <button class="icon-btn" id="btnNext" title="Next">⟩</button>
+          </div>
+          <div style="display:flex;gap:8px;align-items:center">
+            <div class="small">Бета • Liquid Glass • Pink-Violet</div>
           </div>
         </div>
-        <div class="time-right" id="duration">0:00</div>
+
       </div>
     </div>
 
-  </div>
-</div>
+  </div> <!-- top -->
 
-<div id="autoplayOverlay" class="autoplay-overlay">
-  <div class="autoplay-box">
-    <div>Браузер заблокировал автозапуск звука.</div>
-    <div style="margin-top:8px;font-size:13px;opacity:.9">Нажми, чтобы включить звук</div>
-    <button id="autoplayEnable">Включить звук</button>
-  </div>
+  <div class="small">Информации пока нет — это бета реворка BIO. Когда будет готово — добавь сюда данные.</div>
 </div>
 
 <script>
-/* ---------------- STARS ---------------- */
-for(let i=0;i<120;i++){
-  const s=document.createElement('div');
-  s.className='star';
-  s.style.left=(Math.random()*100)+'vw';
-  s.style.top=(Math.random()*100)+'vh';
-  const size=(Math.random()*2+1)+'px';
-  s.style.width=s.style.height=size;
-  s.style.animationDuration=(Math.random()*6+4)+'s';
-  document.body.appendChild(s);
+/* ---------------- START SCREEN LOGIC ---------------- */
+const startScreen = document.getElementById('startScreen');
+const startBtn = document.getElementById('startBtn');
+const mainContent = document.getElementById('mainContent');
+
+function openMain(){
+  startScreen.style.transition='opacity .28s ease';
+  startScreen.style.opacity='0';
+  startScreen.setAttribute('aria-hidden','true');
+  
+setTimeout(() => {
+    startScreen.style.display = 'none';
+    mainContent.style.display = 'flex';
+    mainContent.setAttribute('aria-hidden', 'false');
+}, 300);
 }
 
-/* ---------------- PANELS ---------------- */
-const panels = {
-  bio: document.getElementById('panel-bio'),
-  other: document.getElementById('panel-other'),
-  goals: document.getElementById('panel-goals'),
-  socials: document.getElementById('panel-socials')
-};
-const btns = {
-  bio: document.getElementById('btn-bio'),
-  other: document.getElementById('btn-other'),
-  goals: document.getElementById('btn-goals'),
-  socials: document.getElementById('btn-socials')
-};
-function hideAllPanels(){
-  Object.values(panels).forEach(p=>p.classList.remove('show'));
-  Object.values(btns).forEach(b=>b.classList.remove('active'));
-}
-btns.bio.addEventListener('click', ()=>{const s=panels.bio.classList.contains('show'); hideAllPanels(); if(!s){panels.bio.classList.add('show'); btns.bio.classList.add('active')}})
-btns.other.addEventListener('click', ()=>{const s=panels.other.classList.contains('show'); hideAllPanels(); if(!s){panels.other.classList.add('show'); btns.other.classList.add('active')}})
-btns.goals.addEventListener('click', ()=>{const s=panels.goals.classList.contains('show'); hideAllPanels(); if(!s){panels.goals.classList.add('show'); btns.goals.classList.add('active')}})
-btns.socials.addEventListener('click', ()=>{const s=panels.socials.classList.contains('show'); hideAllPanels(); if(!s){panels.socials.classList.add('show'); btns.socials.classList.add('active')}})
+startBtn.addEventListener('click', openMain);
+startScreen.addEventListener('click', (e) => {
+    if (e.target === startScreen) openMain();
+});
 
-/* ---------------- PLAYER ---------------- */
-const audio = new Audio('tagmp3_VID_20251128_204439_774.mp3');
+/* ---------------- TABS LOGIC ---------------- */
+const tabs = document.querySelectorAll('.btn');
+const panels = document.querySelectorAll('.card');
+
+tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+        tabs.forEach(t => t.classList.remove('active'));
+        tab.classList.add('active');
+
+        const target = tab.getAttribute('aria-controls');
+        panels.forEach(panel => {
+            if (panel.id === target) {
+                panel.style.display = 'block';
+                panel.setAttribute('aria-hidden', 'false');
+            } else {
+                panel.style.display = 'none';
+                panel.setAttribute('aria-hidden', 'true');
+            }
+        });
+    });
+});
+
+/* ---------------- AUDIO PLAYER LOGIC ---------------- */
+const trackTitle = document.getElementById('trackTitle');
+const trackArtist = document.getElementById('trackArtist');
+const btnPlay = document.getElementById('btnPlay');
+const btnPrev = document.getElementById('btnPrev');
+const btnNext = document.getElementById('btnNext');
+const progressBar = document.getElementById('progressBar');
+const progressFilled = document.getElementById('progressFilled');
+const progressThumb = document.getElementById('progressThumb');
+const timeCurrent = document.getElementById('timeCurrent');
+const timeDuration = document.getElementById('timeDuration');
+
+const audio = new Audio('PHASE2_INK-GAME_ADMIN-ABUSE-SONG.mp3'); // твой трек
 let isPlaying = false;
 
-const btnPlay = document.getElementById('btn-play');
-
-function setPlayIconPlaying(){ btnPlay.textContent='⏸'; }
-function setPlayIconPaused(){ btnPlay.textContent='▶️'; }
-
-function playTrack(){
-  audio.play().then(()=>{
-    isPlaying=true;
-    setPlayIconPlaying();
-    document.getElementById('autoplayOverlay').style.display='none';
-  }).catch(()=>{document.getElementById('autoplayOverlay').style.display='flex';});
-}
-function pauseTrack(){audio.pause();isPlaying=false;setPlayIconPaused();}
-
-btnPlay.addEventListener('click', ()=>{
-  if(isPlaying) pauseTrack(); else playTrack();
-});
-
-document.getElementById('autoplayEnable').addEventListener('click', ()=>{
-  document.getElementById('autoplayOverlay').style.display='none';
-  playTrack();
-});
-
-/* ---------------- PROGRESS ---------------- */
-const progressContainer = document.getElementById('progress-container');
-const progressFilled = document.getElementById('progress-filled');
-const progressThumb = document.getElementById('progress-thumb');
-const currTimeEl = document.getElementById('current-time');
-const durEl = document.getElementById('duration');
-
-let dragging = false;
-
-function formatTime(t){const m=Math.floor(t/60);const s=Math.floor(t%60).toString().padStart(2,'0');return `${m}:${s}`;}
-
-function seekByClientX(clientX){
-  const rect = progressContainer.getBoundingClientRect();
-  let x = clientX - rect.left;
-  if(x<0)x=0;if(x>rect.width)x=rect.width;
-  const pct = x/rect.width;
-  progressFilled.style.width=(pct*100)+'%';
-  progressThumb.style.left=(pct*100)+'%';
-  if(audio.duration) audio.currentTime=pct*audio.duration;
+function playTrack() {
+    audio.play();
+    isPlaying = true;
+    btnPlay.textContent = '⏸';
 }
 
-progressContainer.addEventListener('pointerdown', (e)=>{dragging=true;progressContainer.setPointerCapture(e.pointerId);seekByClientX(e.clientX);});
-progressContainer.addEventListener('pointermove', (e)=>{if(!dragging)return;seekByClientX(e.clientX);});
-progressContainer.addEventListener('pointerup', (e)=>{dragging=false; try{progressContainer.releasePointerCapture(e.pointerId);}catch(e){}});
-progressContainer.addEventListener('click',(e)=>{seekByClientX(e.clientX);});
+function pauseTrack() {
+    audio.pause();
+    isPlaying = false;
+    btnPlay.textContent = '▶';
+}
 
-audio.addEventListener('timeupdate', ()=>{
-  if(!audio.duration || isNaN(audio.duration)) return;
-  const percent = (audio.currentTime/audio.duration)*100;
-  progressFilled.style.width=percent+'%';
-  progressThumb.style.left=percent+'%';
-  currTimeEl.textContent=formatTime(audio.currentTime);
-  durEl.textContent=formatTime(audio.duration);
+btnPlay.addEventListener('click', () => {
+    isPlaying ? pauseTrack() : playTrack();
 });
+
+audio.addEventListener('timeupdate', updateProgress);
+audio.addEventListener('loadedmetadata', () => {
+    timeDuration.textContent = formatTime(audio.duration);
+});
+
+function updateProgress() {
+    const percent = (audio.currentTime / audio.duration) * 100;
+    progressFilled.style.width = percent + '%';
+    progressThumb.style.left = percent + '%';
+    timeCurrent.textContent = formatTime(audio.currentTime);
+}
+
+function formatTime(sec) {
+    const minutes = Math.floor(sec / 60);
+    const seconds = Math.floor(sec % 60);
+    return `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
+}
+
+/* Progress bar seeking */
+function seek(e) {
+    const rect = progressBar.getBoundingClientRect();
+    const percent = Math.min(Math.max(0, e.clientX - rect.left), rect.width) / rect.width;
+    audio.currentTime = percent * audio.duration;
+}
+progressBar.addEventListener('click', seek);
+
+/* Optional: prev/next - только один трек, так что они просто перезапускают */
+btnPrev.addEventListener('click', () => { audio.currentTime = 0; });
+btnNext.addEventListener('click', () => { audio.currentTime = 0; });
 </script>
-
-</body>
-</html>
