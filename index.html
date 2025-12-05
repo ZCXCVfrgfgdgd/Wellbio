@@ -144,6 +144,17 @@ body{
 /* card headings */
 h3{color:#ffd8f5;font-size:13px;margin-bottom:8px}
 
+/* BIO CONTENT */
+.bio-section{display:flex;flex-direction:column;gap:6px;position:relative}
+.back-btn{
+  display:inline-block;margin-bottom:6px;padding:6px 12px;border-radius:12px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#071018;font-weight:700;cursor:pointer;text-decoration:none;
+  width:max-content;
+  box-shadow:0 6px 20px rgba(155,103,255,0.15);
+}
+.back-btn:hover{opacity:.85}
+
 /* player */
 .player{
   width:100%;
@@ -197,11 +208,6 @@ h3{color:#ffd8f5;font-size:13px;margin-bottom:8px}
 }
 .icon-btn:active{transform:scale(.98)}
 
-/* subtle glass shine for cards */
-.card .shine{
-  position:absolute;left:0;top:0;pointer-events:none;
-}
-
 /* layout adjustments */
 .row{display:flex;gap:12px;flex-wrap:wrap}
 .col{flex:1 1 220px;min-width:180px}
@@ -251,7 +257,7 @@ for(let i=0;i<120;i++){
 
   <div class="top" role="banner" aria-label="profile header">
     <div class="avatar" aria-hidden="true">
-      <img src="1000038711-removebg-preview.png" alt="avatar">
+      <img src="1764957641549.jpg" alt="avatar">
     </div>
 
     <div style="text-align:center">
@@ -266,13 +272,46 @@ for(let i=0;i<120;i++){
       <button class="btn" id="tab-socials" role="tab" aria-controls="panel-socials" aria-selected="false">SOCIALS</button>
     </div>
 
-    <!-- panels -->
+    <!-- BIO PANEL -->
     <div id="panel-bio" class="card" role="tabpanel" aria-hidden="true" style="display:block">
-      <h3>Основное</h3>
-      <div class="row" style="position:relative">
-        <div class="col">
-          <p>Информации пока нет — это бета реворка BIO.</p>
-        </div>
+      <div class="bio-section">
+        <p><strong>Основные</strong></p>
+        <p>Ник / Имя: Femscout1 / Максим</p>
+        <p>Возраст: 13</p>
+        <p>Дата рождения: 28/08/2012</p>
+        <p>Страна / Город: Украина / Львов</p>
+        <p>Чем занимаюсь / Род деятельности: -</p>
+        <p>Статус: Не в отношениях</p>
+      </div>
+
+      <div class="bio-section">
+        <p><strong>Второстепенные</strong></p>
+        <p>Рост: 177 см</p>
+        <p>Вес: 52 кг</p>
+        <p>Любимый цвет: Черный</p>
+        <p>Любимая музыка / жанры: Funk, Pop</p>
+        <p>Любимые игры: RDR2, Roblox, MSC</p>
+        <p>Любимые фильмы / сериалы: Squid Game 2/3 Season</p>
+      </div>
+
+      <div class="bio-section">
+        <p><strong>Интересы</strong></p>
+        <p>Скоро будет</p>
+      </div>
+
+      <div class="bio-section">
+        <p><strong>Навыки</strong></p>
+        <p>Скоро будет</p>
+      </div>
+
+      <div class="bio-section">
+        <p><strong>О себе</strong></p>
+        <p>Максим, 177 рост, живу в Украине город Львов, учусь в 8 классе, люблю всякую дрянь, игры, фарм, посидеть самому подумать. (Скоро будет)</p>
+      </div>
+
+      <div class="bio-section">
+        <p><strong>Цель</strong></p>
+        <p>Скоро будет</p>
       </div>
     </div>
 
@@ -291,10 +330,10 @@ for(let i=0;i<120;i++){
       <p>Информации пока нет — это бета реворка BIO.</p>
     </div>
 
-    <!-- player -->
+    <!-- AUDIO PLAYER -->
     <div class="player" role="region" aria-label="Аудиоплеер">
-      <div class="cover" aria-hidden="true">
-        <img src="1764622595112.jpg" alt="cover">
+<div class="cover" aria-hidden="true">
+        <img src="Screenshot_20251128-204018.jpg" alt="cover">
       </div>
 
       <div style="flex:1;display:flex;flex-direction:column;gap:10px">
@@ -319,10 +358,9 @@ for(let i=0;i<120;i++){
             <button class="icon-btn" id="btnNext" title="Next">⟩</button>
           </div>
           <div style="display:flex;gap:8px;align-items:center">
-            <div class="small">Im love ❤️</div>
+            <div class="small">Бета • Liquid Glass • Pink-Violet</div>
           </div>
         </div>
-
       </div>
     </div>
 
@@ -332,7 +370,7 @@ for(let i=0;i<120;i++){
 </div>
 
 <script>
-/* ---------------- START SCREEN LOGIC ---------------- */
+/* ---------------- START SCREEN ---------------- */
 const startScreen = document.getElementById('startScreen');
 const startBtn = document.getElementById('startBtn');
 const mainContent = document.getElementById('mainContent');
@@ -341,99 +379,163 @@ function openMain(){
   startScreen.style.transition='opacity .28s ease';
   startScreen.style.opacity='0';
   startScreen.setAttribute('aria-hidden','true');
-  
-setTimeout(() => {
-    startScreen.style.display = 'none';
-    mainContent.style.display = 'flex';
-    mainContent.setAttribute('aria-hidden', 'false');
-}, 300);
+  setTimeout(()=>{ startScreen.style.display='none'; mainContent.style.display='block'; mainContent.setAttribute('aria-hidden','false'); }, 280);
 }
-
 startBtn.addEventListener('click', openMain);
-startScreen.addEventListener('click', (e) => {
-    if (e.target === startScreen) openMain();
+startScreen.addEventListener('click', (e)=>{
+  if(e.target === startScreen || e.target === startBtn) openMain();
 });
 
-/* ---------------- TABS LOGIC ---------------- */
-const tabs = document.querySelectorAll('.btn');
-const panels = document.querySelectorAll('.card');
-
-tabs.forEach(tab => {
-    tab.addEventListener('click', () => {
-        tabs.forEach(t => t.classList.remove('active'));
-        tab.classList.add('active');
-
-        const target = tab.getAttribute('aria-controls');
-        panels.forEach(panel => {
-            if (panel.id === target) {
-                panel.style.display = 'block';
-                panel.setAttribute('aria-hidden', 'false');
-            } else {
-                panel.style.display = 'none';
-                panel.setAttribute('aria-hidden', 'true');
-            }
-        });
+/* ---------------- TABS ---------------- */
+const tabs = {
+  'tab-bio':'panel-bio',
+  'tab-other':'panel-other',
+  'tab-goals':'panel-goals',
+  'tab-socials':'panel-socials'
+};
+Object.keys(tabs).forEach(tid=>{
+  const btn = document.getElementById(tid);
+  btn.addEventListener('click', ()=>{
+    Object.values(tabs).forEach(pid=>{
+      const el=document.getElementById(pid);
+      el.style.display='none';
+      el.setAttribute('aria-hidden','true');
     });
+    Object.keys(tabs).forEach(k=>document.getElementById(k).classList.remove('active'));
+    document.getElementById(tabs[tid]).style.display='block';
+    document.getElementById(tabs[tid]).setAttribute('aria-hidden','false');
+    btn.classList.add('active');
+  });
 });
+document.getElementById('tab-bio').click();
 
-/* ---------------- AUDIO PLAYER LOGIC ---------------- */
+/* ---------------- AUDIO PLAYER ---------------- */
+const tracks = [
+  {
+    title:'𝐏𝐇𝐀𝐒𝐄 𝟐',
+    artist:'𝐈𝐍𝐊•𝐆𝐀𝐌𝐄 | 𝐀𝐃𝐌𝐈𝐍 𝐀𝐁𝐔𝐒𝐄 𝐒𝐎𝐍𝐆',
+    file:'tagmp3_VID_20251128_204439_774.mp3',
+    cover:'Screenshot_20251128-204018.jpg'
+  },
+  {
+    title:'Сайт',
+    artist:'Раковая Выпухоль',
+    file:'2_5361802666559179009 (1).m4a',
+    cover:'Screenshot_20251206-000432.jpg'
+  }
+];
+
+const audio = new Audio();
+audio.preload = 'metadata';
+let current = 0;
+let isPlaying = false;
+
 const trackTitle = document.getElementById('trackTitle');
 const trackArtist = document.getElementById('trackArtist');
+const coverImg = document.querySelector('.cover img');
+
 const btnPlay = document.getElementById('btnPlay');
 const btnPrev = document.getElementById('btnPrev');
 const btnNext = document.getElementById('btnNext');
-const progressBar = document.getElementById('progressBar');
-const progressFilled = document.getElementById('progressFilled');
-const progressThumb = document.getElementById('progressThumb');
+
 const timeCurrent = document.getElementById('timeCurrent');
 const timeDuration = document.getElementById('timeDuration');
+const progFilled = document.getElementById('progressFilled');
+const progBar = document.getElementById('progressBar');
+const progThumb = document.getElementById('progressThumb');
 
-const audio = new Audio('PHASE2_INK-GAME_ADMIN-ABUSE-SONG.mp3'); // твой трек
-let isPlaying = false;
+function formatTime(t){
+  if(!t || isNaN(t)) return '0:00';
+  const m = Math.floor(t/60);
+  const s = Math.floor(t%60).toString().padStart(2,'0');
+  return m+':'+s;
+}
 
-function playTrack() {
-    audio.play();
+function loadTrack(i, autoplay=false){
+  current = (i+tracks.length)%tracks.length;
+  const t = tracks[current];
+  audio.src = t.file;
+  trackTitle.textContent = t.title || '—';
+  trackArtist.textContent = t.artist || '—';
+  coverImg.src = t.cover || '';
+  audio.load();
+  if(autoplay) play(); else pause();
+}
+
+function play(){
+  audio.play().then(()=>{
     isPlaying = true;
     btnPlay.textContent = '⏸';
-}
-
-function pauseTrack() {
-    audio.pause();
+  }).catch(()=>{
     isPlaying = false;
     btnPlay.textContent = '▶';
+  });
 }
 
-btnPlay.addEventListener('click', () => {
-    isPlaying ? pauseTrack() : playTrack();
+function pause(){
+  audio.pause();
+  isPlaying = false;
+  btnPlay.textContent = '▶';
+}
+
+btnPrev.addEventListener('click', ()=>{ loadTrack(current-1, true); });
+btnNext.addEventListener('click', ()=>{ loadTrack(current+1, true); });
+btnPlay.addEventListener('click', ()=>{ if(audio.paused) play(); else pause(); });
+
+audio.addEventListener('timeupdate', ()=>{
+  if(!audio.duration || isNaN(audio.duration)) return;
+  const pct = (audio.currentTime / audio.duration) * 100;
+  progFilled.style.width = pct + '%';
+  progThumb.style.left = pct + '%';
+  timeCurrent.textContent = formatTime(audio.currentTime);
+  timeDuration.textContent = formatTime(audio.duration);
+  progThumb.setAttribute('aria-valuenow', Math.round(pct));
 });
 
-audio.addEventListener('timeupdate', updateProgress);
-audio.addEventListener('loadedmetadata', () => {
-    timeDuration.textContent = formatTime(audio.duration);
+audio.addEventListener('ended', ()=>{ loadTrack(current+1, true); });
+
+let dragging = false;
+function seekFromClientX(clientX){
+  const rect = progBar.getBoundingClientRect();
+  let x = clientX - rect.left;
+  if(x<0) x=0; if(x>rect.width) x=rect.width;
+  const pct = x/rect.width;
+  progFilled.style.width = (pct*100)+'%';
+  progThumb.style.left = (pct*100)+'%';
+  if(audio.duration) audio.currentTime = pct * audio.duration;
+}
+
+progBar.addEventListener('pointerdown', (e)=>{
+  dragging = true;
+  progBar.setPointerCapture(e.pointerId);
+  seekFromClientX(e.clientX);
+});
+progBar.addEventListener('pointermove', (e)=>{
+  if(!dragging) return;
+  seekFromClientX(e.clientX);
+});
+progBar.addEventListener('pointerup', (e)=>{
+  dragging = false;
+  try{ progBar.releasePointerCapture(e.pointerId); }catch(e){}
+});
+progBar.addEventListener('click', (e)=>{ seekFromClientX(e.clientX); });
+
+progThumb.addEventListener('keydown', (e)=>{
+  if(!audio.duration) return;
+  const step = audio.duration / 20;
+  if(e.key === 'ArrowRight' || e.key === 'ArrowUp'){ audio.currentTime = Math.min(audio.duration, audio.currentTime + step); }
+  if(e.key === 'ArrowLeft' || e.key === 'ArrowDown'){ audio.currentTime = Math.max(0, audio.currentTime - step); }
 });
 
-function updateProgress() {
-    const percent = (audio.currentTime / audio.duration) * 100;
-    progressFilled.style.width = percent + '%';
-    progressThumb.style.left = percent + '%';
-    timeCurrent.textContent = formatTime(audio.currentTime);
-}
+loadTrack(0,false);
 
-function formatTime(sec) {
-    const minutes = Math.floor(sec / 60);
-    const seconds = Math.floor(sec % 60);
-    return `${minutes}:${seconds < 10 ? '0'+seconds : seconds}`;
-}
-
-/* Progress bar seeking */
-function seek(e) {
-    const rect = progressBar.getBoundingClientRect();
-    const percent = Math.min(Math.max(0, e.clientX - rect.left), rect.width) / rect.width;
-    audio.currentTime = percent * audio.duration;
-}
-progressBar.addEventListener('click', seek);
-
-/* Optional: prev/next - только один трек, так что они просто перезапускают */
-btnPrev.addEventListener('click', () => { audio.currentTime = 0; });
-btnNext.addEventListener('click', () => { audio.currentTime = 0; });
+window.addEventListener('keydown', (e)=>{
+  if(e.code === 'Space' && !['INPUT','TEXTAREA'].includes(document.activeElement.tagName)){
+    e.preventDefault();
+    if(audio.paused) play(); else pause();
+  }
+});
 </script>
+
+</body>
+</html>
