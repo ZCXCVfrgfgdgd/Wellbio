@@ -3,8 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>ʙɪᴏ ᴡᴇʟʟᴀ — Liquid Glass</title>
+<title>ʙɪᴏ ᴡᴇʟʟᴀ</title>
 <meta name="color-scheme" content="dark">
+
 <style>
 :root{
   --bg:#05040a;
@@ -12,78 +13,69 @@
   --accent2:#9b6bff;
   --text:#e9f7ff;
   --muted:rgba(233,247,255,.65);
-  --glass-blur:14px;
-  --btn-radius:14px;
+  --glass:rgba(255,255,255,.05);
 }
 *{box-sizing:border-box;margin:0;padding:0}
 body{
-  min-height:100vh;
   background:var(--bg);
   color:var(--text);
   font-family:Inter,system-ui;
   display:flex;
   justify-content:center;
   padding:24px;
-  overflow-x:hidden;
-  position:relative;
 }
-.star{position:absolute;border-radius:50%;background:linear-gradient(#fff,#ffe6ff);opacity:.85;animation:fall linear infinite}
-@keyframes fall{0%{transform:translateY(-6px);opacity:0}50%{opacity:1}100%{transform:translateY(110vh);opacity:0}}
-.container{width:100%;max-width:980px;display:none;flex-direction:column;gap:18px}
-.top{
-  background:rgba(255,255,255,.03);
+.container{max-width:900px;width:100%;display:none}
+.card{
+  background:var(--glass);
   border-radius:16px;
-  padding:20px;
-  backdrop-filter:blur(var(--glass-blur));
-  display:flex;
-  flex-direction:column;
-  align-items:center;
+  padding:16px;
+  margin-top:14px;
+  backdrop-filter:blur(14px);
 }
-.avatar{width:150px;height:150px;border-radius:50%;overflow:hidden;margin:auto;border:2px solid rgba(255,255,255,0.06);}
+.avatar{width:140px;height:140px;border-radius:50%;overflow:hidden;margin:auto}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.nick{text-align:center;font-weight:800;margin-top:12px}
-.sub{text-align:center;font-size:13px;color:var(--muted)}
-.controls{display:flex;gap:10px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-.btn{padding:10px 16px;border-radius:var(--btn-radius);background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);color:var(--text);cursor:pointer;font-weight:700}
-.btn.active{background:linear-gradient(90deg,var(--accent1),var(--accent2));color:#071018}
-.card{display:none;margin-top:14px;background:rgba(255,255,255,.03);border-radius:12px;padding:14px;backdrop-filter:blur(var(--glass-blur))}
-h3{color:#ffd8f5;font-size:13px;margin-bottom:8px}
-a{color:#ffd8f5;text-decoration:none}
-.player{margin-top:20px;padding:16px;border-radius:16px;background:rgba(255,255,255,.04);display:flex;flex-direction:column;gap:12px}
+.nick{text-align:center;font-weight:800;margin-top:10px}
+.sub{text-align:center;color:var(--muted);font-size:13px}
+
+.controls{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
+.btn{
+  padding:10px 14px;
+  border-radius:14px;
+  border:1px solid rgba(255,255,255,.1);
+  background:rgba(255,255,255,.05);
+  color:var(--text);
+  cursor:pointer;
+}
+.btn.active{
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  color:#000;
+}
+
+.player{margin-top:20px}
 .cover{width:100%;height:220px;border-radius:12px;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover}
 .track-title{font-weight:800;margin-top:10px}
 .track-artist{font-size:13px;color:var(--muted)}
-.progress{height:8px;background:rgba(255,255,255,.1);border-radius:999px;margin:12px 0;cursor:pointer;position:relative}
-.progress-filled{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2));border-radius:999px}
-.controls-player{display:flex;justify-content:center;gap:12px}
-.icon-btn{width:56px;height:56px;border-radius:14px;border:none;cursor:pointer;background:linear-gradient(90deg,var(--accent1),var(--accent2));font-size:18px}
-.small{text-align:center;font-size:12px;color:var(--muted);margin-top:8px}
+.progress{height:8px;background:#222;border-radius:999px;margin:10px 0;cursor:pointer}
+.progress-filled{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
+.p-controls{display:flex;justify-content:center;gap:10px}
+.p-controls button{
+  width:56px;height:56px;border:none;border-radius:14px;
+  background:linear-gradient(90deg,var(--accent1),var(--accent2));
+  font-size:18px;
+}
+a{color:#ffd8f5;text-decoration:none}
 </style>
 </head>
+
 <body>
 
-<!-- Звезды -->
-<script>
-for(let i=0;i<100;i++){
-  const s=document.createElement('div');
-  s.className='star';
-  const size=(Math.random()*2+0.8);
-  s.style.width=size+'px';s.style.height=size+'px';
-  s.style.left=(Math.random()*100)+'vw';
-  s.style.top=(Math.random()*100)+'vh';
-  s.style.animationDuration=(Math.random()*8+4)+'s';
-  s.style.opacity=(Math.random()*0.6+0.3);
-  document.body.appendChild(s);
-}
-</script>
+<div class="container" id="app">
 
-<div class="container" id="main">
-
-<div class="top">
+<div class="card">
   <div class="avatar"><img src="1764957641549.jpg"></div>
   <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
-  <div class="sub">Дата рождения: 28/08/2012</div>
+  <div class="sub">Максим • 28/08/2012 • Украина, Львов</div>
 
   <div class="controls">
     <button class="btn active" data-tab="bio">BIO</button>
@@ -91,99 +83,107 @@ for(let i=0;i<100;i++){
     <button class="btn" data-tab="goals">GOALS</button>
     <button class="btn" data-tab="socials">SOCIALS</button>
   </div>
-
-  <div class="card" id="bio" style="display:block">
-    <h3>BIO</h3>
-    <div>
-      <button class="btn" data-menu="mainInfo">Основное</button>
-      <button class="btn" data-menu="secondary">Второстепенное</button>
-      <button class="btn" data-menu="aboutMe">О себе</button>
-    </div>
-    <div id="bioContent" style="margin-top:12px;"></div>
-  </div>
-
-  <div class="card" id="other">
-    <h3>OTHER</h3>
-    <p>Огромное спасибо друзьям за поддержку 💜 и <b>vanılla</b> за помощь.</p>
-  </div>
-
-  <div class="card" id="goals">
-    <h3>GOALS</h3>
-    <p>Пока целей нет.</p>
-  </div>
-
-  <div class="card" id="socials">
-    <h3>SOCIALS</h3>
-    <p>Telegram — <a href="https://t.me/Femscout1" target="_blank">t.me/Femscout1</a></p>
-    <p>TikTok — <a href="https://tiktok.com/@lerety2" target="_blank">@lerety2</a></p>
-  </div>
-
-  <!-- Плеер -->
-  <div class="player">
-    <div class="cover"><img id="cover" src="Screenshot_20251128-204018.jpg"></div>
-    <div class="track-title" id="title">—</div>
-    <div class="track-artist" id="artist">—</div>
-    <div class="progress" id="progress"><div class="progress-filled" id="filled"></div></div>
-    <div class="controls-player">
-      <button class="icon-btn" id="prev">⟨</button>
-      <button class="icon-btn" id="play">▶</button>
-      <button class="icon-btn" id="next">⟩</button>
-    </div>
-    <div class="small">Random playlist • Beta</div>
-  </div>
-
 </div>
+
+<div class="card" id="bio">
+<h3>Основное</h3>
+<p>Ник: Femscout1</p>
+<p>Имя: Максим</p>
+<p>Возраст: 13</p>
+<p>Страна: Украина</p>
+<p>Город: Львов</p>
+<p>Статус: не в отношениях</p>
+
+<h3 style="margin-top:10px">Второстепенное</h3>
+<p>Рост: 177</p>
+<p>Вес: 52</p>
+<p>Музыка: funk, pop</p>
+<p>Игры: RDR2, Roblox, MSC</p>
+
+<h3 style="margin-top:10px">О себе</h3>
+<p>Люблю игры, фарм, иногда побыть одному и подумать.</p>
+</div>
+
+<div class="card" id="other" style="display:none">
+<p>Огромное спасибо моим друзьям, которые поддерживали 💜</p>
+<p>И <b>vanılla</b> — за напоминания о BIO.</p>
+<p style="margin-top:8px">
+<a href="http://t.me/ananimnaya_valentinka_robot?start=u1856347223" target="_blank">
+Задать анонимный вопрос
+</a>
+</p>
+</div>
+
+<div class="card" id="goals" style="display:none">
+<p>На данный момент нету.</p>
+</div>
+
+<div class="card" id="socials" style="display:none">
+<p>Telegram — <a href="https://t.me/Femscout1">t.me/Femscout1</a></p>
+<p>TikTok — <a href="https://tiktok.com/@lerety2">@lerety2</a></p>
+</div>
+
+<div class="card player">
+<div class="cover"><img id="cover"></div>
+<div class="track-title" id="title"></div>
+<div class="track-artist" id="artist"></div>
+<div class="progress" id="progress"><div class="progress-filled" id="filled"></div></div>
+<div class="p-controls">
+<button id="prev">⟨</button>
+<button id="play">▶</button>
+<button id="next">⟩</button>
+</div>
+</div>
+
 </div>
 
 <script>
-// Tabs
-document.querySelectorAll('.btn[data-tab]').forEach(b=>{
-  b.onclick=()=>{
-    document.querySelectorAll('.btn[data-tab]').forEach(x=>x.classList.remove('active'));
-    b.classList.add('active');
-    document.querySelectorAll('.card').forEach(c=>c.style.display='none');
-    document.getElementById(b.dataset.tab).style.display='block';
-  }
-});
-
-// BIO меню
-const bioData = {
-  mainInfo:`<p>Ник: Femscout1 / Максим</p><p>Возраст: 13</p><p>Дата рождения: 28/08/2012</p><p>Город: Львов, Украина</p><p>Статус: Не в отношениях</p>`,
-  secondary:`<p>Рост: 177</p><p>Вес: 52</p><p>Любимая музыка: funk, pop</p><p>Любимые игры: RDR2, Roblox, MSC</p><p>Любимые фильмы/сериалы: Squid Game 2/3 Season</p>`,
-  aboutMe:`<p>Максим, 177 см, живу в Львове, учусь в 8 классе, люблю игры и подумать в одиночестве.</p>`
-};
-document.querySelectorAll('#bio .btn[data-menu]').forEach(b=>{
-  b.onclick=()=>{
-    document.getElementById('bioContent').innerHTML = bioData[b.dataset.menu] || '';
-  }
-});
-
-// Audio Player
 const tracks=[
-  {title:'Ты любишь танцевать',artist:'CUPSIZE',file:'2_5237768993212742673.mp3',cover:'9b816476ba9cc02b600ef5ec6c926af7.1000x1000x1.jpg'},
-  {title:'С тобой',artist:'Charge Music',file:'2_5316856675620127297.mp3',cover:'1200x630bb.jpg'},
-  {title:'NOBODY',artist:'Toxi$, Big Baby Tape',file:'2_5220048177192794197.mp3',cover:'artworks-vVzuX0zFy18o6pqh-xvxwnA-t500x500.png'}
+{title:"Ты любишь танцевать",artist:"CUPSIZE",file:"2_5237768993212742673.mp3",cover:"9b816476ba9cc02b600ef5ec6c926af7.1000x1000x1.jpg"},
+{title:"С тобой",artist:"Charge Music",file:"2_5316856675620127297.mp3",cover:"1200x630bb.jpg"},
+{title:"NOBODY",artist:"Toxi$, Big Baby Tape",file:"2_5220048177192794197.mp3",cover:"artworks-vVzuX0zFy18o6pqh-xvxwnA-t500x500.png"},
+{title:"Martin Roze",artist:"madk1d, greyrock, tewiq",file:"2_5402341707519916888 (2).m4a",cover:"artworks-dZUYTgfQVZzfKQwk-ZCHa8g-t500x500.jpg"},
+{title:"Бабки",artist:"lightprey, trepet, whitek3d",file:"2_5382132391743620975 (2).mp3",cover:"maxresdefault.jpg"}
 ];
-let i=0;
-const audio=new Audio();
-const title=document.getElementById('title');
-const artist=document.getElementById('artist');
-const cover=document.getElementById('cover');
-const filled=document.getElementById('filled');
 
-function load(n){i=(n+tracks.length)%tracks.length;audio.src=tracks[i].file;title.textContent=tracks[i].title;artist.textContent=tracks[i].artist;cover.src=tracks[i].cover;}
+tracks.sort(()=>Math.random()-0.5);
+
+const audio=new Audio();
+let i=0;
+const title=document.getElementById("title");
+const artist=document.getElementById("artist");
+const cover=document.getElementById("cover");
+const filled=document.getElementById("filled");
+
+function load(n){
+ i=(n+tracks.length)%tracks.length;
+ audio.src=tracks[i].file;
+ title.textContent=tracks[i].title;
+ artist.textContent=tracks[i].artist;
+ cover.src=tracks[i].cover;
+}
 load(0);
 
-document.getElementById('play').onclick=()=>audio.paused?(audio.play(),event.target.textContent='⏸'): (audio.pause(),event.target.textContent='▶');
-document.getElementById('next').onclick=()=>{load(i+1);audio.play()};
-document.getElementById('prev').onclick=()=>{load(i-1);audio.play()};
-audio.ontimeupdate=()=>filled.style.width=(audio.currentTime/audio.duration*100||0)+'%';
-audio.onended=()=>{load(i+1);audio.play()};
+play.onclick=()=>audio.paused?(audio.play(),play.textContent="⏸"):(audio.pause(),play.textContent="▶");
+next.onclick=()=>{load(i+1);audio.play()}
+prev.onclick=()=>{load(i-1);audio.play()}
+audio.ontimeupdate=()=>filled.style.width=(audio.currentTime/audio.duration*100||0)+"%";
+audio.onended=()=>{load(i+1);audio.play()}
 
-// Уведомление для телефонов
-if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
-  alert('Привет! Для комфортного использования BIO и плеера включите режим ПК на телефоне.');
+document.querySelectorAll(".btn").forEach(b=>{
+ b.onclick=()=>{
+  document.querySelectorAll(".btn").forEach(x=>x.classList.remove("active"));
+  b.classList.add("active");
+  ["bio","other","goals","socials"].forEach(id=>document.getElementById(id).style.display="none");
+  document.getElementById(b.dataset.tab).style.display="block";
+ }
+});
+
+if(/Android|iPhone/i.test(navigator.userAgent)){
+ alert("Прости, мне было лень оптимизировать под телефон 😅\nВключи режим ПК");
 }
+
+document.getElementById("app").style.display="block";
 </script>
 
 </body>
