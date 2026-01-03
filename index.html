@@ -8,152 +8,262 @@
 
 <style>
 :root{
-  --bg:#05040a;
-  --accent1:#ff79d1;
-  --accent2:#9b6bff;
-  --text:#e9f7ff;
-  --muted:rgba(233,247,255,.65);
-  --glass:rgba(255,255,255,.05);
+ --bg:#05040a;
+ --accent1:#ff79d1;
+ --accent2:#9b6bff;
+ --text:#e9f7ff;
+ --muted:rgba(233,247,255,.65);
+ --glass:rgba(255,255,255,.04);
 }
-*{box-sizing:border-box;margin:0;padding:0}
+*{margin:0;padding:0;box-sizing:border-box}
 body{
-  background:var(--bg);
-  color:var(--text);
-  font-family:Inter,system-ui;
-  display:flex;
-  justify-content:center;
-  padding:24px;
+ background:var(--bg);
+ color:var(--text);
+ font-family:Inter,system-ui;
+ display:flex;
+ justify-content:center;
+ padding:20px;
 }
-.container{max-width:900px;width:100%;display:none}
+.container{max-width:900px;width:100%}
 .card{
-  background:var(--glass);
-  border-radius:16px;
-  padding:16px;
-  margin-top:14px;
-  backdrop-filter:blur(14px);
+ background:var(--glass);
+ border-radius:18px;
+ padding:18px;
+ margin-bottom:14px;
+ backdrop-filter:blur(14px);
 }
-.avatar{width:140px;height:140px;border-radius:50%;overflow:hidden;margin:auto}
+.avatar{
+ width:140px;height:140px;
+ border-radius:50%;
+ overflow:hidden;
+ margin:auto;
+}
 .avatar img{width:100%;height:100%;object-fit:cover}
-.nick{text-align:center;font-weight:800;margin-top:10px}
+.nick{text-align:center;font-weight:800;font-size:20px;margin-top:10px}
 .sub{text-align:center;color:var(--muted);font-size:13px}
 
-.controls{display:flex;gap:8px;justify-content:center;margin-top:12px;flex-wrap:wrap}
-.btn{
-  padding:10px 14px;
-  border-radius:14px;
-  border:1px solid rgba(255,255,255,.1);
-  background:rgba(255,255,255,.05);
-  color:var(--text);
-  cursor:pointer;
+/* tabs */
+.tabs{
+ display:flex;
+ gap:10px;
+ justify-content:center;
+ flex-wrap:wrap;
+ margin-top:12px;
 }
-.btn.active{
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  color:#000;
+.tab{
+ padding:10px 16px;
+ border-radius:14px;
+ border:1px solid rgba(255,255,255,.1);
+ background:transparent;
+ color:var(--text);
+ cursor:pointer;
+}
+.tab.active{
+ background:linear-gradient(90deg,var(--accent1),var(--accent2));
+ color:#000;
+}
+.section{display:none;margin-top:14px}
+.section.active{display:block}
+h3{font-size:13px;color:#ffd8f5;margin-bottom:6px}
+p{font-size:14px;line-height:1.45}
+a{color:#ffd8f5;text-decoration:none}
+
+/* bio buttons */
+.bio-buttons{
+ display:flex;
+ gap:10px;
+ flex-wrap:wrap;
+ margin-bottom:10px;
+}
+.bio-btn{
+ padding:8px 14px;
+ border-radius:12px;
+ border:1px solid rgba(255,255,255,.1);
+ background:transparent;
+ color:var(--text);
+ cursor:pointer;
+}
+.bio-btn.active{
+ background:linear-gradient(90deg,var(--accent1),var(--accent2));
+ color:#000;
 }
 
-.player{margin-top:20px}
-.cover{width:100%;height:220px;border-radius:12px;overflow:hidden}
+/* player */
+.player{margin-top:16px}
+.cover{height:220px;border-radius:14px;overflow:hidden}
 .cover img{width:100%;height:100%;object-fit:cover}
 .track-title{font-weight:800;margin-top:10px}
 .track-artist{font-size:13px;color:var(--muted)}
-.progress{height:8px;background:#222;border-radius:999px;margin:10px 0;cursor:pointer}
-.progress-filled{height:100%;width:0%;background:linear-gradient(90deg,var(--accent1),var(--accent2))}
-.p-controls{display:flex;justify-content:center;gap:10px}
-.p-controls button{
-  width:56px;height:56px;border:none;border-radius:14px;
-  background:linear-gradient(90deg,var(--accent1),var(--accent2));
-  font-size:18px;
+.progress{
+ height:8px;
+ background:rgba(255,255,255,.15);
+ border-radius:999px;
+ margin:12px 0;
+ cursor:pointer
 }
-a{color:#ffd8f5;text-decoration:none}
+.progress-fill{
+ height:100%;
+ width:0%;
+ background:linear-gradient(90deg,var(--accent1),var(--accent2));
+ border-radius:999px
+}
+.player-controls{
+ display:flex;
+ justify-content:center;
+ gap:14px
+}
+.player-controls button{
+ width:56px;height:56px;
+ border:none;border-radius:14px;
+ cursor:pointer;
+ background:linear-gradient(90deg,var(--accent1),var(--accent2));
+ font-size:18px;
+}
+.small{text-align:center;font-size:12px;color:var(--muted);margin-top:6px}
 </style>
 </head>
 
 <body>
 
-<div class="container" id="app">
+<div class="container">
 
 <div class="card">
-  <div class="avatar"><img src="1764957641549.jpg"></div>
-  <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
-  <div class="sub">Максим • 28/08/2012 • Украина, Львов</div>
+ <div class="avatar"><img src="1764957641549.jpg"></div>
+ <div class="nick">ʙɪᴏ ᴡᴇʟʟᴀ</div>
+ <div class="sub">Дата рождения: 28/08/2012</div>
 
-  <div class="controls">
-    <button class="btn active" data-tab="bio">BIO</button>
-    <button class="btn" data-tab="other">OTHER</button>
-    <button class="btn" data-tab="goals">GOALS</button>
-    <button class="btn" data-tab="socials">SOCIALS</button>
+ <div class="tabs">
+  <button class="tab active" data-tab="bio">BIO</button>
+  <button class="tab" data-tab="other">OTHER</button>
+  <button class="tab" data-tab="goals">GOALS</button>
+  <button class="tab" data-tab="socials">SOCIAL</button>
+ </div>
+
+ <!-- BIO -->
+ <div class="section active" id="bio">
+  <div class="bio-buttons">
+   <button class="bio-btn active" data-bio="main">Основное</button>
+   <button class="bio-btn" data-bio="second">Второстепенное</button>
+   <button class="bio-btn" data-bio="about">О себе</button>
   </div>
+
+  <div id="bio-main" class="bio-section">
+   <p>
+    Ник: <b>Femscout1</b><br>
+    Имя: Максим<br>
+    Возраст: 13<br>
+    Страна: Украина<br>
+    Город: Львов<br>
+    Статус: не в отношениях
+   </p>
+  </div>
+
+  <div id="bio-second" class="bio-section" style="display:none">
+   <p>
+    Рост: 177<br>
+    Вес: 52<br>
+    Музыка: funk, pop<br>
+    Игры: RDR2, Roblox, MSC
+   </p>
+  </div>
+
+  <div id="bio-about" class="bio-section" style="display:none">
+   <p>
+    Люблю игры, фарм, иногда побыть одному и подумать.
+   </p>
+  </div>
+ </div>
+
+ <!-- OTHER -->
+ <div class="section" id="other">
+  <h3>OTHER</h3>
+  <p>
+   Огромное спасибо моим друзьям, которые поддерживали ❤️<br>
+   и <b>vanılla</b> — за напоминания о BIO.
+  </p>
+  <p style="margin-top:8px">
+   Вы можете задать свой вопрос, тыкнув на
+   <a href="http://t.me/ananimnaya_valentinka_robot?start=u1856347223" target="_blank">
+    это сообщение
+   </a>
+  </p>
+ </div>
+
+ <!-- GOALS -->
+ <div class="section" id="goals">
+  <h3>GOALS</h3>
+  <p>На данный момент нет.</p>
+ </div>
+
+ <!-- SOCIAL -->
+ <div class="section" id="socials">
+  <h3>SOCIAL</h3>
+  <p>Telegram — <a href="https://t.me/Femscout1" target="_blank">t.me/Femscout1</a></p>
+  <p>TikTok — <a href="https://tiktok.com/@lerety2" target="_blank">@lerety2</a></p>
+ </div>
 </div>
 
-<div class="card" id="bio">
-<h3>Основное</h3>
-<p>Ник: Femscout1</p>
-<p>Имя: Максим</p>
-<p>Возраст: 13</p>
-<p>Страна: Украина</p>
-<p>Город: Львов</p>
-<p>Статус: не в отношениях</p>
-
-<h3 style="margin-top:10px">Второстепенное</h3>
-<p>Рост: 177</p>
-<p>Вес: 52</p>
-<p>Музыка: funk, pop</p>
-<p>Игры: RDR2, Roblox, MSC</p>
-
-<h3 style="margin-top:10px">О себе</h3>
-<p>Люблю игры, фарм, иногда побыть одному и подумать.</p>
-</div>
-
-<div class="card" id="other" style="display:none">
-<p>Огромное спасибо моим друзьям, которые поддерживали 💜</p>
-<p>И <b>vanılla</b> — за напоминания о BIO.</p>
-<p style="margin-top:8px">
-<a href="http://t.me/ananimnaya_valentinka_robot?start=u1856347223" target="_blank">
-Задать анонимный вопрос
-</a>
-</p>
-</div>
-
-<div class="card" id="goals" style="display:none">
-<p>На данный момент нету.</p>
-</div>
-
-<div class="card" id="socials" style="display:none">
-<p>Telegram — <a href="https://t.me/Femscout1">t.me/Femscout1</a></p>
-<p>TikTok — <a href="https://tiktok.com/@lerety2">@lerety2</a></p>
-</div>
-
+<!-- PLAYER -->
 <div class="card player">
-<div class="cover"><img id="cover"></div>
-<div class="track-title" id="title"></div>
-<div class="track-artist" id="artist"></div>
-<div class="progress" id="progress"><div class="progress-filled" id="filled"></div></div>
-<div class="p-controls">
-<button id="prev">⟨</button>
-<button id="play">▶</button>
-<button id="next">⟩</button>
-</div>
+ <div class="cover"><img id="cover"></div>
+ <div class="track-title" id="title"></div>
+ <div class="track-artist" id="artist"></div>
+ <div class="progress"><div class="progress-fill" id="fill"></div></div>
+ <div class="player-controls">
+  <button id="prev">⟨</button>
+  <button id="play">▶</button>
+  <button id="next">⟩</button>
+ </div>
+ <div class="small">Random playlist</div>
 </div>
 
 </div>
 
 <script>
-const tracks=[
-{title:"Ты любишь танцевать",artist:"CUPSIZE",file:"2_5237768993212742673.mp3",cover:"9b816476ba9cc02b600ef5ec6c926af7.1000x1000x1.jpg"},
-{title:"С тобой",artist:"Charge Music",file:"2_5316856675620127297.mp3",cover:"1200x630bb.jpg"},
-{title:"NOBODY",artist:"Toxi$, Big Baby Tape",file:"2_5220048177192794197.mp3",cover:"artworks-vVzuX0zFy18o6pqh-xvxwnA-t500x500.png"},
-{title:"Martin Roze",artist:"madk1d, greyrock, tewiq",file:"2_5402341707519916888 (2).m4a",cover:"artworks-dZUYTgfQVZzfKQwk-ZCHa8g-t500x500.jpg"},
-{title:"Бабки",artist:"lightprey, trepet, whitek3d",file:"2_5382132391743620975 (2).mp3",cover:"maxresdefault.jpg"}
-];
+/* tabs */
+document.querySelectorAll('.tab').forEach(btn=>{
+ btn.onclick=()=>{
+  document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.section').forEach(s=>s.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(btn.dataset.tab).classList.add('active');
+ }
+});
 
+/* bio buttons */
+document.querySelectorAll('.bio-btn').forEach(btn=>{
+ btn.onclick=()=>{
+  document.querySelectorAll('.bio-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.bio-section').forEach(s=>s.style.display='none');
+  btn.classList.add('active');
+  document.getElementById('bio-'+btn.dataset.bio).style.display='block';
+ }
+});
+
+/* tracks */
+const tracks=[
+ {title:'Ты любишь танцевать',artist:'CUPSIZE',file:'2_5237768993212742673.mp3',cover:'9b816476ba9cc02b600ef5ec6c926af7.1000x1000x1'},
+ {title:'С тобой',artist:'Charge Music',file:'2_5316856675620127297.mp3',cover:'1200x630bb.jpg'},
+ {title:'NOBODY',artist:'Toxi$, Big Baby Tape',file:'2_5220048177192794197.mp3',cover:'artworks-vVzuX0zFy18o6pqh-xvxwnA-t500x500.png'},
+ {title:'Martin Roze',artist:'madk1d, greyrock, tewiq',file:'2_5402341707519916888 (2).m4a',cover:'artworks-dZUYTgfQVZzfKQwk-ZCHa8g-t500x500.jpg'},
+ {title:'Бабки',artist:'lightprey, trepet, whitek3d',file:'2_5382132391743620975 (2).mp3',cover:'maxresdefault.jpg'},
+ {title:'Dynamite (Super Slowed)',artist:'Remzcore',file:'2_5303051113132493898.mp3',cover:'Screenshot_20260103-123350.jpg'},
+ {title:'HMU',artist:'Tobias Dray',file:'2_5460744737235426365 (2).mp3',cover:'Screenshot_20260103-123734.jpg'},
+ {
+  title:'𝙍𝘼Й',
+  artist:'𝙇𝙞𝙙𝙖,𝗣𝗢𝗟𝗠𝗔𝗧𝗘𝗥И',
+  file:'tagmp3_2_5217930307344306770.mp3',
+  cover:'Screenshot_20260103-124010.jpg'
+ }
+];
 tracks.sort(()=>Math.random()-0.5);
 
 const audio=new Audio();
 let i=0;
-const title=document.getElementById("title");
-const artist=document.getElementById("artist");
-const cover=document.getElementById("cover");
-const filled=document.getElementById("filled");
+const title=document.getElementById('title');
+const artist=document.getElementById('artist');
+const cover=document.getElementById('cover');
+const fill=document.getElementById('fill');
 
 function load(n){
  i=(n+tracks.length)%tracks.length;
@@ -164,26 +274,15 @@ function load(n){
 }
 load(0);
 
-play.onclick=()=>audio.paused?(audio.play(),play.textContent="⏸"):(audio.pause(),play.textContent="▶");
+play.onclick=()=>{audio.paused?(audio.play(),play.textContent='⏸'):(audio.pause(),play.textContent='▶')}
 next.onclick=()=>{load(i+1);audio.play()}
 prev.onclick=()=>{load(i-1);audio.play()}
-audio.ontimeupdate=()=>filled.style.width=(audio.currentTime/audio.duration*100||0)+"%";
-audio.onended=()=>{load(i+1);audio.play()}
+audio.ontimeupdate=()=>fill.style.width=(audio.currentTime/audio.duration*100||0)+'%';
+audio.onended=()=>{load(i+1);audio.play()};
 
-document.querySelectorAll(".btn").forEach(b=>{
- b.onclick=()=>{
-  document.querySelectorAll(".btn").forEach(x=>x.classList.remove("active"));
-  b.classList.add("active");
-  ["bio","other","goals","socials"].forEach(id=>document.getElementById(id).style.display="none");
-  document.getElementById(b.dataset.tab).style.display="block";
- }
-});
-
-if(/Android|iPhone/i.test(navigator.userAgent)){
- alert("Прости, мне было лень оптимизировать под телефон 😅\nВключи режим ПК");
+if(/Android|iPhone|iPad/i.test(navigator.userAgent)){
+ alert('Простите, мне было лень оптимизировать для телефона 😅\nВключите режим ПК');
 }
-
-document.getElementById("app").style.display="block";
 </script>
 
 </body>
